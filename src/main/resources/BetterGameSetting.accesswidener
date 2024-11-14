@@ -1,0 +1,9 @@
+accessWidener v2 named
+accessible field net/minecraft/GuiSlot left I
+accessible field net/minecraft/GuiSlot width I
+accessible field net/minecraft/GuiSlot amountScrolled F
+accessible field net/minecraft/GuiSlot field_77242_t I
+accessible field net/minecraft/GuiScreen mc Lnet/minecraft/Minecraft;
+accessible class net/minecraft/GuiScreenTemporaryResourcePackSelectSelectionList
+accessible field net/minecraft/Minecraft mcResourcePackRepository Lnet/minecraft/ResourcePackRepository;
+accessible field net/minecraft/SoundManager sndSystem Lpaulscode/sound/SoundSystem;

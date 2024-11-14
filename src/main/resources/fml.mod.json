@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "better_game_setting",
+  "version": "${version}",
+  "depends": {
+    "minecraft": "1.6.4-mite",
+    "fishmodloader": ">=3.3.3"
+  },
+  "breaks": {
+    "gamma_free": "*",
+    "shader-loader": "<=1.0.2"
+  },
+  "environment": "client",
+  "name": "BetterGameSetting",
+  "icon": "assets/bettergamesetting/bgs_icon.png",
+  "description": "1.7.2+ Game Setting Gui",
+  "authors": [
+    "Xy_Lose"
+  ],
+  "contact": {
+    "homepage": "https://github.com/ysesiq/BetterGameSetting",
+    "issues": "https://github.com/ysesiq/BetterGameSetting/issues"
+  },
+  "entrypoints": {
+    "preLaunch": [
+      "moddedmite.xylose.bettergamesetting.init.EarlyRiser"
+    ],
+    "client": [
+      "moddedmite.xylose.bettergamesetting.init.BetterGameSettingClient"
+    ]
+  },
+  "mixins": [
+    "BetterGameSetting.mixins.json"
+  ],
+  "accessWidener": "BetterGameSetting.accesswidener",
+  "custom": {
+    "loom:injected_interfaces": {
+    },
+    "modmenu:clientsideOnly": true
+  }
+}

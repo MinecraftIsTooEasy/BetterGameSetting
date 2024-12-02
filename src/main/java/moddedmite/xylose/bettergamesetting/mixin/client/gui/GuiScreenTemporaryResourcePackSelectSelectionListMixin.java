@@ -2,18 +2,14 @@ package moddedmite.xylose.bettergamesetting.mixin.client.gui;
 
 import moddedmite.xylose.bettergamesetting.api.IGuiScreenTemporaryResourcePackSelect;
 import net.minecraft.*;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 
 import java.util.List;
 
 @Mixin(GuiScreenTemporaryResourcePackSelectSelectionList.class)
 public abstract class GuiScreenTemporaryResourcePackSelectSelectionListMixin extends GuiSlot {
-    @Shadow
-    private final ResourcePackRepository field_110511_b;
-    @Shadow
-    final GuiScreenTemporaryResourcePackSelect field_110512_a;
+    @Mutable @Final @Shadow private final ResourcePackRepository field_110511_b;
+    @Mutable @Final @Shadow final GuiScreenTemporaryResourcePackSelect field_110512_a;
 
     public GuiScreenTemporaryResourcePackSelectSelectionListMixin(GuiScreenTemporaryResourcePackSelect par1GuiScreenTemporaryResourcePackSelect, ResourcePackRepository par2ResourcePackRepository) {
         super(IGuiScreenTemporaryResourcePackSelect.func_110344_a(par1GuiScreenTemporaryResourcePackSelect), par1GuiScreenTemporaryResourcePackSelect.width, par1GuiScreenTemporaryResourcePackSelect.height, 32, par1GuiScreenTemporaryResourcePackSelect.height - 55 + 4, 36);
@@ -22,6 +18,10 @@ public abstract class GuiScreenTemporaryResourcePackSelectSelectionListMixin ext
         par2ResourcePackRepository.updateRepositoryEntriesAll();
     }
 
+    /**
+     * @author Xy_Lose
+     * @reason able clicked resource packs
+     */
     @Overwrite
     protected void elementClicked(int par1, boolean par2) {
         List var3 = this.field_110511_b.getRepositoryEntriesAll();
@@ -42,6 +42,10 @@ public abstract class GuiScreenTemporaryResourcePackSelectSelectionListMixin ext
         IGuiScreenTemporaryResourcePackSelect.func_110334_e(this.field_110512_a).gameSettings.saveOptions();
     }
 
+    /**
+     * @author Xy_Lose
+     * @reason able select resource packs
+     */
     @Overwrite
     protected boolean isSelected(int par1) {
         List var2 = this.field_110511_b.getRepositoryEntries();

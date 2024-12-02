@@ -1,13 +1,16 @@
 package moddedmite.xylose.bettergamesetting.client.gui;
 
+import moddedmite.xylose.bettergamesetting.api.IGuiSlot;
 import moddedmite.xylose.bettergamesetting.client.KeyBindingExtra;
 import moddedmite.xylose.bettergamesetting.api.IGameSetting;
 import net.minecraft.*;
+import net.xiaoyu233.fml.util.ReflectHelper;
 import org.apache.commons.lang3.ArrayUtils;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
 
 import java.util.Arrays;
-
-import static it.unimi.dsi.fastutil.Arrays.mergeSort;
 
 public class GuiKeyBindingList extends GuiListExtended {
     private final GuiNewControls field_148191_k;
@@ -21,13 +24,16 @@ public class GuiKeyBindingList extends GuiListExtended {
         this.mc = mcIn;
         KeyBinding[] akeybinding = (KeyBinding[]) ArrayUtils.clone(mcIn.gameSettings.keyBindings);
         this.listEntries = new IGuiListEntry[akeybinding.length + KeyBinding.keybindArray.size()];
-//        Arrays.sort(akeybinding);
+        try {
+            Arrays.sort((KeyBindingExtra[]) akeybinding);
+        } catch (Exception ignored) {
+        }
         int i = 0;
         String s = null;
 
         for (KeyBinding keybinding : akeybinding) {
-//            String s1 = KeyBindingExtra.getKeyCategory(keybinding.keyDescription);
-            String s1 = keybinding.keyDescription;
+            String s1 = KeyBindingExtra.getKeyCategory(keybinding.keyDescription);
+//            String s1 = keybinding.keyDescription;
 
             if (!s1.equals(s)) {
                 s = s1;
@@ -48,12 +54,9 @@ public class GuiKeyBindingList extends GuiListExtended {
         return this.listEntries.length;
     }
 
-    @Override
     protected void elementClicked(int i, boolean bl) {
-
     }
 
-//    @Override
 //    protected void drawSlot(int par1, int par2, int par3, int par4, Tessellator par5Tessellator) {
 //        this.getListEntry(par1).drawEntry(par1, par2, par3, super.width, super.slotHeight, Mouse.getX(), Mouse.getY(), ((IGuiSlot) this).getSlotIndexFromScreenCoords(Mouse.getY(), Mouse.getX()) == par1);
 //    }
@@ -70,7 +73,114 @@ public class GuiKeyBindingList extends GuiListExtended {
 //        return super.getListWidth() + 32;
 //    }
 
-    public class CategoryEntry implements IGuiListEntry {
+    @Override
+    public void drawScreen(int par1, int par2, float par3) {
+        this.mouseX = par1;
+        this.mouseY = par2;
+        this.drawBackground();
+        int var4 = this.getSize();
+        int var5 = this.getScrollBarX();
+        int var6 = var5 + 6;
+        int var7;
+        int var8;
+        int var9;
+        int var10;
+        int var11;
+        int var13;
+
+        ((IGuiSlot) this).handleMouseInput();
+
+        this.bindAmountScrolled();
+        this.drawDarkenedBackground(1);
+        Tessellator var16 = Tessellator.instance;
+        var7 = this.width / 2 - 92 - 16;
+        var8 = this.top + 4 - (int) this.amountScrolled;
+
+        if (this.field_77243_s) {
+            this.func_77222_a(var7, var8, var16);
+        }
+
+        for (var9 = 0; var9 < var4; ++var9) {
+            var11 = var8 + var9 * this.slotHeight + this.field_77242_t;
+            var10 = this.slotHeight - 4;
+
+            if (var11 <= this.bottom && var11 + var10 >= this.top) {
+                if (this.showSelectionBox && this.isSelected(var9)) {
+                    var13 = this.width / 2 - 110;
+                    int var17 = this.width / 2 + 110;
+                    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+                    GL11.glDisable(GL11.GL_TEXTURE_2D);
+                    var16.startDrawingQuads();
+                    var16.setColorOpaque_I(8421504);
+                    var16.addVertexWithUV((double) var13, (double) (var11 + var10 + 2), 0.0D, 0.0D, 1.0D);
+                    var16.addVertexWithUV((double) var17, (double) (var11 + var10 + 2), 0.0D, 1.0D, 1.0D);
+                    var16.addVertexWithUV((double) var17, (double) (var11 - 2), 0.0D, 1.0D, 0.0D);
+                    var16.addVertexWithUV((double) var13, (double) (var11 - 2), 0.0D, 0.0D, 0.0D);
+                    var16.setColorOpaque_I(0);
+                    var16.addVertexWithUV((double) (var13 + 1), (double) (var11 + var10 + 1), 0.0D, 0.0D, 1.0D);
+                    var16.addVertexWithUV((double) (var17 - 1), (double) (var11 + var10 + 1), 0.0D, 1.0D, 1.0D);
+                    var16.addVertexWithUV((double) (var17 - 1), (double) (var11 - 1), 0.0D, 1.0D, 0.0D);
+                    var16.addVertexWithUV((double) (var13 + 1), (double) (var11 - 1), 0.0D, 0.0D, 0.0D);
+                    var16.draw();
+                    GL11.glEnable(GL11.GL_TEXTURE_2D);
+                }
+
+                this.drawSlot(var9, var7, var11, var10, var16);
+            }
+        }
+
+        this.drawDarkenedBackground(2);
+        var11 = this.func_77209_d();
+
+        if (var11 > 0) {
+            var10 = (this.bottom - this.top) * (this.bottom - this.top) / this.getContentHeight();
+
+            if (var10 < 32) {
+                var10 = 32;
+            }
+
+            if (var10 > this.bottom - this.top - 8) {
+                var10 = this.bottom - this.top - 8;
+            }
+
+            var13 = (int) this.amountScrolled * (this.bottom - this.top - var10) / var11 + this.top;
+
+            if (var13 < this.top) {
+                var13 = this.top;
+            }
+
+            var16.startDrawingQuads();
+            var16.setColorRGBA_I(0, 255);
+            var16.addVertexWithUV((double) var5, (double) this.bottom, 0.0D, 0.0D, 1.0D);
+            var16.addVertexWithUV((double) var6, (double) this.bottom, 0.0D, 1.0D, 1.0D);
+            var16.addVertexWithUV((double) var6, (double) this.top, 0.0D, 1.0D, 0.0D);
+            var16.addVertexWithUV((double) var5, (double) this.top, 0.0D, 0.0D, 0.0D);
+            var16.draw();
+            var16.startDrawingQuads();
+            var16.setColorRGBA_I(8421504, 255);
+            var16.addVertexWithUV((double) var5, (double) (var13 + var10), 0.0D, 0.0D, 1.0D);
+            var16.addVertexWithUV((double) var6, (double) (var13 + var10), 0.0D, 1.0D, 1.0D);
+            var16.addVertexWithUV((double) var6, (double) var13, 0.0D, 1.0D, 0.0D);
+            var16.addVertexWithUV((double) var5, (double) var13, 0.0D, 0.0D, 0.0D);
+            var16.draw();
+            var16.startDrawingQuads();
+            var16.setColorRGBA_I(12632256, 255);
+            var16.addVertexWithUV((double) var5, (double) (var13 + var10 - 1), 0.0D, 0.0D, 1.0D);
+            var16.addVertexWithUV((double) (var6 - 1), (double) (var13 + var10 - 1), 0.0D, 1.0D, 1.0D);
+            var16.addVertexWithUV((double) (var6 - 1), (double) var13, 0.0D, 1.0D, 0.0D);
+            var16.addVertexWithUV((double) var5, (double) var13, 0.0D, 0.0D, 0.0D);
+            var16.draw();
+        }
+
+        this.func_77215_b(par1, par2);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glShadeModel(GL11.GL_FLAT);
+        GL11.glEnable(GL11.GL_ALPHA_TEST);
+        GL11.glDisable(GL11.GL_BLEND);
+    }
+
+
+        public class CategoryEntry implements IGuiListEntry {
         private final String labelText;
         private final int labelWidth;
 

@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.Calendar;
 
-@Mixin(GuiMainMenu.class)
+@Mixin(value = GuiMainMenu.class, priority = 9999)
 public class GuiMainMenuMixin extends GuiScreen {
     @Shadow
     private GuiButton minecraftRealmsButton;
@@ -26,8 +26,8 @@ public class GuiMainMenuMixin extends GuiScreen {
         }
     }
 
-    @Overwrite
-    private void func_130022_h() {
+    @Inject(method = "func_130022_h", at = @At("TAIL"))
+    private void func_130022_h(CallbackInfo ci) {
         this.minecraftRealmsButton.drawButton = !Main.is_MITE_DS;
     }
 
@@ -41,6 +41,8 @@ public class GuiMainMenuMixin extends GuiScreen {
 
     @ModifyConstant(method = "drawScreen", constant = @Constant(stringValue = "MITE Resource Pack 1.6.4 needs to be installed!"))
     private String disMITEResourcePack(String constant) {
-        return "";
+        if (Minecraft.MITE_resource_pack == null)
+            return "";
+        return constant;
     }
 }

@@ -23,5 +23,4 @@ public interface IGuiScreenTemporaryResourcePackSelect {
     static Minecraft func_110334_e(GuiScreenTemporaryResourcePackSelect par0GuiScreenTemporaryResourcePackSelect) {
         return par0GuiScreenTemporaryResourcePackSelect.mc;
     }
-
 }

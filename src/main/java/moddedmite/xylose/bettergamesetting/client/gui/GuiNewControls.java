@@ -41,11 +41,11 @@ public class GuiNewControls extends GuiScreen {
         }
     }
 
-//    public void handleMouseInput() {
-//        super.handleMouseInput();
-////        this.keyBindingList.handleMouseInput();
-////        Mouse.getEventButton();
-//    }
+    public void handleMouseInput() {
+        super.handleMouseInput();
+//        this.keyBindingList.handleMouseInput();
+//        Mouse.getEventButton();
+    }
 
     protected void actionPerformed(GuiButton button) {
         if (button.id == 200) {
@@ -115,7 +115,13 @@ public class GuiNewControls extends GuiScreen {
 
         this.buttonReset.enabled = !flag;
         super.drawScreen(mouseX, mouseY, partialTicks);
-        guiSlider.mouseReleased(mouseX, mouseY);
+//        guiSlider.mouseReleased(mouseX, mouseY);
 //        guiSlider.mousePressed(this.mc, mouseX, mouseY);
+    }
+
+    @Override
+    public void mouseMovedOrUp(int par1, int par2, int par3) {
+        par3 = 0;
+        super.mouseMovedOrUp(par1, par2, par3);
     }
 }

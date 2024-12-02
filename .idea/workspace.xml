@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="6e8b262d-7c3f-4c7c-92cc-44f911c489ce" name="更改" comment="1.0.0">
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/moddedmite/xylose/bettergamesetting/mixin/item/BlockCakeMixin.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/moddedmite/xylose/bettergamesetting/mixin/item/ItemBlockMixin.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/moddedmite/xylose/bettergamesetting/mixin/item/ItemBowlMixin.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/moddedmite/xylose/bettergamesetting/mixin/item/ItemFoodMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ChangeLogCN.md" beforeDir="false" afterPath="$PROJECT_DIR$/ChangeLogCN.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/moddedmite/xylose/bettergamesetting/api/IGameSetting.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/moddedmite/xylose/bettergamesetting/api/IGameSetting.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/moddedmite/xylose/bettergamesetting/api/IGuiScreenTemporaryResourcePackSelect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/moddedmite/xylose/bettergamesetting/api/IGuiScreenTemporaryResourcePackSelect.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/moddedmite/xylose/bettergamesetting/api/IGuiSlot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/moddedmite/xylose/bettergamesetting/api/IGuiSlot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/moddedmite/xylose/bettergamesetting/api/IKeyBinding.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/moddedmite/xylose/bettergamesetting/api/IKeyBinding.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/moddedmite/xylose/bettergamesetting/client/KeyBindingExtra.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/moddedmite/xylose/bettergamesetting/client/KeyBindingExtra.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/moddedmite/xylose/bettergamesetting/client/gui/GuiKeyBindingList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/moddedmite/xylose/bettergamesetting/client/gui/GuiKeyBindingList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/moddedmite/xylose/bettergamesetting/client/gui/GuiListExtended.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/moddedmite/xylose/bettergamesetting/client/gui/GuiListExtended.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/moddedmite/xylose/bettergamesetting/client/gui/GuiNewControls.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/moddedmite/xylose/bettergamesetting/client/gui/GuiNewControls.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/moddedmite/xylose/bettergamesetting/mixin/client/GameSettingsMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/moddedmite/xylose/bettergamesetting/mixin/client/GameSettingsMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/moddedmite/xylose/bettergamesetting/mixin/client/KeyBindingMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/moddedmite/xylose/bettergamesetting/mixin/client/KeyBindingMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/moddedmite/xylose/bettergamesetting/mixin/client/MinecraftMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/moddedmite/xylose/bettergamesetting/mixin/client/MinecraftMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/moddedmite/xylose/bettergamesetting/mixin/client/gui/GuiMainMenuMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/moddedmite/xylose/bettergamesetting/mixin/client/gui/GuiMainMenuMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/moddedmite/xylose/bettergamesetting/mixin/client/gui/GuiScreenTemporaryResourcePackSelectSelectionListMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/moddedmite/xylose/bettergamesetting/mixin/client/gui/GuiScreenTemporaryResourcePackSelectSelectionListMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/moddedmite/xylose/bettergamesetting/mixin/client/gui/GuiSlotMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/moddedmite/xylose/bettergamesetting/mixin/client/gui/GuiSlotMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/moddedmite/xylose/bettergamesetting/mixin/client/renderer/RenderGlobalMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/moddedmite/xylose/bettergamesetting/mixin/client/renderer/RenderGlobalMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/moddedmite/xylose/bettergamesetting/mixin/entity/EntityRenderMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/moddedmite/xylose/bettergamesetting/mixin/entity/EntityRenderMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/BetterGameSetting.accesswidener" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/BetterGameSetting.accesswidener" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/BetterGameSetting.mixins.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/BetterGameSetting.mixins.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/minecraft/lang/en_US.lang" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/minecraft/lang/en_US.lang" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/minecraft/lang/zh_CN.lang" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/minecraft/lang/zh_CN.lang" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/fml.mod.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fml.mod.json" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="BetterGameSetting" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="BetterGameSetting" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="BetterGameSetting" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="build" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="BetterGameSetting" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="fml" type="c8890929:TasksNode$1" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;ysesiq&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;git@github.com:/ysesiq/BetterGameSetting.git&quot;,
+    &quot;accountId&quot;: &quot;8279572d-1ad8-49ec-ad2c-088e7c964eb1&quot;
+  }
+}</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl/2.9.0/c93326bd0f3a21f3b2c8c22b6f345ab6ca1dd683/lwjgl-2.9.0-sources.jar!/org/lwjgl/input/Mouse.java" root0="SKIP_INSPECTION" />
+    <setting file="jar://$PROJECT_DIR$/.gradle/loom-cache/minecraftMaven/net/minecraft/minecraft-merged-97c3bd6e53/1.6.4-MITE-loom.mappings.1_6_4_MITE.layered+hash.687863292-v2/minecraft-merged-97c3bd6e53-1.6.4-MITE-loom.mappings.1_6_4_MITE.layered+hash.687863292-v2.jar!/net/minecraft/GameSettings.class" root0="SKIP_INSPECTION" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="2ogmEMydQ5o7tIAjA2whgxO22h3" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.BEtterGameSetting [clean].executor": "Run",
+    "Gradle.BEtterGameSetting [genSources].executor": "Run",
+    "Gradle.BEtterGameSetting [jar] (1).executor": "Run",
+    "Gradle.BEtterGameSetting [jar].executor": "Run",
+    "Gradle.BetterGameSetting [runClient].executor": "Run",
+    "Gradle.F:/Projects/IDEA/Minecraft/MITE/FML3/BetterGameSetting [genSources] (1).executor": "Run",
+    "Gradle.F:/Projects/IDEA/Minecraft/MITE/FML3/BetterGameSetting [genSources] (2).executor": "Run",
+    "Gradle.F:/Projects/IDEA/Minecraft/MITE/FML3/BetterGameSetting [genSources].executor": "Run",
+    "Gradle.F:/Projects/IDEA/Minecraft/MITE/FML3/BetterGameSetting [jar] (1).executor": "Run",
+    "Gradle.F:/Projects/IDEA/Minecraft/MITE/FML3/BetterGameSetting [jar].executor": "Run",
+    "Gradle.F:/Projects/IDEA/Minecraft/MITE/FML3/BetterGameSetting [runClient] (1).executor": "Run",
+    "Gradle.F:/Projects/IDEA/Minecraft/MITE/FML3/BetterGameSetting [runClient].executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "F:/Projects/IDEA/Minecraft/MITE/FML3/BetterGameSetting/run/mods"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\Projects\IDEA\Minecraft\MITE\FML3\BetterGameSetting\run\mods" />
+      <recent name="F:\Projects\IDEA\Minecraft\MITE\FML3\BetterGameSetting\libs" />
+      <recent name="F:\Projects\IDEA\Minecraft\MITE\FML3\BetterGameSetting\src\main\java\moddedmite\xylose\bettergamesetting\mixin" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="F:\Projects\IDEA\Minecraft\MITE\FML3\BetterGameSetting\run\mods" />
+      <recent name="F:\Projects\IDEA\Minecraft\MITE\FML3\BetterGameSetting\run\resourcepacks" />
+      <recent name="F:\Projects\IDEA\Minecraft\MITE\FML3\BetterGameSetting\run\resourcepacks\0" />
+      <recent name="F:\Projects\IDEA\Minecraft\MITE\FML3\BetterGameSetting\run\mods\0" />
+      <recent name="F:\Projects\IDEA\Minecraft\MITE\FML3\BetterGameSetting\src\main\resources\assets\bettergamesetting" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="moddedmite.xylose.bettergamesetting.api" />
+      <recent name="moddedmite.xylose.bettergamesetting" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Gradle.F:/Projects/IDEA/Minecraft/MITE/FML3/BetterGameSetting [runClient] (1)">
+    <configuration name="BEtterGameSetting [clean]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="clean" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="BEtterGameSetting [jar] (1)" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="jar" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="BEtterGameSetting [jar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="jar" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="F:/Projects/IDEA/Minecraft/MITE/FML3/BetterGameSetting [genSources]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="genSources" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="F:/Projects/IDEA/Minecraft/MITE/FML3/BetterGameSetting [runClient] (1)" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="runClient" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle.F:/Projects/IDEA/Minecraft/MITE/FML3/BetterGameSetting [runClient] (1)" />
+        <item itemvalue="Gradle.BEtterGameSetting [jar] (1)" />
+        <item itemvalue="Gradle.BEtterGameSetting [jar]" />
+        <item itemvalue="Gradle.BEtterGameSetting [clean]" />
+        <item itemvalue="Gradle.F:/Projects/IDEA/Minecraft/MITE/FML3/BetterGameSetting [genSources]" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="默认任务">
+      <changelist id="6e8b262d-7c3f-4c7c-92cc-44f911c489ce" name="更改" comment="" />
+      <created>1731299498083</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1731299498083</updated>
+    </task>
+    <task id="LOCAL-00001" summary="1.0.0">
+      <option name="closed" value="true" />
+      <created>1731592926920</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1731592926920</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="1.0.0" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.0.0" />
+  </component>
+</project>

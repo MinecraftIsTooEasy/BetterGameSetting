@@ -12,4 +12,7 @@ public interface IGuiSlot {
     default int getScrollBarX() {
         return 0;
     }
+
+    default void handleMouseInput() {
+    }
 }

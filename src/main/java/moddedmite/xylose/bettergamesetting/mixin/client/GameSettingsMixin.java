@@ -48,6 +48,7 @@ public abstract class GameSettingsMixin implements IGameSetting {
         renderDistance = 8;
         limitFramerate = 120;
         skin = "MITE Resource Pack 1.6.4.zip";
+        gammaSetting = 0.5F;
 //        fovSetting = 70.0F;
         original.call(instance);
     }

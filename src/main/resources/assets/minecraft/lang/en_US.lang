@@ -13,3 +13,4 @@ options.neutral=Friendly Creatures
 options.player=Players
 options.ambient=Ambient/Environment
 options.chunks=chunks
+key.categories.uncategorized=Uncategorized

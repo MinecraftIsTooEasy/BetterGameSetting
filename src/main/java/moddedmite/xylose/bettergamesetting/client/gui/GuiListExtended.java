@@ -27,7 +27,8 @@ public abstract class GuiListExtended extends GuiSlot {
         int j1 = scaledresolution.getScaledHeight();
         final int mouseXIn = Mouse.getX() * i1 / mc.displayWidth;
         final int mouseYIn = j1 - Mouse.getY() * j1 / mc.displayHeight - 1;
-        this.getListEntry(par1).drawEntry(par1, par2, par3, super.width, super.slotHeight, mouseXIn, mouseYIn, ((IGuiSlot) this).getSlotIndexFromScreenCoords(mouseXIn, mouseYIn) == par1);
+        if (this.getListEntry(par1) != null)
+            this.getListEntry(par1).drawEntry(par1, par2, par3, super.width, super.slotHeight, mouseXIn, mouseYIn, ((IGuiSlot) this).getSlotIndexFromScreenCoords(mouseXIn, mouseYIn) == par1);
     }
 
     protected void func_178040_a(int p_178040_1_, int p_178040_2_, int p_178040_3_) {

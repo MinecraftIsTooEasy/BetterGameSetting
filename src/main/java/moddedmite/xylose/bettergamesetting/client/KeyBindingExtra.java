@@ -1,16 +1,20 @@
 package moddedmite.xylose.bettergamesetting.client;
 
+import moddedmite.xylose.bettergamesetting.api.IKeyBinding;
 import net.minecraft.I18n;
 import net.minecraft.KeyBinding;
+import org.spongepowered.asm.mixin.Unique;
+
+import java.util.Iterator;
 
 public class KeyBindingExtra extends KeyBinding {
+    public static int defaultKeyCode;
+
     public KeyBindingExtra(String keyDescription, int keyCode) {
         super(keyDescription, keyCode);
     }
 
     public static int getKeyCodeDefault(String keyDescription) {
-        for (Object o : keybindArray) {
-            KeyBinding keyBinding = (KeyBinding) o;
             return switch (keyDescription) {
                 case "key.forward" -> 17;
                 case "key.left" -> 30;
@@ -29,20 +33,34 @@ public class KeyBindingExtra extends KeyBinding {
                 case "key.toggleRun" -> 15;
                 case "key.zoom" -> 44;
                 case "key.redrawChunks" -> 19;
-                default -> keyBinding.keyCode;
+                default -> getDefaultKeyCode();
             };
-        }
-        return 0;
     }
 
     public static String getKeyCategory(String keyDescription) {
-            return switch (keyDescription) {
-                case "key.forward", "key.jump", "key.right", "key.back", "key.left", "key.sneak", "key.toggleRun" -> I18n.getString("key.categories.movement");
-                case "key.inventory" -> I18n.getString("key.categories.inventory");
-                case "key.drop", "key.attack", "key.use", "key.zoom", "key.pickItem" -> I18n.getString("key.categories.gameplay");
-                case "key.chat", "key.command", "key.playerlist" -> I18n.getString("key.categories.multiplayer");
-                case "key.redrawChunks" -> I18n.getString("key.categories.misc");
-                default -> "key.categories.uncategorized";
-            };
+        return switch (keyDescription) {
+            case "key.forward", "key.jump", "key.right", "key.back", "key.left", "key.sneak", "key.toggleRun" ->
+                    I18n.getString("key.categories.movement");
+            case "key.inventory" -> I18n.getString("key.categories.inventory");
+            case "key.drop", "key.attack", "key.use", "key.zoom", "key.pickItem" ->
+                    I18n.getString("key.categories.gameplay");
+            case "key.chat", "key.command", "key.playerlist" -> I18n.getString("key.categories.multiplayer");
+            case "key.redrawChunks" -> I18n.getString("key.categories.misc");
+            default -> I18n.getString("key.categories.uncategorized");
+        };
+    }
+
+    public int compareTo(KeyBinding p_compareTo_1_) {
+        int i = I18n.getString(getKeyCategory(p_compareTo_1_.keyDescription)).compareTo(I18n.getString(getKeyCategory(p_compareTo_1_.keyDescription)));
+
+        if (i == 0) {
+            i = I18n.getString(getKeyCategory(p_compareTo_1_.keyDescription)).compareTo(I18n.getString(p_compareTo_1_.keyDescription));
         }
+
+        return i;
+    }
+
+    public static int getDefaultKeyCode() {
+        return defaultKeyCode;
+    }
 }

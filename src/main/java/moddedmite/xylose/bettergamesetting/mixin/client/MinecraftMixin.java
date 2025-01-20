@@ -1,9 +1,12 @@
 package moddedmite.xylose.bettergamesetting.mixin.client;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.GameSettings;
 import net.minecraft.GuiMainMenu;
 import net.minecraft.GuiScreen;
 import net.minecraft.Minecraft;
+import net.xiaoyu233.fml.FishModLoader;
+import net.xiaoyu233.fml.config.Configs;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -13,8 +16,10 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(value = Minecraft.class, priority = 9999)
 public class MinecraftMixin {
-    @Shadow public GameSettings gameSettings;
-    @Shadow public GuiScreen currentScreen;
+    @Shadow
+    public GameSettings gameSettings;
+    @Shadow
+    public GuiScreen currentScreen;
 
     @Redirect(method = "runGameLoop", at = @At(value = "FIELD", target = "Lnet/minecraft/GameSettings;gammaSetting:F", opcode = Opcodes.PUTFIELD))
     private void inject(GameSettings instance, float value) {
@@ -34,4 +39,6 @@ public class MinecraftMixin {
         }
         return 9999;
     }
+
+
 }

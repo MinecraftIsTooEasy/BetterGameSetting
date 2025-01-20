@@ -4,7 +4,7 @@
   "version": "${version}",
   "depends": {
     "minecraft": "1.6.4-mite",
-    "fishmodloader": ">=3.3.3"
+    "fishmodloader": ">=3.4.0"
   },
   "breaks": {
     "gamma_free": "*",

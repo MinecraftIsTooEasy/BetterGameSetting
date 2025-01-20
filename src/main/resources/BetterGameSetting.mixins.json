@@ -53,15 +53,13 @@
     "item.ItemFlintAndSteelMixin",
     "network.NetClientHandlerMixin",
     "server.PlayerControllerMPMixin",
-    "world.WorldMixin"
-  ],
-  "injectors": {
-    "defaultRequire": 1
-  },
-  "mixins": [
+    "world.WorldMixin",
     "item.BlockCakeMixin",
     "item.ItemBlockMixin",
     "item.ItemBowlMixin",
     "item.ItemFoodMixin"
-  ]
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
 }

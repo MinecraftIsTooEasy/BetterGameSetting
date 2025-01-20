@@ -1,33 +1,54 @@
 package moddedmite.xylose.bettergamesetting.mixin.entity;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
 import moddedmite.xylose.bettergamesetting.api.IGameSetting;
 import net.minecraft.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Constant;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(value = EntityRenderer.class, priority = 9999)
 public abstract class EntityRenderMixin {
-    @Shadow private float farPlaneDistance;
-    @Shadow private Minecraft mc;
-    @Shadow protected abstract void setupFog(int par1, float par2);
-    @Shadow private float fogColorRed;
-    @Shadow private float fogColorGreen;
-    @Shadow private float fogColorBlue;
+    @Shadow
+    private float farPlaneDistance;
+    @Shadow
+    private Minecraft mc;
+
+    @Shadow
+    protected abstract void setupFog(int par1, float par2);
+
+    @Shadow
+    private float fogColorRed;
+    @Shadow
+    private float fogColorGreen;
+    @Shadow
+    private float fogColorBlue;
+
+    @Shadow
+    public int debugViewDirection;
+
+    @Shadow
+    private float prevDebugCamFOV;
+
+    @Shadow
+    private float debugCamFOV;
+
+    @Shadow private float fovModifierHandPrev;
+
+    @Shadow private float fovModifierHand;
 
     @ModifyConstant(method = "updateRenderer", constant = @Constant(intValue = 3))
     private int modifyRD(int constant) {
         return this.mc.gameSettings.getRenderDistance() * 2;
     }
+
     @ModifyConstant(method = "updateRenderer", constant = @Constant(floatValue = 3.0F))
     private float modifyRD_1(float constant) {
         return 16;
@@ -80,41 +101,68 @@ public abstract class EntityRenderMixin {
         this.mc.theWorld.playSound(v, par1, par3, par5, ((IGameSetting) Minecraft.getMinecraft().gameSettings).getWeatherVolume() * par7Str, par8, par9);
     }
 
-//    @ModifyConstant(method = "getFOVModifier", constant = @Constant(floatValue = 70.0F))
-//    private float getFOVModifier(float constant) {
-//        return 30.0F;
-//    }
 
-//    @Inject(method = "updateFovModifierHand", at = @At("HEAD"), cancellable = true)
-//    private void updateFovModifierHand(CallbackInfo ci) {
-//        ci.cancel();
-//    }
+    @ModifyReturnValue(method = "getFOVModifier", at = @At(value = "RETURN", ordinal = 1))
+    private float getFOVModifier(float original, @Local(argsOnly = true) float par1, @Local(argsOnly = true) boolean par2, @Local(name = "var4") float var4) {
+        if (par2) {
+            var4 = this.mc.gameSettings.fovSetting;
+            var4 *= this.fovModifierHandPrev + (this.fovModifierHand - this.fovModifierHandPrev) * par1;
+            return var4 + this.prevDebugCamFOV + (this.debugCamFOV - this.prevDebugCamFOV) * par1;
+        }
+        return original;
+    }
 
 //    @Overwrite
-//    private float getFOVModifier(float par1, boolean par2) {
+//    private float getFOVModifier(float partialTicks, boolean useFOVSetting) {
 //        if (this.debugViewDirection > 0) {
 //            return 90.0F;
 //        } else {
 //            EntityPlayer var3 = (EntityPlayer) this.mc.renderViewEntity;
 //            float var4 = 70.0F;
+//            if (useFOVSetting) {
+//                var4 = this.mc.gameSettings.fovSetting;
+//            }
 //
+//            if (var3.getHealth() <= 0.0F) {
+//                float f1 = (float) var3.deathTime + partialTicks;
+//                var4 /= (1.0F - 500.0F / (f1 + 500.0F)) * 2.0F + 1.0F;
+//            }
+//
+//            int block = ActiveRenderInfo.getBlockIdAtEntityViewpoint(this.mc.theWorld, var3, partialTicks);
+//            if (block != 0 && Block.blocksList[block].blockMaterial == Material.water)
+//                var4 = var4 * 60.0F / 70.0F;
+//
+//            return var4 + this.prevDebugCamFOV + (this.debugCamFOV - this.prevDebugCamFOV) * partialTicks;
+//        }
+//    }
+
+//    private float getFOVModifier(float par1, boolean par2) {
+//        if (this.debugViewDirection > 0) {
+//            return 90.0F;
+//        } else {
+//            EntityPlayer var3 = (EntityPlayer)this.mc.renderViewEntity;
+//            float var4 = 70.0F;
 //            if (par2) {
-//                var4 *= this.mc.gameSettings.fovSetting;
+//                var4 += this.mc.gameSettings.fovSetting * 40.0F;
 //                var4 *= this.fovModifierHandPrev + (this.fovModifierHand - this.fovModifierHandPrev) * par1;
 //            }
 //
 //            if (var3.getHealth() <= 0.0F) {
-//                float var5 = (float) var3.deathTime + par1;
+//                float var5 = (float)var3.deathTime + par1;
 //                var4 /= (1.0F - 500.0F / (var5 + 500.0F)) * 2.0F + 1.0F;
 //            }
 //
 //            int var6 = ActiveRenderInfo.getBlockIdAtEntityViewpoint(this.mc.theWorld, var3, par1);
-//
 //            if (var6 != 0 && Block.blocksList[var6].blockMaterial == Material.water) {
 //                var4 = var4 * 60.0F / 70.0F;
 //            }
 //
 //            return var4 + this.prevDebugCamFOV + (this.debugCamFOV - this.prevDebugCamFOV) * par1;
 //        }
+//    }
+
+//    @Inject(method = "updateFovModifierHand", at = @At("HEAD"), cancellable = true)
+//    private void updateFovModifierHand(CallbackInfo ci) {
+//        ci.cancel();
 //    }
 }

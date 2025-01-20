@@ -1,18 +1,17 @@
 package moddedmite.xylose.bettergamesetting.mixin.client.gui;
 
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import net.minecraft.*;
 import net.minecraft.client.main.Main;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.Calendar;
+import java.util.Objects;
 
 @Mixin(value = GuiMainMenu.class, priority = 9999)
 public class GuiMainMenuMixin extends GuiScreen {
@@ -39,10 +38,25 @@ public class GuiMainMenuMixin extends GuiScreen {
         }
     }
 
-    @ModifyConstant(method = "drawScreen", constant = @Constant(stringValue = "MITE Resource Pack 1.6.4 needs to be installed!"))
-    private String disMITEResourcePack(String constant) {
-        if (Minecraft.MITE_resource_pack == null)
-            return "";
-        return constant;
+//    @ModifyConstant(method = "drawScreen", constant = @Constant(stringValue = "MITE Resource Pack 1.6.4 needs to be installed!"))
+//    private String disMITEResourcePack(String constant) {
+//        if (Minecraft.MITE_resource_pack == null)
+//            return "";
+//        return constant;
+//    }
+
+    @WrapWithCondition(method = "drawScreen", at = @At(value = "INVOKE", target = "Lnet/minecraft/GuiMainMenu;drawRect(IIIII)V", ordinal = 1))
+    private boolean disMITEResourcePack(int i, int j, int k, int l, int m) {
+        return Objects.equals(this.mc.getResourcePackRepository().getResourcePackName(), this.mc.mcDefaultResourcePack.getPackName());
+    }
+
+    @WrapWithCondition(method = "drawScreen", at = @At(value = "INVOKE", target = "Lnet/minecraft/GuiMainMenu;drawString(Lnet/minecraft/FontRenderer;Ljava/lang/String;III)V", ordinal = 4))
+    private boolean disMITEResourcePack(GuiMainMenu instance, FontRenderer fontRenderer, String string, int i, int j, int k) {
+        return Objects.equals(this.mc.getResourcePackRepository().getResourcePackName(), this.mc.mcDefaultResourcePack.getPackName());
+    }
+
+    @WrapWithCondition(method = "drawScreen", at = @At(value = "INVOKE", target = "Lnet/minecraft/GuiMainMenu;drawString(Lnet/minecraft/FontRenderer;Ljava/lang/String;III)V", ordinal = 5))
+    private boolean disMITEResourcePack_1(GuiMainMenu instance, FontRenderer fontRenderer, String string, int i, int j, int k) {
+        return Objects.equals(this.mc.getResourcePackRepository().getResourcePackName(), this.mc.mcDefaultResourcePack.getPackName());
     }
 }

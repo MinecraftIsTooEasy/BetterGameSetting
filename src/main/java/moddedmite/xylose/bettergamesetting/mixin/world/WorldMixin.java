@@ -16,6 +16,7 @@ public class WorldMixin {
     public void playSoundAtBlock(IWorldAccess instance, String s, double x, double y, double z, float volume, float pitch, Operation<Void> original) {
         instance.playSound(s, x, y, z, ((IGameSetting) Minecraft.getMinecraft().gameSettings).getBlockVolume() * volume, pitch);
     }
+
     @WrapOperation(method = "moodSoundAndLightCheck", at = @At(value = "INVOKE", target = "Lnet/minecraft/SoundManager;playSoundFX(Ljava/lang/String;FF)V"))
     public void moodSoundAndLightCheck(SoundManager instance, String var4, float v, float par1Str, Operation<Void> original) {
         instance.playSoundFX(var4, ((IGameSetting) Minecraft.getMinecraft().gameSettings).getBlockVolume() * v, par1Str);

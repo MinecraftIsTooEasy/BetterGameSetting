@@ -25,7 +25,7 @@ public class GuiNewControls extends GuiScreen {
         this.keyBindingList = new GuiKeyBindingList(this, this.mc);
         this.buttonList.add(new GuiButton(200, this.width / 2 - 155, this.height - 29, 150, 20, I18n.getString("gui.done")));
         this.buttonList.add(this.buttonReset = new GuiButton(201, this.width / 2 - 155 + 160, this.height - 29, 150, 20, I18n.getString("controls.resetAll")));
-        this.buttonList.add(new GuiButton(202, this.width / 2 - 155 + 160, 18 + 24, 150, 20, I18n.getString("gui.classicControls")));
+        this.buttonList.add(new GuiButton(202, this.width / 2 - 155 + 160, 18 + 24, 150, 20, I18n.getString("controls.classicControls")));
         this.screenTitle = I18n.getString("controls.title");
         int i = 0;
 
@@ -51,10 +51,7 @@ public class GuiNewControls extends GuiScreen {
         if (button.id == 200) {
             this.mc.displayGuiScreen(this.parentScreen);
         } else if (button.id == 201) {
-            for (KeyBinding keybinding : this.mc.gameSettings.keyBindings) {
-                ((IGameSetting) this.options).setOptionKeyBinding(keybinding, KeyBindingExtra.getKeyCodeDefault(keybinding.keyDescription));
-            }
-            KeyBinding.resetKeyBindingArrayAndHash();
+            this.mc.displayGuiScreen(new GuiYesNoResetKeyBinding(this));
         } else if (button.id == 202) {
             this.mc.displayGuiScreen(new GuiControls(this.parentScreen, this.options));
             this.options.saveOptions();
@@ -68,7 +65,6 @@ public class GuiNewControls extends GuiScreen {
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) {
         if (this.buttonId != null) {
             ((IGameSetting) this.options).setOptionKeyBinding(this.buttonId, -100 + Mouse.getEventButton());
-            System.out.println(-100 + Mouse.getEventButton());
             this.buttonId = null;
             KeyBinding.resetKeyBindingArrayAndHash();
         } else if (mouseButton != 0 || !this.keyBindingList.mouseClicked(mouseX, mouseY, mouseButton)) {

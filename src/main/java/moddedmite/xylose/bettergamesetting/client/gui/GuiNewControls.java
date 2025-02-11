@@ -1,5 +1,6 @@
 package moddedmite.xylose.bettergamesetting.client.gui;
 
+import moddedmite.xylose.bettergamesetting.api.IKeyBinding;
 import moddedmite.xylose.bettergamesetting.client.KeyBindingExtra;
 import moddedmite.xylose.bettergamesetting.api.IGameSetting;
 import net.minecraft.*;
@@ -103,7 +104,7 @@ public class GuiNewControls extends GuiScreen {
         boolean flag = true;
 
         for (KeyBinding keybinding : this.options.keyBindings) {
-            if (keybinding.keyCode != KeyBindingExtra.getKeyCodeDefault(keybinding.keyDescription)) {
+            if (keybinding.keyCode != ((IKeyBinding) keybinding).getDefaultKeyCode(keybinding.keyDescription, keybinding.keyCode)) {
                 flag = false;
                 break;
             }

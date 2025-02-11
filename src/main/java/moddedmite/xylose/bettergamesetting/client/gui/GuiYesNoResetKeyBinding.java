@@ -1,6 +1,7 @@
 package moddedmite.xylose.bettergamesetting.client.gui;
 
 import moddedmite.xylose.bettergamesetting.api.IGameSetting;
+import moddedmite.xylose.bettergamesetting.api.IKeyBinding;
 import moddedmite.xylose.bettergamesetting.client.KeyBindingExtra;
 import net.minecraft.*;
 
@@ -23,7 +24,7 @@ public class GuiYesNoResetKeyBinding extends GuiScreen {
     protected void actionPerformed(GuiButton guiButton) {
         if (guiButton.id == 0) {
             for (KeyBinding keybinding : this.mc.gameSettings.keyBindings) {
-                ((IGameSetting) this.mc.gameSettings).setOptionKeyBinding(keybinding, KeyBindingExtra.getKeyCodeDefault(keybinding.keyDescription));
+                ((IGameSetting) this.mc.gameSettings).setOptionKeyBinding(keybinding, ((IKeyBinding) keybinding).getDefaultKeyCode(keybinding.keyDescription, keybinding.keyCode));
             }
             KeyBinding.resetKeyBindingArrayAndHash();
             this.mc.displayGuiScreen(this.parentScreen);

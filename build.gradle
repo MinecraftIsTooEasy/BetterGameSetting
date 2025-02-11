@@ -30,13 +30,12 @@ repositories {
 loom {
 	accessWidenerPath = file("src/main/resources/BetterGameSetting.accesswidener")
 	mergedMinecraftJar()
-	setFML(new File("libs\\FishModLoader-v3.4.1.jar"))
+	setFML(new File("libs\\FishModLoader-v3.0.0.jar"))
 	mods {
 		"Better Game Setting" {
 			sourceSet sourceSets.main
 		}
 	}
-
 }
 
 runClient{
@@ -47,9 +46,11 @@ dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings loom.fmlMCPMappings()
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+//	implementation 'org.apache.logging.log4j:log4j-core:2.17.1'
 
 	implementation files("libs\\RustedIronCore-1.3.7.jar")
 	implementation files(loom.getFML().toPath())
+
 }
 
 processResources {

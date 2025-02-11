@@ -30,7 +30,8 @@
     ]
   },
   "mixins": [
-    "BetterGameSetting.mixins.json"
+    "BetterGameSetting.mixins.json",
+    "BetterGameSetting.sound.mixins.json"
   ],
   "accessWidener": "BetterGameSetting.accesswidener",
   "custom": {

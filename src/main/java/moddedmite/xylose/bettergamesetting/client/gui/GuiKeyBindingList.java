@@ -1,6 +1,7 @@
 package moddedmite.xylose.bettergamesetting.client.gui;
 
 import moddedmite.xylose.bettergamesetting.api.IGuiSlot;
+import moddedmite.xylose.bettergamesetting.api.IKeyBinding;
 import moddedmite.xylose.bettergamesetting.client.KeyBindingExtra;
 import moddedmite.xylose.bettergamesetting.api.IGameSetting;
 import net.minecraft.*;
@@ -222,7 +223,7 @@ public class GuiKeyBindingList extends GuiListExtended {
             GuiKeyBindingList.this.mc.fontRenderer.drawString(this.keyDesc, x + 90 - GuiKeyBindingList.this.maxListLabelWidth, y + slotHeight / 2 - GuiKeyBindingList.this.mc.fontRenderer.FONT_HEIGHT / 2, 16777215);
             this.btnReset.xPosition = x + 190;
             this.btnReset.yPosition = y;
-            this.btnReset.enabled = this.keybinding.keyCode != KeyBindingExtra.getKeyCodeDefault(this.keybinding.keyDescription);
+            this.btnReset.enabled = this.keybinding.keyCode != ((IKeyBinding) keybinding).getDefaultKeyCode(keybinding.keyDescription, keybinding.keyCode);
             this.btnReset.drawButton(GuiKeyBindingList.this.mc, mouseX, mouseY);
             this.btnChangeKeyBinding.xPosition = x + 105;
             this.btnChangeKeyBinding.yPosition = y;
@@ -252,7 +253,7 @@ public class GuiKeyBindingList extends GuiListExtended {
                 GuiKeyBindingList.this.field_148191_k.buttonId = this.keybinding;
                 return true;
             } else if (this.btnReset.mousePressed(GuiKeyBindingList.this.mc, p_148278_2_, p_148278_3_)) {
-                ((IGameSetting) GuiKeyBindingList.this.mc.gameSettings).setOptionKeyBinding(this.keybinding, KeyBindingExtra.getKeyCodeDefault(this.keybinding.keyDescription));
+                ((IGameSetting) GuiKeyBindingList.this.mc.gameSettings).setOptionKeyBinding(this.keybinding, ((IKeyBinding) keybinding).getDefaultKeyCode(keybinding.keyDescription, keybinding.keyCode));
                 KeyBinding.resetKeyBindingArrayAndHash();
                 return true;
             } else {

@@ -1,20 +1,17 @@
 package moddedmite.xylose.bettergamesetting.client;
 
-import moddedmite.xylose.bettergamesetting.api.IKeyBinding;
 import net.minecraft.I18n;
 import net.minecraft.KeyBinding;
-import org.spongepowered.asm.mixin.Unique;
-
-import java.util.Iterator;
 
 public class KeyBindingExtra extends KeyBinding {
-    public static int defaultKeyCode;
+    public final int defaultKeyCode;
 
-    public KeyBindingExtra(String keyDescription, int keyCode) {
-        super(keyDescription, keyCode);
+    public KeyBindingExtra(String description, int keyCode, int keyCodeDefault) {
+        super(description, keyCode);
+        this.defaultKeyCode = keyCodeDefault;
     }
 
-    public static int getKeyCodeDefault(String keyDescription) {
+    public int getKeyCodeDefault(String keyDescription) {
             return switch (keyDescription) {
                 case "key.forward" -> 17;
                 case "key.left" -> 30;
@@ -60,7 +57,7 @@ public class KeyBindingExtra extends KeyBinding {
         return i;
     }
 
-    public static int getDefaultKeyCode() {
+    public int getDefaultKeyCode() {
         return defaultKeyCode;
     }
 }

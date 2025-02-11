@@ -1,5 +1,14 @@
 # Better Game Setting
 
+### v1.0.2-fix
+* 修改了mixin类的包名
+* 模组中的按键绑定不会被重置按键重置
+* 将侵入性较强的配置项改名,以避免异常
+* 修复了默认视野数值错误的问题
+* 修复了无法渲染出云的问题
+
+---
+
 ### v1.0.2
 * 现在需要FishModLoader-v3.4.0
 * 本mod的资源移进`/assets/bettergamesetting/`中

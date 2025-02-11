@@ -18,4 +18,8 @@ public interface IKeyBinding {
     default void setKeyCode(int keyCode) {
         return;
     }
+
+    default int getDefaultKeyCode(String keyDescription, int keyCode) {
+        return 0;
+    }
 }

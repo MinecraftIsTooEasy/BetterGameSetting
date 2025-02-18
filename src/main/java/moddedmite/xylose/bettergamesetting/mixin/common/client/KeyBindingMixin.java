@@ -7,22 +7,27 @@ import net.minecraft.I18n;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(value = KeyBinding.class, priority = 99999)
+import java.util.List;
+
+@Mixin(KeyBinding.class)
 public class KeyBindingMixin implements IKeyBinding {
     @Shadow public String keyDescription;
     @Shadow public int keyCode;
+    @Shadow public static List keybindArray;
     @Unique private final String keyCategory;
 
     public KeyBindingMixin(String keyCategory) {
         this.keyCategory = keyCategory;
     }
 
-//    @Inject(method = "<init>", at = @At("RETURN"))
-//    private void onInit(String keyDescription, int keyCode, CallbackInfo ci) {
-//        KeyBindingExtra keyBinding = new KeyBindingExtra(keyDescription, keyCode);
-//        keyBinding.defaultKeyCode = keyCode;
-//    }
+    @Inject(method = "<init>", at = @At("RETURN"))
+    private void onInit(String keyDescription, int keyCode, CallbackInfo ci) {
+//        KeyBindingExtra.defaultKeyCode = keyCode;
+    }
 
     @Override
     public String getKeyCategory() {
@@ -52,7 +57,6 @@ public class KeyBindingMixin implements IKeyBinding {
 
     @Override
     public int getDefaultKeyCode(String keyDescription, int keyCode) {
-        KeyBindingExtra keybinding = new KeyBindingExtra(keyDescription, keyCode, keyCode);
-        return keybinding.getKeyCodeDefault(keyDescription);
+        return KeyBindingExtra.getKeyCodeDefault(keyDescription);
     }
 }

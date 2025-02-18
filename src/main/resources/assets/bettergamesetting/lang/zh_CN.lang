@@ -1,4 +1,7 @@
+options.maxFps=最大帧率
 options.framerateLimit.max=无限制
+options.maxFpsDesc0=选择最大帧率：
+options.maxFpsDesc1=35 fps、120 fps、或 200+ fps。
 options.sounds=音乐和声音…
 options.sounds.title=音乐和声音选项
 controls.classicControls=经典控制

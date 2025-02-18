@@ -5,13 +5,15 @@ import net.minecraft.KeyBinding;
 
 public class KeyBindingExtra extends KeyBinding {
     public final int defaultKeyCode;
+    public static KeyBindingExtra instance;
 
     public KeyBindingExtra(String description, int keyCode, int keyCodeDefault) {
         super(description, keyCode);
+        instance = this;
         this.defaultKeyCode = keyCodeDefault;
     }
 
-    public int getKeyCodeDefault(String keyDescription) {
+    public static int getKeyCodeDefault(String keyDescription) {
             return switch (keyDescription) {
                 case "key.forward" -> 17;
                 case "key.left" -> 30;
@@ -57,7 +59,11 @@ public class KeyBindingExtra extends KeyBinding {
         return i;
     }
 
-    public int getDefaultKeyCode() {
-        return defaultKeyCode;
+    public static int getDefaultKeyCode() {
+        return 0;
+    }
+
+    public static KeyBindingExtra getInstance() {
+        return instance;
     }
 }

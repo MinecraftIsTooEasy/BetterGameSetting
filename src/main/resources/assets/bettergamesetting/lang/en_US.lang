@@ -1,3 +1,4 @@
+options.maxFps=Max Fps
 options.framerateLimit.max=Unlimited
 options.sounds=Music & Sounds...
 options.sounds.title=Music & Sound Options

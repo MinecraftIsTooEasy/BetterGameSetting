@@ -112,8 +112,6 @@ public class GuiNewControls extends GuiScreen {
 
         this.buttonReset.enabled = !flag;
         super.drawScreen(mouseX, mouseY, partialTicks);
-//        guiSlider.mouseReleased(mouseX, mouseY);
-//        guiSlider.mousePressed(this.mc, mouseX, mouseY);
     }
 
     @Override

@@ -5,8 +5,10 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import moddedmite.xylose.bettergamesetting.api.IGameSetting;
 import moddedmite.xylose.bettergamesetting.api.IKeyBinding;
 import moddedmite.xylose.bettergamesetting.client.EnumOptionsExtra;
+import moddedmite.xylose.bettergamesetting.client.KeyBindingExtra;
 import net.minecraft.*;
 import net.minecraft.client.main.Main;
+import org.apache.commons.lang3.ArrayUtils;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -18,6 +20,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Mixin(GameSettings.class)
 public abstract class GameSettingsMixin implements IGameSetting {
@@ -27,12 +31,11 @@ public abstract class GameSettingsMixin implements IGameSetting {
     @Shadow public float gammaSetting;
     @Shadow public String skin;
     @Shadow public float fovSetting;
+    @Shadow public boolean clouds;
     @Shadow protected abstract float parseFloat(String var1);
     @Shadow public abstract void saveOptions();
     @Shadow public abstract float getOptionFloatValue(EnumOptions par1EnumOptions);
 
-    @Shadow public boolean clouds;
-    @Shadow public KeyBinding[] keyBindings;
     @Unique public float recordVolume = 1.0F;
     @Unique public float weatherVolume = 1.0F;
     @Unique public float blockVolume = 1.0F;
@@ -56,6 +59,18 @@ public abstract class GameSettingsMixin implements IGameSetting {
         this.gammaSetting = 0.5F;
         this.fovSetting = 70.0F;
         original.call(instance);
+    }
+
+    @Inject(
+            method = "<init>()V",
+            at = @At("RETURN")
+    )
+    private void newDefaultValue_1(CallbackInfo ci) {
+        this.renderDistance = 8;
+        this.limitFramerate = 120;
+        this.skin = "MITE Resource Pack 1.6.4.zip";
+        this.gammaSetting = 0.5F;
+        this.fovSetting = 70.0F;
     }
 
     @Redirect(

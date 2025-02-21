@@ -17,5 +17,6 @@ public abstract class EnumOptionsMixin {
     private void changeToEnumFloat(CallbackInfoReturnable<Boolean> cir) {
         if (Objects.equals(getEnumString(), "options.renderDistance")) cir.setReturnValue(true);
         if (Objects.equals(getEnumString(), "options.framerateLimit")) cir.setReturnValue(true);
+        if (Objects.equals(getEnumString(), "options.guiScale")) cir.setReturnValue(true);
     }
 }

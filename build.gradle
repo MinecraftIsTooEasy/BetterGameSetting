@@ -10,13 +10,13 @@ group = project.maven_group
 
 static def buildTime() {
 	def df = new SimpleDateFormat("yyyyMMddHHmm")
-	df.setTimeZone(TimeZone.getTimeZone("UTC"))
+	df.setTimeZone(TimeZone.getTimeZone("GMT+8"))
 	return df.format(new Date())
 }
 
 base {
-//	archivesName = project.archives_base_name + "-dev-build." + buildTime()
-	archivesName = "[更好的游戏设置]" + project.archives_base_name
+	archivesName = project.archives_base_name + "-dev-build." + buildTime()
+//	archivesName = "[更好的游戏设置]" + project.archives_base_name
 }
 
 repositories {

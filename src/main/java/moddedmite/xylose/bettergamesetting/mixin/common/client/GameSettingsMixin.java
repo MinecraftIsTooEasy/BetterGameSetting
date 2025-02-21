@@ -10,10 +10,7 @@ import net.minecraft.*;
 import net.minecraft.client.main.Main;
 import org.apache.commons.lang3.ArrayUtils;
 import org.objectweb.asm.Opcodes;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -32,10 +29,13 @@ public abstract class GameSettingsMixin implements IGameSetting {
     @Shadow public String skin;
     @Shadow public float fovSetting;
     @Shadow public boolean clouds;
+    @Shadow public int guiScale;
     @Shadow protected abstract float parseFloat(String var1);
     @Shadow public abstract void saveOptions();
     @Shadow public abstract float getOptionFloatValue(EnumOptions par1EnumOptions);
-
+    @Shadow private static String getTranslation(String[] par0ArrayOfStr, int par1) {return null;}
+    @Shadow @Final private static String[] GUISCALES;
+    @Shadow protected Minecraft mc;
     @Unique public float recordVolume = 1.0F;
     @Unique public float weatherVolume = 1.0F;
     @Unique public float blockVolume = 1.0F;
@@ -94,6 +94,13 @@ public abstract class GameSettingsMixin implements IGameSetting {
         }
         if (par1EnumOptions == EnumOptions.FOV) {
             this.fovSetting = (int) denormalizeValue(par2, 30.0F, 110.0F, 1.0F);
+        }
+        if (par1EnumOptions == EnumOptions.GUI_SCALE) {
+            this.guiScale = (int) denormalizeValue(par2, 0.0F, 6.0F, 1.0F);
+            ScaledResolution var3 = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
+            int var4 = var3.getScaledWidth();
+            int var5 = var3.getScaledHeight();
+            this.mc.currentScreen.setWorldAndResolution(this.mc, var4, var5);
         }
         if (par1EnumOptions == EnumOptions.GAMMA) {
             this.gammaSetting = par2;
@@ -179,6 +186,13 @@ public abstract class GameSettingsMixin implements IGameSetting {
                 cir.setReturnValue(var2 + I18n.getString("options.fov.max"));
             } else {
                 cir.setReturnValue(var2 + (int) this.fovSetting);
+            }
+        }
+        if (par1EnumOptions == EnumOptions.GUI_SCALE) {
+            if (!(this.guiScale == 0)) {
+                cir.setReturnValue(var2 + this.guiScale + "x");
+            } else {
+                cir.setReturnValue(var2 + getTranslation(GUISCALES, this.guiScale));
             }
         }
     }

@@ -1,4 +1,4 @@
-package moddedmite.xylose.bettergamesetting.client.gui;
+package moddedmite.xylose.bettergamesetting.client.gui.button;
 
 import net.minecraft.EnumOptions;
 import net.minecraft.GuiButton;

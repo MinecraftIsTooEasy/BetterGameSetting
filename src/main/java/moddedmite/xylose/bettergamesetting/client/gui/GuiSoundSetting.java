@@ -1,6 +1,7 @@
 package moddedmite.xylose.bettergamesetting.client.gui;
 
 import moddedmite.xylose.bettergamesetting.client.EnumOptionsExtra;
+import moddedmite.xylose.bettergamesetting.client.gui.button.GuiCustomSlider;
 import net.minecraft.*;
 
 public class GuiSoundSetting extends GuiScreen {

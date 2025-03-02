@@ -2,6 +2,8 @@ package moddedmite.xylose.bettergamesetting.api;
 
 import net.minecraft.KeyBinding;
 
+import java.util.List;
+
 public interface IGameSetting {
     default void setOptionKeyBinding(KeyBinding key, int keyCode) {
     }
@@ -32,5 +34,9 @@ public interface IGameSetting {
 
     default float getAmbientVolume() {
         return 0.0F;
+    }
+
+    default List<String> getResourcePacks() {
+        return null;
     }
 }

@@ -22,13 +22,13 @@ public abstract class GuiListExtended extends GuiSlot {
 
     protected void drawSlot(int par1, int par2, int par3, int par4, Tessellator par5Tessellator) {
         Minecraft mc = Minecraft.getMinecraft();
-        final ScaledResolution scaledresolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
-        int i1 = scaledresolution.getScaledWidth();
-        int j1 = scaledresolution.getScaledHeight();
-        final int mouseXIn = Mouse.getX() * i1 / mc.displayWidth;
-        final int mouseYIn = j1 - Mouse.getY() * j1 / mc.displayHeight - 1;
+        ScaledResolution scaledresolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
+        int width = scaledresolution.getScaledWidth();
+        int height = scaledresolution.getScaledHeight();
+        int mouseXIn = Mouse.getX() * width / mc.displayWidth;
+        int mouseYIn = height - Mouse.getY() * height / mc.displayHeight - 1;
         if (this.getListEntry(par1) != null)
-            this.getListEntry(par1).drawEntry(par1, par2, par3, super.width, super.slotHeight, mouseXIn, mouseYIn, ((IGuiSlot) this).getSlotIndexFromScreenCoords(mouseXIn, mouseYIn) == par1);
+            this.getListEntry(par1).drawEntry(par1, par2, par3, 220, par4, mouseXIn, mouseYIn, ((IGuiSlot) this).getSlotIndexFromScreenCoords(mouseXIn, mouseYIn) == par1);
     }
 
     protected void func_178040_a(int p_178040_1_, int p_178040_2_, int p_178040_3_) {
@@ -45,23 +45,25 @@ public abstract class GuiListExtended extends GuiSlot {
                 int l = mouseX - j;
                 int i1 = mouseY - k;
 
-                if (this.getListEntry(i).mousePressed(i, mouseX, mouseY, mouseEvent, l, i1)) {
+                try {
+                    if (this.getListEntry(i).mousePressed(i, mouseX, mouseY, mouseEvent, l, i1)) {
 //                    this.setEnabled(false);
-                    return true;
-                }
+                        return true;
+                    }
+                } catch (Exception ignored) {}
             }
         }
 
         return false;
     }
 
-    public boolean mouseReleased(int p_148181_1_, int p_148181_2_, int p_148181_3_) {
+    public boolean mouseReleased(int mouseX, int mouseY, int mouseEvent) {
         for (int i = 0; i < this.getSize(); ++i) {
             int j = super.left + super.width / 2 - 220 / 2 + 2;
             int k = (int) (this.top + 4 - this.amountScrolled + i * this.slotHeight + this.field_77242_t);
-            int l = p_148181_1_ - j;
-            int i1 = p_148181_2_ - k;
-            this.getListEntry(i).mouseReleased(i, p_148181_1_, p_148181_2_, p_148181_3_, l, i1);
+            int l = mouseX - j;
+            int i1 = mouseY - k;
+            this.getListEntry(i).mouseReleased(i, mouseX, mouseY, mouseEvent, l, i1);
         }
 
 //        this.setEnabled(true);
@@ -75,7 +77,7 @@ public abstract class GuiListExtended extends GuiSlot {
 
         void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean isSelected);
 
-        boolean mousePressed(int slotIndex, int p_148278_2_, int p_148278_3_, int p_148278_4_, int p_148278_5_, int p_148278_6_);
+        boolean mousePressed(int slotIndex, int x, int y, int mouseEvent, int relativeX, int relativeY);
 
         void mouseReleased(int slotIndex, int x, int y, int mouseEvent, int relativeX, int relativeY);
     }

@@ -1,14 +1,12 @@
-package moddedmite.xylose.bettergamesetting.client.gui;
+package moddedmite.xylose.bettergamesetting.client.gui.controls;
 
 import moddedmite.xylose.bettergamesetting.api.IGuiSlot;
 import moddedmite.xylose.bettergamesetting.api.IKeyBinding;
 import moddedmite.xylose.bettergamesetting.client.KeyBindingExtra;
 import moddedmite.xylose.bettergamesetting.api.IGameSetting;
+import moddedmite.xylose.bettergamesetting.client.gui.GuiListExtended;
 import net.minecraft.*;
-import net.xiaoyu233.fml.util.ReflectHelper;
 import org.apache.commons.lang3.ArrayUtils;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import java.util.Arrays;
@@ -194,7 +192,7 @@ public class GuiKeyBindingList extends GuiListExtended {
             GuiKeyBindingList.this.mc.fontRenderer.drawString(this.labelText, GuiKeyBindingList.this.mc.currentScreen.width / 2 - this.labelWidth / 2, y + slotHeight - GuiKeyBindingList.this.mc.fontRenderer.FONT_HEIGHT - 1, 16777215);
         }
 
-        public boolean mousePressed(int slotIndex, int p_148278_2_, int p_148278_3_, int p_148278_4_, int p_148278_5_, int p_148278_6_) {
+        public boolean mousePressed(int slotIndex, int x, int y, int mouseEvent, int relativeX, int relativeY) {
             return false;
         }
 
@@ -248,11 +246,11 @@ public class GuiKeyBindingList extends GuiListExtended {
             this.btnChangeKeyBinding.drawButton(GuiKeyBindingList.this.mc, mouseX, mouseY);
         }
 
-        public boolean mousePressed(int slotIndex, int p_148278_2_, int p_148278_3_, int p_148278_4_, int p_148278_5_, int p_148278_6_) {
-            if (this.btnChangeKeyBinding.mousePressed(GuiKeyBindingList.this.mc, p_148278_2_, p_148278_3_)) {
+        public boolean mousePressed(int slotIndex, int x, int y, int mouseEvent, int relativeX, int relativeY) {
+            if (this.btnChangeKeyBinding.mousePressed(GuiKeyBindingList.this.mc, x, y)) {
                 GuiKeyBindingList.this.field_148191_k.buttonId = this.keybinding;
                 return true;
-            } else if (this.btnReset.mousePressed(GuiKeyBindingList.this.mc, p_148278_2_, p_148278_3_)) {
+            } else if (this.btnReset.mousePressed(GuiKeyBindingList.this.mc, x, y)) {
                 ((IGameSetting) GuiKeyBindingList.this.mc.gameSettings).setOptionKeyBinding(this.keybinding, ((IKeyBinding) keybinding).getDefaultKeyCode(keybinding.keyDescription, keybinding.keyCode));
                 KeyBinding.resetKeyBindingArrayAndHash();
                 return true;

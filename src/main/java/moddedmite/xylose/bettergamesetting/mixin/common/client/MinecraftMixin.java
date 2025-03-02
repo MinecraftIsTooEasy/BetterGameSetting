@@ -1,13 +1,8 @@
 package moddedmite.xylose.bettergamesetting.mixin.common.client;
 
-import net.minecraft.GameSettings;
-import net.minecraft.GuiMainMenu;
-import net.minecraft.GuiScreen;
-import net.minecraft.Minecraft;
+import net.minecraft.*;
 import org.objectweb.asm.Opcodes;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
@@ -18,6 +13,12 @@ public class MinecraftMixin {
 
     @Redirect(method = "runGameLoop", at = @At(value = "FIELD", target = "Lnet/minecraft/GameSettings;gammaSetting:F", opcode = Opcodes.PUTFIELD))
     private void inject(GameSettings instance, float value) {
+        if (this.gameSettings.limitFramerate < 10)
+            this.gameSettings.limitFramerate = 120;
+        if (this.gameSettings.fovSetting < 30)
+            this.gameSettings.fovSetting = 70;
+        if (this.gameSettings.getRenderDistance() < 2)
+            this.gameSettings.renderDistance = 12;
     }
 
     /**
@@ -34,6 +35,5 @@ public class MinecraftMixin {
         }
         return 9999;
     }
-
 
 }

@@ -10,3 +10,5 @@ accessible field net/minecraft/SoundManager sndSystem Lpaulscode/sound/SoundSyst
 accessible method net/minecraft/GuiSlot bindAmountScrolled ()V
 accessible field net/minecraft/GuiSlot field_77243_s Z
 accessible field net/minecraft/GuiSlot showSelectionBox Z
+accessible field net/minecraft/GameSettings renderDistance I
+accessible field net/minecraft/GuiSlot right I

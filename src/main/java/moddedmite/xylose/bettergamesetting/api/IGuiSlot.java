@@ -1,5 +1,6 @@
 package moddedmite.xylose.bettergamesetting.api;
 
+
 public interface IGuiSlot {
     default boolean isMouseYWithinSlotBounds(int p_148141_1_) {
         return false;
@@ -13,6 +14,8 @@ public interface IGuiSlot {
         return 0;
     }
 
-    default void handleMouseInput() {
-    }
+    default void handleMouseInput() {}
+
+    default void setSlotXBoundsFromLeft(int p_148140_1_) {}
+
 }

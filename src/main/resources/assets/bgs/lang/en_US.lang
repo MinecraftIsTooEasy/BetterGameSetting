@@ -23,3 +23,5 @@ key.categories.inventory=Inventory
 key.categories.uncategorized=Uncategorized
 controls.reset_keybinding_info_0=Are you sure reset all the keybindings?
 controls.reset_keybinding_info_1=§4Warning: The current reset keybindings of the mod keybindings is not compatible!
+resourcePack.available.title=Available Resource Packs
+resourcePack.selected.title=Selected Resource Packs

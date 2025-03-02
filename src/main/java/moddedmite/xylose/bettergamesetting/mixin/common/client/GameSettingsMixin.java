@@ -1,14 +1,14 @@
 package moddedmite.xylose.bettergamesetting.mixin.common.client;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import moddedmite.xylose.bettergamesetting.api.IGameSetting;
 import moddedmite.xylose.bettergamesetting.api.IKeyBinding;
 import moddedmite.xylose.bettergamesetting.client.EnumOptionsExtra;
-import moddedmite.xylose.bettergamesetting.client.KeyBindingExtra;
 import net.minecraft.*;
 import net.minecraft.client.main.Main;
-import org.apache.commons.lang3.ArrayUtils;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
@@ -17,24 +17,22 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.io.*;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
 
 @Mixin(GameSettings.class)
 public abstract class GameSettingsMixin implements IGameSetting {
     @Shadow private File optionsFile;
-    @Shadow private int renderDistance;
+    @Shadow public int renderDistance;
     @Shadow public int limitFramerate;
     @Shadow public float gammaSetting;
     @Shadow public String skin;
     @Shadow public float fovSetting;
     @Shadow public boolean clouds;
-    @Shadow public int guiScale;
     @Shadow protected abstract float parseFloat(String var1);
     @Shadow public abstract void saveOptions();
     @Shadow public abstract float getOptionFloatValue(EnumOptions par1EnumOptions);
-    @Shadow private static String getTranslation(String[] par0ArrayOfStr, int par1) {return null;}
-    @Shadow @Final private static String[] GUISCALES;
     @Shadow protected Minecraft mc;
     @Unique public float recordVolume = 1.0F;
     @Unique public float weatherVolume = 1.0F;
@@ -43,6 +41,10 @@ public abstract class GameSettingsMixin implements IGameSetting {
     @Unique public float neutralVolume = 1.0F;
     @Unique public float playerVolume = 1.0F;
     @Unique public float ambientVolume = 1.0F;
+    @Unique private static final Gson gson = new Gson();
+    @Unique public List<String> resourcePacks = new ArrayList();
+    TypeToken<List<String>> typeToken = new TypeToken<List<String>>() {};
+    ParameterizedType typeListString = (ParameterizedType) typeToken.getType();
 
     @WrapOperation(
             method = "<init>(Lnet/minecraft/Minecraft;Ljava/io/File;)V",
@@ -58,6 +60,7 @@ public abstract class GameSettingsMixin implements IGameSetting {
         this.skin = "MITE Resource Pack 1.6.4.zip";
         this.gammaSetting = 0.5F;
         this.fovSetting = 70.0F;
+        this.resourcePacks.add("MITE Resource Pack 1.6.4.zip");
         original.call(instance);
     }
 
@@ -71,6 +74,7 @@ public abstract class GameSettingsMixin implements IGameSetting {
         this.skin = "MITE Resource Pack 1.6.4.zip";
         this.gammaSetting = 0.5F;
         this.fovSetting = 70.0F;
+        this.resourcePacks.add("MITE Resource Pack 1.6.4.zip");
     }
 
     @Redirect(
@@ -87,20 +91,13 @@ public abstract class GameSettingsMixin implements IGameSetting {
     @Inject(method = "setOptionFloatValue", at = @At("TAIL"))
     public void setOptionFloatValue(EnumOptions par1EnumOptions, float par2, CallbackInfo ci) {
         if (par1EnumOptions == EnumOptions.RENDER_DISTANCE) {
-            this.renderDistance = (int) denormalizeValue(par2, 0.0F, 16.0F, 1.0F);
+            this.renderDistance = (int) denormalizeValue(par2, 2.0F, 16.0F, 1.0F);
         }
         if (par1EnumOptions == EnumOptions.FRAMERATE_LIMIT) {
             this.limitFramerate = (int) denormalizeValue(par2, 10.0F, 260.0F, 10.0F);
         }
         if (par1EnumOptions == EnumOptions.FOV) {
             this.fovSetting = (int) denormalizeValue(par2, 30.0F, 110.0F, 1.0F);
-        }
-        if (par1EnumOptions == EnumOptions.GUI_SCALE) {
-            this.guiScale = (int) denormalizeValue(par2, 0.0F, 6.0F, 1.0F);
-            ScaledResolution var3 = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
-            int var4 = var3.getScaledWidth();
-            int var5 = var3.getScaledHeight();
-            this.mc.currentScreen.setWorldAndResolution(this.mc, var4, var5);
         }
         if (par1EnumOptions == EnumOptions.GAMMA) {
             this.gammaSetting = par2;
@@ -188,13 +185,6 @@ public abstract class GameSettingsMixin implements IGameSetting {
                 cir.setReturnValue(var2 + (int) this.fovSetting);
             }
         }
-        if (par1EnumOptions == EnumOptions.GUI_SCALE) {
-            if (!(this.guiScale == 0)) {
-                cir.setReturnValue(var2 + this.guiScale + "x");
-            } else {
-                cir.setReturnValue(var2 + getTranslation(GUISCALES, this.guiScale));
-            }
-        }
     }
 
     @Inject(method = "loadOptions", at = @At("TAIL"))
@@ -204,11 +194,11 @@ public abstract class GameSettingsMixin implements IGameSetting {
                 return;
             }
             BufferedReader var1 = new BufferedReader(new FileReader(this.optionsFile));
-            String var2;
-            while ((var2 = var1.readLine()) != null) {
-                String[] var3 = var2.split(":");
-                if (var3[0].equals("renderDistance")) {
-                    int val = Integer.parseInt(var3[1]);
+            String s;
+            while ((s = var1.readLine()) != null) {
+                String[] astring = s.split(":");
+                if (astring[0].equals("renderDistance")) {
+                    int val = Integer.parseInt(astring[1]);
                     if (val == 0) {
                         this.renderDistance = 12;
                     } else if (val == 1) {
@@ -217,8 +207,8 @@ public abstract class GameSettingsMixin implements IGameSetting {
                         this.renderDistance = val;
                     }
                 }
-                if (var3[0].equals("maxFps")) {
-                    int val2 = Integer.parseInt(var3[1]);
+                if (astring[0].equals("maxFps")) {
+                    int val2 = Integer.parseInt(astring[1]);
                     if (val2 == 2) {
                         this.limitFramerate = 35;
                     } else if (val2 == 1 || val2 == 3) {
@@ -229,29 +219,37 @@ public abstract class GameSettingsMixin implements IGameSetting {
                         this.limitFramerate = val2;
                     }
                 }
-                if (var3[0].equals("fovSetting")) {
-                    this.fovSetting = this.parseFloat(var3[1]);
+                if (astring[0].equals("fovSetting")) {
+                    this.fovSetting = this.parseFloat(astring[1]);
                 }
-                if (var3[0].equals("record")) {
-                    this.recordVolume = this.parseFloat(var3[1]);
+                if (astring[0].equals("resourcePacks")) {
+                    this.resourcePacks = gson.fromJson(s.substring(s.indexOf(58) + 1), typeListString);
+
+                    if (this.resourcePacks == null)
+                    {
+                        this.resourcePacks = new ArrayList();
+                    }
                 }
-                if (var3[0].equals("weather")) {
-                    this.weatherVolume = this.parseFloat(var3[1]);
+                if (astring[0].equals("record")) {
+                    this.recordVolume = this.parseFloat(astring[1]);
                 }
-                if (var3[0].equals("block")) {
-                    this.blockVolume = this.parseFloat(var3[1]);
+                if (astring[0].equals("weather")) {
+                    this.weatherVolume = this.parseFloat(astring[1]);
                 }
-                if (var3[0].equals("hostile")) {
-                    this.hostileVolume = this.parseFloat(var3[1]);
+                if (astring[0].equals("block")) {
+                    this.blockVolume = this.parseFloat(astring[1]);
                 }
-                if (var3[0].equals("neutral")) {
-                    this.neutralVolume = this.parseFloat(var3[1]);
+                if (astring[0].equals("hostile")) {
+                    this.hostileVolume = this.parseFloat(astring[1]);
                 }
-                if (var3[0].equals("player")) {
-                    this.playerVolume = this.parseFloat(var3[1]);
+                if (astring[0].equals("neutral")) {
+                    this.neutralVolume = this.parseFloat(astring[1]);
                 }
-                if (var3[0].equals("ambient")) {
-                    this.ambientVolume = this.parseFloat(var3[1]);
+                if (astring[0].equals("player")) {
+                    this.playerVolume = this.parseFloat(astring[1]);
+                }
+                if (astring[0].equals("ambient")) {
+                    this.ambientVolume = this.parseFloat(astring[1]);
                 }
             }
         } catch (IOException e) {
@@ -288,14 +286,15 @@ public abstract class GameSettingsMixin implements IGameSetting {
     }
 
     @Inject(method = "saveOptions", at = @At(value = "INVOKE", target = "Ljava/io/PrintWriter;println(Ljava/lang/String;)V", ordinal = 40), locals = LocalCapture.CAPTURE_FAILEXCEPTION)
-    private void saveExtraOption(CallbackInfo ci, PrintWriter var1) {
-        var1.println("record:" + this.recordVolume);
-        var1.println("weather:" + this.weatherVolume);
-        var1.println("block:" + this.blockVolume);
-        var1.println("hostile:" + this.hostileVolume);
-        var1.println("neutral:" + this.neutralVolume);
-        var1.println("player:" + this.playerVolume);
-        var1.println("ambient:" + this.ambientVolume);
+    private void saveExtraOption(CallbackInfo ci, PrintWriter printwriter) {
+        printwriter.println("resourcePacks:" + gson.toJson(this.resourcePacks));
+        printwriter.println("record:" + this.recordVolume);
+        printwriter.println("weather:" + this.weatherVolume);
+        printwriter.println("block:" + this.blockVolume);
+        printwriter.println("hostile:" + this.hostileVolume);
+        printwriter.println("neutral:" + this.neutralVolume);
+        printwriter.println("player:" + this.playerVolume);
+        printwriter.println("ambient:" + this.ambientVolume);
     }
 
     /**
@@ -379,6 +378,11 @@ public abstract class GameSettingsMixin implements IGameSetting {
     @Override
     public float getAmbientVolume() {
         return this.ambientVolume;
+    }
+
+    @Override
+    public List<String> getResourcePacks() {
+        return this.resourcePacks;
     }
 
 }

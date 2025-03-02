@@ -1,7 +1,5 @@
 options.maxFps=最大帧率
 options.framerateLimit.max=无限制
-options.maxFpsDesc0=选择最大帧率：
-options.maxFpsDesc1=35 fps、120 fps、或 200+ fps。
 options.sounds=音乐和声音…
 options.sounds.title=音乐和声音选项
 controls.classicControls=经典控制
@@ -25,3 +23,5 @@ key.categories.inventory=道具栏
 key.categories.uncategorized=未分类
 controls.reset_keybinding_info_0=确定要重置所有按键吗?
 controls.reset_keybinding_info_1=§4警告:当前对模组按键的重置并未兼容!
+resourcePack.available.title=可用的资源包
+resourcePack.selected.title=已选的资源包

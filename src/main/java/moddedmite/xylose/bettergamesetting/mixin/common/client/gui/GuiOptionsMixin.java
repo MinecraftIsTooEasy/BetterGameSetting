@@ -1,7 +1,8 @@
 package moddedmite.xylose.bettergamesetting.mixin.common.client.gui;
 
 import moddedmite.xylose.bettergamesetting.client.gui.GuiSoundSetting;
-import moddedmite.xylose.bettergamesetting.client.gui.GuiNewControls;
+import moddedmite.xylose.bettergamesetting.client.gui.controls.GuiNewControls;
+import moddedmite.xylose.bettergamesetting.client.gui.resourcepack.GuiScreenResourcePacks;
 import net.minecraft.*;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
@@ -29,6 +30,10 @@ public class GuiOptionsMixin extends GuiScreen {
             if (par1GuiButton.id == 100) {
                 this.mc.gameSettings.saveOptions();
                 this.mc.displayGuiScreen(new GuiNewControls(this, this.options));
+            }
+            if (par1GuiButton.id == 105) {
+                this.mc.gameSettings.saveOptions();
+                this.mc.displayGuiScreen(new GuiScreenResourcePacks(this));
             }
         }
     }

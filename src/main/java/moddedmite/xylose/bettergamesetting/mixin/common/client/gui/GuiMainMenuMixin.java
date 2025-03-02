@@ -1,6 +1,7 @@
 package moddedmite.xylose.bettergamesetting.mixin.common.client.gui;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import moddedmite.xylose.bettergamesetting.api.IGameSetting;
 import net.minecraft.*;
 import net.minecraft.client.main.Main;
 import org.spongepowered.asm.mixin.Mixin;
@@ -40,16 +41,19 @@ public class GuiMainMenuMixin extends GuiScreen {
 
     @WrapWithCondition(method = "drawScreen", at = @At(value = "INVOKE", target = "Lnet/minecraft/GuiMainMenu;drawRect(IIIII)V", ordinal = 1))
     private boolean disMITEResourcePack(int i, int j, int k, int l, int m) {
-        return Objects.equals(this.mc.getResourcePackRepository().getResourcePackName(), this.mc.mcDefaultResourcePack.getPackName());
+//        return Objects.equals(this.mc.getResourcePackRepository().getResourcePackName(), this.mc.mcDefaultResourcePack.getPackName());
+        return !((IGameSetting) this.mc.gameSettings).getResourcePacks().isEmpty();
     }
 
     @WrapWithCondition(method = "drawScreen", at = @At(value = "INVOKE", target = "Lnet/minecraft/GuiMainMenu;drawString(Lnet/minecraft/FontRenderer;Ljava/lang/String;III)V", ordinal = 4))
     private boolean disMITEResourcePack(GuiMainMenu instance, FontRenderer fontRenderer, String string, int i, int j, int k) {
-        return Objects.equals(this.mc.getResourcePackRepository().getResourcePackName(), this.mc.mcDefaultResourcePack.getPackName());
+//        return Objects.equals(this.mc.getResourcePackRepository().getResourcePackName(), this.mc.mcDefaultResourcePack.getPackName());
+        return !((IGameSetting) this.mc.gameSettings).getResourcePacks().isEmpty();
     }
 
     @WrapWithCondition(method = "drawScreen", at = @At(value = "INVOKE", target = "Lnet/minecraft/GuiMainMenu;drawString(Lnet/minecraft/FontRenderer;Ljava/lang/String;III)V", ordinal = 5))
     private boolean disMITEResourcePack_1(GuiMainMenu instance, FontRenderer fontRenderer, String string, int i, int j, int k) {
-        return Objects.equals(this.mc.getResourcePackRepository().getResourcePackName(), this.mc.mcDefaultResourcePack.getPackName());
+//        return Objects.equals(this.mc.getResourcePackRepository().getResourcePackName(), this.mc.mcDefaultResourcePack.getPackName());
+        return !((IGameSetting) this.mc.gameSettings).getResourcePacks().isEmpty();
     }
 }

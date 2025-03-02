@@ -18,6 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.io.*;
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,9 +43,21 @@ public abstract class GameSettingsMixin implements IGameSetting {
     @Unique public float playerVolume = 1.0F;
     @Unique public float ambientVolume = 1.0F;
     @Unique private static final Gson gson = new Gson();
-    @Unique public List<String> resourcePacks = new ArrayList();
-    TypeToken<List<String>> typeToken = new TypeToken<List<String>>() {};
-    ParameterizedType typeListString = (ParameterizedType) typeToken.getType();
+    @Unique public List<String> resourcePacks = new ArrayList<>();
+    @Unique private static final ParameterizedType typeListString = new ParameterizedType() {
+        public Type[] getActualTypeArguments()
+        {
+            return new Type[] {String.class};
+        }
+        public Type getRawType()
+        {
+            return List.class;
+        }
+        public Type getOwnerType()
+        {
+            return null;
+        }
+    };
 
     @WrapOperation(
             method = "<init>(Lnet/minecraft/Minecraft;Ljava/io/File;)V",
@@ -57,7 +70,7 @@ public abstract class GameSettingsMixin implements IGameSetting {
     private void newDefaultValue(GameSettings instance, Operation<Void> original) {
         this.renderDistance = 8;
         this.limitFramerate = 120;
-        this.skin = "MITE Resource Pack 1.6.4.zip";
+//        this.skin = "MITE Resource Pack 1.6.4.zip";
         this.gammaSetting = 0.5F;
         this.fovSetting = 70.0F;
         this.resourcePacks.add("MITE Resource Pack 1.6.4.zip");
@@ -71,7 +84,7 @@ public abstract class GameSettingsMixin implements IGameSetting {
     private void newDefaultValue_1(CallbackInfo ci) {
         this.renderDistance = 8;
         this.limitFramerate = 120;
-        this.skin = "MITE Resource Pack 1.6.4.zip";
+//        this.skin = "MITE Resource Pack 1.6.4.zip";
         this.gammaSetting = 0.5F;
         this.fovSetting = 70.0F;
         this.resourcePacks.add("MITE Resource Pack 1.6.4.zip");
@@ -223,10 +236,8 @@ public abstract class GameSettingsMixin implements IGameSetting {
                     this.fovSetting = this.parseFloat(astring[1]);
                 }
                 if (astring[0].equals("resourcePacks")) {
-                    this.resourcePacks = gson.fromJson(s.substring(s.indexOf(58) + 1), typeListString);
-
-                    if (this.resourcePacks == null)
-                    {
+                    this.resourcePacks = (List) gson.fromJson(s.substring(s.indexOf(58) + 1), typeListString);
+                    if (this.resourcePacks == null) {
                         this.resourcePacks = new ArrayList();
                     }
                 }

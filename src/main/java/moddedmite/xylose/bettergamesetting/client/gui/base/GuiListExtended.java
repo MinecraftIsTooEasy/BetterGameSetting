@@ -1,4 +1,4 @@
-package moddedmite.xylose.bettergamesetting.client.gui;
+package moddedmite.xylose.bettergamesetting.client.gui.base;
 
 import moddedmite.xylose.bettergamesetting.api.IGuiSlot;
 import net.minecraft.*;
@@ -10,7 +10,8 @@ public abstract class GuiListExtended extends GuiSlot {
         super(mcIn, widthIn, heightIn, topIn, bottomIn, slotHeightIn);
     }
 
-    protected void elementClicked(int slotIndex, boolean isDoubleClick, int mouseX, int mouseY) {
+    protected void elementClicked(int slotIndex, boolean isDoubleClick) {
+        Minecraft.getMinecraft().sndManager.playSoundFX("random.click", 1.0F, 1.0F);
     }
 
     protected boolean isSelected(int slotIndex) {
@@ -28,7 +29,7 @@ public abstract class GuiListExtended extends GuiSlot {
         int mouseXIn = Mouse.getX() * width / mc.displayWidth;
         int mouseYIn = height - Mouse.getY() * height / mc.displayHeight - 1;
         if (this.getListEntry(par1) != null)
-            this.getListEntry(par1).drawEntry(par1, par2, par3, 220, par4, mouseXIn, mouseYIn, ((IGuiSlot) this).getSlotIndexFromScreenCoords(mouseXIn, mouseYIn) == par1);
+            this.getListEntry(par1).drawEntry(par1, par2, par3, ((IGuiSlot) this).getListWidth(), par4, mouseXIn, mouseYIn, ((IGuiSlot) this).getSlotIndexFromScreenCoords(mouseXIn, mouseYIn) == par1);
     }
 
     protected void func_178040_a(int p_178040_1_, int p_178040_2_, int p_178040_3_) {
@@ -40,7 +41,7 @@ public abstract class GuiListExtended extends GuiSlot {
             int i = ((IGuiSlot) this).getSlotIndexFromScreenCoords(mouseX, mouseY);
 
             if (i >= 0) {
-                int j = super.left + super.width / 2 - 220 / 2 + 2;
+                int j = super.left + super.width / 2 - ((IGuiSlot) this).getListWidth() / 2 + 2;
                 int k = (int) (this.top + 4 - super.amountScrolled + i * this.slotHeight + super.field_77242_t);
                 int l = mouseX - j;
                 int i1 = mouseY - k;
@@ -59,7 +60,7 @@ public abstract class GuiListExtended extends GuiSlot {
 
     public boolean mouseReleased(int mouseX, int mouseY, int mouseEvent) {
         for (int i = 0; i < this.getSize(); ++i) {
-            int j = super.left + super.width / 2 - 220 / 2 + 2;
+            int j = super.left + super.width / 2 - ((IGuiSlot) this).getListWidth() / 2 + 2;
             int k = (int) (this.top + 4 - this.amountScrolled + i * this.slotHeight + this.field_77242_t);
             int l = mouseX - j;
             int i1 = mouseY - k;

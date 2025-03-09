@@ -1,4 +1,4 @@
-package moddedmite.xylose.bettergamesetting.client.gui;
+package moddedmite.xylose.bettergamesetting.client.gui.base;
 
 import net.minecraft.Gui;
 import net.minecraft.Tessellator;

@@ -1,4 +1,4 @@
-package moddedmite.xylose.bettergamesetting.mixin.common.entity;
+package moddedmite.xylose.bettergamesetting.mixin.common.client.renderer;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
@@ -16,32 +16,16 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(value = EntityRenderer.class, priority = 9999)
 public abstract class EntityRenderMixin {
-    @Shadow
-    private float farPlaneDistance;
-    @Shadow
-    private Minecraft mc;
-
-    @Shadow
-    protected abstract void setupFog(int par1, float par2);
-
-    @Shadow
-    private float fogColorRed;
-    @Shadow
-    private float fogColorGreen;
-    @Shadow
-    private float fogColorBlue;
-
-    @Shadow
-    public int debugViewDirection;
-
-    @Shadow
-    private float prevDebugCamFOV;
-
-    @Shadow
-    private float debugCamFOV;
-
+    @Shadow private float farPlaneDistance;
+    @Shadow private Minecraft mc;
+    @Shadow protected abstract void setupFog(int par1, float par2);
+    @Shadow private float fogColorRed;
+    @Shadow private float fogColorGreen;
+    @Shadow private float fogColorBlue;
+    @Shadow public int debugViewDirection;
+    @Shadow private float prevDebugCamFOV;
+    @Shadow private float debugCamFOV;
     @Shadow private float fovModifierHandPrev;
-
     @Shadow private float fovModifierHand;
 
     @ModifyConstant(method = "updateRenderer", constant = @Constant(intValue = 3))
@@ -54,8 +38,8 @@ public abstract class EntityRenderMixin {
         return 16;
     }
 
-    @Inject(method = "setupCameraTransform", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glLoadIdentity()V", shift = At.Shift.AFTER))
-    private void setupCameraTransform0(float par1, int par2, boolean extend_far_clipping_plane, CallbackInfo ci) {
+    @Inject(method = "setupCameraTransform", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glLoadIdentity()V", ordinal = 0, shift = At.Shift.AFTER))
+    private void setupCameraTransform(float par1, int par2, boolean extend_far_clipping_plane, CallbackInfo ci) {
         this.farPlaneDistance = this.mc.gameSettings.getRenderDistance() * 16;
     }
 

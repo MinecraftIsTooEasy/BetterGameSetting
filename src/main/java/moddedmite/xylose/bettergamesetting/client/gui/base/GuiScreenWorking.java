@@ -1,59 +1,59 @@
-package moddedmite.xylose.bettergamesetting.client.gui;
+package moddedmite.xylose.bettergamesetting.client.gui.base;
 
 import net.minecraft.GuiScreen;
 import net.minecraft.IProgressUpdate;
 
 public class GuiScreenWorking extends GuiScreen implements IProgressUpdate {
-    private String field_146591_a = "";
-    private String field_146589_f = "";
-    private int field_146590_g;
-    private boolean field_146592_h;
+    private String message = "";
+    private String message1 = "";
+    private int progress;
+    private boolean doneWorking;
 
     /**
      * "Saving level", or the loading,or downloading equivelent
      */
-    public void displayProgressMessage(String p_73720_1_) {
-        this.resetProgressAndMessage(p_73720_1_);
+    public void displayProgressMessage(String message) {
+        this.resetProgressAndMessage(message);
     }
 
     /**
      * this string, followed by "working..." and then the "% complete" are the 3 lines shown. This resets progress to 0,
      * and the WorkingString to "working...".
      */
-    public void resetProgressAndMessage(String p_73721_1_) {
-        this.field_146591_a = p_73721_1_;
+    public void resetProgressAndMessage(String message) {
+        this.message = message;
         this.resetProgresAndWorkingMessage("Working...");
     }
 
     /**
      * This is called with "Working..." by resetProgressAndMessage
      */
-    public void resetProgresAndWorkingMessage(String p_73719_1_) {
-        this.field_146589_f = p_73719_1_;
+    public void resetProgresAndWorkingMessage(String message) {
+        this.message1 = message;
         this.setLoadingProgress(0);
     }
 
     /**
      * Updates the progress bar on the loading screen to the specified amount. Args: loadProgress
      */
-    public void setLoadingProgress(int p_73718_1_) {
-        this.field_146590_g = p_73718_1_;
+    public void setLoadingProgress(int progress) {
+        this.progress = progress;
     }
 
-    public void func_146586_a() {
-        this.field_146592_h = true;
+    public void setDoneWorking() {
+        this.doneWorking = true;
     }
 
     /**
      * Draws the screen and all the components in it.
      */
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        if (this.field_146592_h) {
+        if (this.doneWorking) {
             this.mc.displayGuiScreen((GuiScreen) null);
         } else {
             this.drawDefaultBackground();
-            this.drawCenteredString(this.fontRenderer, this.field_146591_a, this.width / 2, 70, 16777215);
-            this.drawCenteredString(this.fontRenderer, this.field_146589_f + " " + this.field_146590_g + "%", this.width / 2, 90, 16777215);
+            this.drawCenteredString(this.fontRenderer, this.message, this.width / 2, 70, 16777215);
+            this.drawCenteredString(this.fontRenderer, this.message1 + " " + this.progress + "%", this.width / 2, 90, 16777215);
             super.drawScreen(mouseX, mouseY, partialTicks);
         }
     }

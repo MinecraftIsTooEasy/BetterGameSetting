@@ -14,7 +14,4 @@ public class GuiResourcePackAvailable extends GuiResourcePackList {
     protected String getListHeader() {
         return I18n.getString("resourcePack.available.title");
     }
-
-    @Override
-    protected void elementClicked(int i, boolean bl) {}
 }

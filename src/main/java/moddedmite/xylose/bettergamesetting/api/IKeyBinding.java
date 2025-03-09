@@ -2,7 +2,7 @@ package moddedmite.xylose.bettergamesetting.api;
 
 import net.minecraft.KeyBinding;
 
-public interface IKeyBinding {
+public interface IKeyBinding extends Comparable<KeyBinding> {
     default String getKeyCategory() {
         return "";
     }

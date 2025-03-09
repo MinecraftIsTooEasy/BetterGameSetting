@@ -1,14 +1,16 @@
 package moddedmite.xylose.bettergamesetting.mixin.common.client;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import moddedmite.xylose.bettergamesetting.api.IGameSetting;
 import moddedmite.xylose.bettergamesetting.api.IKeyBinding;
 import moddedmite.xylose.bettergamesetting.client.EnumOptionsExtra;
+import moddedmite.xylose.bettergamesetting.client.KeyBindingExtra;
+import moddedmite.xylose.bettergamesetting.util.OptionMathHelper;
 import net.minecraft.*;
 import net.minecraft.client.main.Main;
+import org.apache.commons.lang3.ArrayUtils;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
@@ -20,6 +22,7 @@ import java.io.*;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Mixin(GameSettings.class)
@@ -35,6 +38,8 @@ public abstract class GameSettingsMixin implements IGameSetting {
     @Shadow public abstract void saveOptions();
     @Shadow public abstract float getOptionFloatValue(EnumOptions par1EnumOptions);
     @Shadow protected Minecraft mc;
+
+    @Unique public boolean forceUnicodeFont;
     @Unique public float recordVolume = 1.0F;
     @Unique public float weatherVolume = 1.0F;
     @Unique public float blockVolume = 1.0F;
@@ -45,16 +50,15 @@ public abstract class GameSettingsMixin implements IGameSetting {
     @Unique private static final Gson gson = new Gson();
     @Unique public List<String> resourcePacks = new ArrayList<>();
     @Unique private static final ParameterizedType typeListString = new ParameterizedType() {
-        public Type[] getActualTypeArguments()
-        {
-            return new Type[] {String.class};
+        public Type[] getActualTypeArguments() {
+            return new Type[]{String.class};
         }
-        public Type getRawType()
-        {
+
+        public Type getRawType() {
             return List.class;
         }
-        public Type getOwnerType()
-        {
+
+        public Type getOwnerType() {
             return null;
         }
     };
@@ -70,10 +74,10 @@ public abstract class GameSettingsMixin implements IGameSetting {
     private void newDefaultValue(GameSettings instance, Operation<Void> original) {
         this.renderDistance = 8;
         this.limitFramerate = 120;
-//        this.skin = "MITE Resource Pack 1.6.4.zip";
         this.gammaSetting = 0.5F;
         this.fovSetting = 70.0F;
         this.resourcePacks.add("MITE Resource Pack 1.6.4.zip");
+        this.forceUnicodeFont = false;
         original.call(instance);
     }
 
@@ -84,10 +88,10 @@ public abstract class GameSettingsMixin implements IGameSetting {
     private void newDefaultValue_1(CallbackInfo ci) {
         this.renderDistance = 8;
         this.limitFramerate = 120;
-//        this.skin = "MITE Resource Pack 1.6.4.zip";
         this.gammaSetting = 0.5F;
         this.fovSetting = 70.0F;
         this.resourcePacks.add("MITE Resource Pack 1.6.4.zip");
+        this.forceUnicodeFont = false;
     }
 
     @Redirect(
@@ -101,16 +105,24 @@ public abstract class GameSettingsMixin implements IGameSetting {
     private void keepGammaSetting(GameSettings instance, float value) {
     }
 
+    @Inject(method = "setOptionValue", at = @At("TAIL"))
+    public void setOptionValue(EnumOptions par1EnumOptions, int par2, CallbackInfo ci) {
+        if (par1EnumOptions == EnumOptionsExtra.FORCE_UNICODE_FONT) {
+            this.forceUnicodeFont = !this.forceUnicodeFont;
+            this.mc.fontRenderer.setUnicodeFlag(this.mc.getLanguageManager().isCurrentLocaleUnicode() || this.forceUnicodeFont);
+        }
+    }
+
     @Inject(method = "setOptionFloatValue", at = @At("TAIL"))
     public void setOptionFloatValue(EnumOptions par1EnumOptions, float par2, CallbackInfo ci) {
         if (par1EnumOptions == EnumOptions.RENDER_DISTANCE) {
-            this.renderDistance = (int) denormalizeValue(par2, 2.0F, 16.0F, 1.0F);
+            this.renderDistance = (int) par2;
         }
         if (par1EnumOptions == EnumOptions.FRAMERATE_LIMIT) {
-            this.limitFramerate = (int) denormalizeValue(par2, 10.0F, 260.0F, 10.0F);
+            this.limitFramerate = (int) par2;
         }
         if (par1EnumOptions == EnumOptions.FOV) {
-            this.fovSetting = (int) denormalizeValue(par2, 30.0F, 110.0F, 1.0F);
+            this.fovSetting = (int) OptionMathHelper.denormalizeValue(par2, 30.0F, 110.0F, 1.0F);
         }
         if (par1EnumOptions == EnumOptions.GAMMA) {
             this.gammaSetting = par2;
@@ -139,15 +151,15 @@ public abstract class GameSettingsMixin implements IGameSetting {
     }
 
     @Inject(method = "getOptionFloatValue", at = @At("HEAD"), cancellable = true)
-    public void getOptionFloatValue0(EnumOptions par1EnumOptions, CallbackInfoReturnable<Float> cir) {
+    public void getOptionFloatValue(EnumOptions par1EnumOptions, CallbackInfoReturnable<Float> cir) {
         if (par1EnumOptions == EnumOptions.RENDER_DISTANCE) {
-            cir.setReturnValue(normalizeValue(this.renderDistance, 0.0F, 16.0F, 1.0F));
+            cir.setReturnValue((float) this.renderDistance);
         }
         if (par1EnumOptions == EnumOptions.FRAMERATE_LIMIT) {
-            cir.setReturnValue(normalizeValue(this.limitFramerate, 10.0F, 260.0F, 10.0F));
+            cir.setReturnValue((float) this.limitFramerate);
         }
         if (par1EnumOptions == EnumOptions.FOV) {
-            cir.setReturnValue(normalizeValue(this.fovSetting, 30.0F, 110.0F, 1.0F));
+            cir.setReturnValue(OptionMathHelper.normalizeValue(this.fovSetting, 30.0F, 110.0F, 1.0F));
         }
         if (par1EnumOptions == EnumOptions.GAMMA) {
             cir.setReturnValue(this.gammaSetting);
@@ -180,7 +192,7 @@ public abstract class GameSettingsMixin implements IGameSetting {
         String var2 = I18n.getString(par1EnumOptions.getEnumString()) + ": ";
         float var5 = this.getOptionFloatValue(par1EnumOptions);
         if (par1EnumOptions == EnumOptions.RENDER_DISTANCE) {
-            cir.setReturnValue(var2 + this.renderDistance + " " + I18n.getString("options.chunks"));
+            cir.setReturnValue(var2 + this.renderDistance + I18n.getString("options.chunks"));
         }
         if (par1EnumOptions == EnumOptions.FRAMERATE_LIMIT) {
             if (this.limitFramerate >= 260) {
@@ -197,6 +209,9 @@ public abstract class GameSettingsMixin implements IGameSetting {
             } else {
                 cir.setReturnValue(var2 + (int) this.fovSetting);
             }
+        }
+        if (par1EnumOptions == EnumOptionsExtra.FORCE_UNICODE_FONT) {
+            cir.setReturnValue(var2 + getTranslationBoolean(this.forceUnicodeFont));
         }
     }
 
@@ -240,6 +255,9 @@ public abstract class GameSettingsMixin implements IGameSetting {
                     if (this.resourcePacks == null) {
                         this.resourcePacks = new ArrayList();
                     }
+                }
+                if (astring[0].equals("forceUnicodeFont")) {
+                    this.forceUnicodeFont = astring[1].equals("true");
                 }
                 if (astring[0].equals("record")) {
                     this.recordVolume = this.parseFloat(astring[1]);
@@ -306,6 +324,7 @@ public abstract class GameSettingsMixin implements IGameSetting {
         printwriter.println("neutral:" + this.neutralVolume);
         printwriter.println("player:" + this.playerVolume);
         printwriter.println("ambient:" + this.ambientVolume);
+        printwriter.println("forceUnicodeFont:" + this.forceUnicodeFont);
     }
 
     /**
@@ -318,36 +337,8 @@ public abstract class GameSettingsMixin implements IGameSetting {
     }
 
     @Unique
-    private static float normalizeValue(float value, float min, float max, float step) {
-        float v = snapToStepClamp(value, min, max, step);
-        return clamp((v - min) / (max - min), 0.0f, 1.0f);
-    }
-
-    @Unique
-    private static float denormalizeValue(float value, float min, float max, float step) {
-        float v = min + ((max - min) * clamp(value, 0.0f, 1.0f));
-        return snapToStepClamp(v, min, max, step);
-    }
-
-    @Unique
-    private static float snapToStepClamp(float value, float min, float max, float step) {
-        return clamp(snapToStep(value, step), min, max);
-    }
-
-    @Unique
-    private static float snapToStep(float value, float step) {
-        if (step > 0.0f) {
-            return step * Math.round(value / step);
-        }
-        return value;
-    }
-
-    @Unique
-    private static float clamp(float num, float min, float max) {
-        if (num < min) {
-            return min;
-        }
-        return Math.min(num, max);
+    private static String getTranslationBoolean(boolean value) {
+        return value ? I18n.getString("options.on") : I18n.getString("options.off");
     }
 
     @Override
@@ -396,4 +387,8 @@ public abstract class GameSettingsMixin implements IGameSetting {
         return this.resourcePacks;
     }
 
+    @Override
+    public boolean isForceUnicodeFont() {
+        return this.forceUnicodeFont;
+    }
 }

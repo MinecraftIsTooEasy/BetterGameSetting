@@ -1,5 +1,6 @@
 package moddedmite.xylose.bettergamesetting.api;
 
+import moddedmite.xylose.bettergamesetting.client.KeyBindingExtra;
 import net.minecraft.KeyBinding;
 
 import java.util.List;
@@ -38,5 +39,9 @@ public interface IGameSetting {
 
     default List<String> getResourcePacks() {
         return null;
+    }
+
+    default boolean isForceUnicodeFont() {
+        return false;
     }
 }

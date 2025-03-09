@@ -2,8 +2,8 @@ package moddedmite.xylose.bettergamesetting.client.gui.resourcepack;
 
 import java.util.List;
 
-import moddedmite.xylose.bettergamesetting.client.gui.GuiExtra;
-import moddedmite.xylose.bettergamesetting.client.gui.GuiListExtended;
+import moddedmite.xylose.bettergamesetting.client.gui.base.GuiExtra;
+import moddedmite.xylose.bettergamesetting.client.gui.base.GuiListExtended;
 import moddedmite.xylose.bettergamesetting.init.BetterGameSettingClient;
 import net.minecraft.Minecraft;
 import net.minecraft.Gui;
@@ -11,7 +11,7 @@ import net.minecraft.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 public abstract class ResourcePackListEntry implements GuiListExtended.IGuiListEntry {
-    static final ResourceLocation RESOURCE_PACKS_TEXTURE = new ResourceLocation(BetterGameSettingClient.modid, "textures/gui/resource_packs.png");
+    static final ResourceLocation RESOURCE_PACKS_TEXTURE = new ResourceLocation(BetterGameSettingClient.resourceId, "textures/gui/resource_packs.png");
     protected final Minecraft mc;
     protected final GuiScreenResourcePacks resourcePacksGUI;
 

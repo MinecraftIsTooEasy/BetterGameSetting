@@ -2,10 +2,9 @@ options.maxFps=最大帧率
 options.framerateLimit.max=无限制
 options.sounds=音乐和声音…
 options.sounds.title=音乐和声音选项
-controls.classicControls=经典控制
-controls.reset=重置
-controls.resetAll=重置按键
-controls.title=按键控制
+options.mipmapLevels=Mipmap级别
+options.anisotropicFiltering=各项异性过滤
+options.forceUnicodeFont=强制使用Unicode字体
 options.record=唱片机/音符盒
 options.weather=天气
 options.block=方块
@@ -13,7 +12,13 @@ options.hostile=敌对生物
 options.neutral=友好生物
 options.player=玩家
 options.ambient=环境
+
 options.chunks=个区块
+
+controls.classicControls=经典控制
+controls.reset=重置
+controls.resetAll=重置按键
+controls.title=按键控制
 key.categories.movement=移动
 key.categories.misc=杂项
 key.categories.multiplayer=多人游戏
@@ -23,5 +28,12 @@ key.categories.inventory=道具栏
 key.categories.uncategorized=未分类
 controls.reset_keybinding_info_0=确定要重置所有按键吗?
 controls.reset_keybinding_info_1=§4警告:当前对模组按键的重置并未兼容!
+
 resourcePack.available.title=可用的资源包
 resourcePack.selected.title=已选的资源包
+
+# 翻译修正
+options.renderDistance=渲染距离
+options.fov=角视场
+options.fov.min=中
+options.vsync=垂直同步

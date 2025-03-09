@@ -14,7 +14,4 @@ public class GuiResourcePackSelected extends GuiResourcePackList {
     protected String getListHeader() {
         return I18n.getString("resourcePack.selected.title");
     }
-
-    @Override
-    protected void elementClicked(int i, boolean bl) {}
 }

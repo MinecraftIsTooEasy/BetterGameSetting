@@ -1,4 +1,4 @@
-package moddedmite.xylose.bettergamesetting.client;
+package moddedmite.xylose.bettergamesetting.util;
 
 import com.google.common.base.Function;
 import net.minecraft.ResourcePack;

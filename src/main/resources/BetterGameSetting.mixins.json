@@ -10,22 +10,24 @@
     "client.GameSettingsMixin",
     "client.KeyBindingMixin",
     "client.MinecraftMixin",
+    "client.OpenGlHelperMixin",
     "client.audio.SoundsMITEMixin",
     "client.gui.GuiMainMenuMixin",
     "client.gui.GuiOptionsMixin",
     "client.gui.GuiScreenTemporaryResourcePackSelectSelectionListMixin",
     "client.gui.GuiSlotMixin",
     "client.gui.GuiVideoSettingsMixin",
+    "client.renderer.EntityRenderMixin",
     "client.renderer.RenderGlobalMixin",
     "client.renderer.RenderMixin",
     "client.resources.ResourceLocationMixin",
-    "client.resources.SimpleReloadableResourceManagerMixin",
-    "entity.EntityRenderMixin"
+    "client.resources.ResourcePackRepositoryMixin",
+    "client.resources.SimpleReloadableResourceManagerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
   },
   "mixins": [
-    "client.resources.ResourcePackRepositoryMixin"
+    "client.gui.GuiLanguageMixin"
   ]
 }

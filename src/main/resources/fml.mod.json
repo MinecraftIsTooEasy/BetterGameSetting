@@ -8,17 +8,19 @@
   },
   "breaks": {
     "gamma_free": "*",
+    "fontfixer": "*",
     "shader-loader": "<=1.0.3"
   },
   "environment": "client",
   "name": "BetterGameSetting",
-  "icon": "assets/bettergamesetting/bgs_icon.png",
-  "description": "1.7.2+ Game Setting Gui",
+  "icon": "assets/bgs/bgs_icon.png",
+  "description": "1.7.2+ Game Setting Gui & Fixes the FontRenderer",
   "authors": [
     "Xy_Lose"
   ],
   "contributors": [
-    "jaredlll08"
+    "jaredlll08",
+    "ThexXTURBOXx"
   ],
   "contact": {
     "homepage": "https://github.com/ysesiq/BetterGameSetting",
@@ -39,6 +41,8 @@
   "accessWidener": "BetterGameSetting.accesswidener",
   "custom": {
     "loom:injected_interfaces": {
+      "net/minecraft/EnumOptions": ["moddedmite/xylose/bettergamesetting/api/IEnumOptions"],
+      "net/minecraft/KeyBinding": ["moddedmite/xylose/bettergamesetting/api/IKeyBinding"]
     },
     "modmenu:clientsideOnly": true
   }

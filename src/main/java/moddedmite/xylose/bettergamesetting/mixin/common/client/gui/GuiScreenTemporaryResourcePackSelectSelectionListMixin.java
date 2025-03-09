@@ -1,6 +1,6 @@
 package moddedmite.xylose.bettergamesetting.mixin.common.client.gui;
 
-import moddedmite.xylose.bettergamesetting.api.IGuiScreenTemporaryResourcePackSelect;
+import moddedmite.xylose.bettergamesetting.util.GuiScreenTemporaryResourcePackSelectHelper;
 import net.minecraft.*;
 import org.spongepowered.asm.mixin.*;
 
@@ -12,7 +12,7 @@ public abstract class GuiScreenTemporaryResourcePackSelectSelectionListMixin ext
     @Mutable @Final @Shadow final GuiScreenTemporaryResourcePackSelect field_110512_a;
 
     public GuiScreenTemporaryResourcePackSelectSelectionListMixin(GuiScreenTemporaryResourcePackSelect par1GuiScreenTemporaryResourcePackSelect, ResourcePackRepository par2ResourcePackRepository) {
-        super(IGuiScreenTemporaryResourcePackSelect.func_110344_a(par1GuiScreenTemporaryResourcePackSelect), par1GuiScreenTemporaryResourcePackSelect.width, par1GuiScreenTemporaryResourcePackSelect.height, 32, par1GuiScreenTemporaryResourcePackSelect.height - 55 + 4, 36);
+        super(GuiScreenTemporaryResourcePackSelectHelper.func_110344_a(par1GuiScreenTemporaryResourcePackSelect), par1GuiScreenTemporaryResourcePackSelect.width, par1GuiScreenTemporaryResourcePackSelect.height, 32, par1GuiScreenTemporaryResourcePackSelect.height - 55 + 4, 36);
         this.field_110512_a = par1GuiScreenTemporaryResourcePackSelect;
         this.field_110511_b = par2ResourcePackRepository;
         par2ResourcePackRepository.updateRepositoryEntriesAll();
@@ -32,14 +32,14 @@ public abstract class GuiScreenTemporaryResourcePackSelectSelectionListMixin ext
             }
 
             this.field_110511_b.setRepositoryEntries((ResourcePackRepositoryEntry) var3.get(par1 - 1));
-            IGuiScreenTemporaryResourcePackSelect.func_110341_b(this.field_110512_a).refreshResources();
+            GuiScreenTemporaryResourcePackSelectHelper.func_110341_b(this.field_110512_a).refreshResources();
         } catch (Exception var5) {
             this.field_110511_b.setRepositoryEntries();
-            IGuiScreenTemporaryResourcePackSelect.func_110339_c(this.field_110512_a).refreshResources();
+            GuiScreenTemporaryResourcePackSelectHelper.func_110339_c(this.field_110512_a).refreshResources();
         }
 
-        IGuiScreenTemporaryResourcePackSelect.func_110345_d(this.field_110512_a).gameSettings.skin = this.field_110511_b.getResourcePackName();
-        IGuiScreenTemporaryResourcePackSelect.func_110334_e(this.field_110512_a).gameSettings.saveOptions();
+        GuiScreenTemporaryResourcePackSelectHelper.func_110345_d(this.field_110512_a).gameSettings.skin = this.field_110511_b.getResourcePackName();
+        GuiScreenTemporaryResourcePackSelectHelper.func_110334_e(this.field_110512_a).gameSettings.saveOptions();
     }
 
     /**

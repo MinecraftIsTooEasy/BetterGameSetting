@@ -2,7 +2,7 @@ package moddedmite.xylose.bettergamesetting.mixin.common.client.resources;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Iterables;
-import moddedmite.xylose.bettergamesetting.client.SimpleReloadableResourceManagerINNER1;
+import moddedmite.xylose.bettergamesetting.util.SimpleReloadableResourceManagerINNER1;
 import net.minecraft.Minecraft;
 import net.minecraft.ResourcePack;
 import net.minecraft.SimpleReloadableResourceManager;

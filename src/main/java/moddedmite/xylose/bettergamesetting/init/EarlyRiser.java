@@ -12,5 +12,8 @@ public class EarlyRiser implements PreLaunchEntrypoint {
         EnumExtends.OPTIONS.addEnum("ANIMALS", "options.neutral", true, false);
         EnumExtends.OPTIONS.addEnum("PLAYERS", "options.player", true, false);
         EnumExtends.OPTIONS.addEnum("AMBIENT", "options.ambient", true, false);
+//        EnumExtends.OPTIONS.addEnum("MIPMAP_LEVELS", "options.mipmapLevels", true, false);
+//        EnumExtends.OPTIONS.addEnum("ANISOTROPIC_FILTERING", "options.anisotropicFiltering", true, false);
+        EnumExtends.OPTIONS.addEnum("FORCE_UNICODE_FONT", "options.forceUnicodeFont", false, true);
     }
 }

@@ -1,5 +1,14 @@
 # Better Game Setting
 
+
+### v1.2.1
+* 加入了更多自带键位设置(来自ModernMITE，感谢Debris)
+* 更多音频可自由调节音量
+* 修复了在ManyLib模组的gui中使用Mojangles（ASCII）字体异常的问题
+* 修复了全角左括号“（”不显示的问题
+
+---
+
 ### v1.2.0
 * 加入了1.7.2+的视频设置界面
   * 考虑到兼容性，不添加mipmap与各项异性过滤选项

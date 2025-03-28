@@ -1,9 +1,11 @@
 package moddedmite.xylose.bettergamesetting.client.gui;
 
+import moddedmite.xylose.bettergamesetting.client.EnumOptionsExtra;
 import moddedmite.xylose.bettergamesetting.client.gui.base.GuiListExtended;
 import moddedmite.xylose.bettergamesetting.client.gui.base.GuiOptionsRowList;
 import moddedmite.xylose.bettergamesetting.util.OpenGlHelperExtra;
 import net.minecraft.*;
+import org.lwjgl.LWJGLException;
 
 public class GuiVideoSettings extends GuiScreen {
     public GuiScreen parentGuiScreen;
@@ -41,13 +43,12 @@ public class GuiVideoSettings extends GuiScreen {
             for (int k = 0; k < j; ++k) {
                 EnumOptions options = aoptions1[k];
 
-                if (options != EnumOptions.ADVANCED_OPENGL) {
+                if (options != EnumOptions.ADVANCED_OPENGL ) {
                     aoptions[i] = options;
                     ++i;
                 }
             }
-
-            this.optionsRowList = new GuiOptionsRowList(this.mc, this.width, this.height, 32, this.height - 32, 25, aoptions);
+             this.optionsRowList = new GuiOptionsRowList(this.mc, this.width, this.height, 32, this.height - 32, 25, aoptions);
         }
     }
 

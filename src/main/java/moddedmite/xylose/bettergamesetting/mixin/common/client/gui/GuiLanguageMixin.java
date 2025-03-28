@@ -29,17 +29,15 @@ public class GuiLanguageMixin extends GuiScreen {
         return true;
     }
 
-    @Inject(method = "actionPerformed", at = @At("TAIL"))
+    @Inject(method = "actionPerformed", at = @At("HEAD"))
     private void actionPerformed(GuiButton guiButton, CallbackInfo ci) {
-        if (guiButton.enabled) {
-            if (guiButton.id == 100) {
-                this.theGameSettings.setOptionValue(EnumOptionsExtra.FORCE_UNICODE_FONT, 1);
-                guiButton.displayString = this.theGameSettings.getKeyBinding(EnumOptionsExtra.FORCE_UNICODE_FONT);
-                ScaledResolution scaledresolution = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
-                int i = scaledresolution.getScaledWidth();
-                int j = scaledresolution.getScaledHeight();
-                this.setWorldAndResolution(this.mc, i, j);
-            }
+        if (guiButton.enabled && guiButton.id == 100) {
+            this.theGameSettings.setOptionValue(EnumOptionsExtra.FORCE_UNICODE_FONT, 1);
+            guiButton.displayString = this.theGameSettings.getKeyBinding(EnumOptionsExtra.FORCE_UNICODE_FONT);
+            ScaledResolution scaledresolution = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
+            int i = scaledresolution.getScaledWidth();
+            int j = scaledresolution.getScaledHeight();
+            this.setWorldAndResolution(this.mc, i, j);
         }
     }
 }

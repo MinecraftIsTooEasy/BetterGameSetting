@@ -5,12 +5,17 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import moddedmite.xylose.bettergamesetting.api.IGameSetting;
 import moddedmite.xylose.bettergamesetting.api.IKeyBinding;
+import moddedmite.xylose.bettergamesetting.client.CustomKeys;
 import moddedmite.xylose.bettergamesetting.client.EnumOptionsExtra;
 import moddedmite.xylose.bettergamesetting.client.KeyBindingExtra;
+import moddedmite.xylose.bettergamesetting.util.DisplayModeHelper;
 import moddedmite.xylose.bettergamesetting.util.OptionMathHelper;
 import net.minecraft.*;
 import net.minecraft.client.main.Main;
 import org.apache.commons.lang3.ArrayUtils;
+import org.lwjgl.LWJGLException;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
@@ -21,6 +26,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import java.io.*;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -31,7 +37,6 @@ public abstract class GameSettingsMixin implements IGameSetting {
     @Shadow public int renderDistance;
     @Shadow public int limitFramerate;
     @Shadow public float gammaSetting;
-    @Shadow public String skin;
     @Shadow public float fovSetting;
     @Shadow public boolean clouds;
     @Shadow protected abstract float parseFloat(String var1);
@@ -39,6 +44,7 @@ public abstract class GameSettingsMixin implements IGameSetting {
     @Shadow public abstract float getOptionFloatValue(EnumOptions par1EnumOptions);
     @Shadow protected Minecraft mc;
 
+    @Shadow public KeyBinding[] keyBindings;
     @Unique public boolean forceUnicodeFont;
     @Unique public float recordVolume = 1.0F;
     @Unique public float weatherVolume = 1.0F;
@@ -63,6 +69,9 @@ public abstract class GameSettingsMixin implements IGameSetting {
         }
     };
 
+//    public DisplayMode fullscreenResolution;
+
+
     @WrapOperation(
             method = "<init>(Lnet/minecraft/Minecraft;Ljava/io/File;)V",
             at = @At(
@@ -78,6 +87,7 @@ public abstract class GameSettingsMixin implements IGameSetting {
         this.fovSetting = 70.0F;
         this.resourcePacks.add("MITE Resource Pack 1.6.4.zip");
         this.forceUnicodeFont = false;
+//        this.fullscreenResolution = Display.getDisplayMode();
         original.call(instance);
     }
 
@@ -92,6 +102,7 @@ public abstract class GameSettingsMixin implements IGameSetting {
         this.fovSetting = 70.0F;
         this.resourcePacks.add("MITE Resource Pack 1.6.4.zip");
         this.forceUnicodeFont = false;
+//        this.fullscreenResolution = Display.getDisplayMode();
     }
 
     @Redirect(
@@ -105,7 +116,17 @@ public abstract class GameSettingsMixin implements IGameSetting {
     private void keepGammaSetting(GameSettings instance, float value) {
     }
 
-    @Inject(method = "setOptionValue", at = @At("TAIL"))
+    @Inject(method = "initKeybindings", at = @At("RETURN"))
+    private void inject(CallbackInfo ci) {
+        KeyBinding[] vanillaKeyBindings = this.keyBindings;
+        KeyBinding[] myKeybindings = CustomKeys.getMyKeybindings();
+        KeyBinding[] newKeyBindings = new KeyBinding[vanillaKeyBindings.length + myKeybindings.length];
+        System.arraycopy(vanillaKeyBindings, 0, newKeyBindings, 0, vanillaKeyBindings.length);
+        System.arraycopy(myKeybindings, 0, newKeyBindings, vanillaKeyBindings.length, myKeybindings.length);
+        this.keyBindings = newKeyBindings;
+    }
+
+    @Inject(method = "setOptionValue", at = @At("HEAD"))
     public void setOptionValue(EnumOptions par1EnumOptions, int par2, CallbackInfo ci) {
         if (par1EnumOptions == EnumOptionsExtra.FORCE_UNICODE_FONT) {
             this.forceUnicodeFont = !this.forceUnicodeFont;
@@ -259,6 +280,9 @@ public abstract class GameSettingsMixin implements IGameSetting {
                 if (astring[0].equals("forceUnicodeFont")) {
                     this.forceUnicodeFont = astring[1].equals("true");
                 }
+//                if (astring[0].equals("fullscreenResolution")) {
+//                    this.fullscreenResolution = DisplayModeHelper.getDisplayModeFromString(astring[1]);
+//                }
                 if (astring[0].equals("record")) {
                     this.recordVolume = this.parseFloat(astring[1]);
                 }
@@ -325,6 +349,7 @@ public abstract class GameSettingsMixin implements IGameSetting {
         printwriter.println("player:" + this.playerVolume);
         printwriter.println("ambient:" + this.ambientVolume);
         printwriter.println("forceUnicodeFont:" + this.forceUnicodeFont);
+//        printwriter.println("fullscreenResolution:" + this.fullscreenResolution);
     }
 
     /**

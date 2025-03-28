@@ -2,8 +2,10 @@ package moddedmite.xylose.bettergamesetting.client.gui.base;
 
 import com.google.common.collect.Lists;
 import moddedmite.xylose.bettergamesetting.api.IGuiSlot;
+import moddedmite.xylose.bettergamesetting.client.EnumOptionsExtra;
 import moddedmite.xylose.bettergamesetting.client.gui.button.GuiOptionButton;
 import moddedmite.xylose.bettergamesetting.client.gui.button.GuiOptionSlider;
+import moddedmite.xylose.bettergamesetting.client.gui.button.GuiResolutionSlider;
 import moddedmite.xylose.bettergamesetting.client.gui.button.GuiScaleSlider;
 import net.minecraft.EnumOptions;
 import net.minecraft.GuiButton;
@@ -43,6 +45,8 @@ public class GuiOptionsRowList extends GuiListExtended {
                 max--;
 
             return new GuiScaleSlider(options.returnEnumOrdinal(), x, y, mcIn.gameSettings, 0, max);
+//        } else if (options == EnumOptionsExtra.FULLSCREEN_RESOLUTION) {
+//            return new GuiResolutionSlider(options.returnEnumOrdinal(), x, y);
         } else {
             int i = options.returnEnumOrdinal();
             return (GuiButton) (options.getEnumFloat() ? new GuiOptionSlider(i, x, y, options) : new GuiOptionButton(i, x, y, options, mcIn.gameSettings.getKeyBinding(options)));

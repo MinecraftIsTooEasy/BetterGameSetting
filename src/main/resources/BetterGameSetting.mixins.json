@@ -12,6 +12,7 @@
     "client.MinecraftMixin",
     "client.OpenGlHelperMixin",
     "client.audio.SoundsMITEMixin",
+    "client.gui.GuiLanguageMixin",
     "client.gui.GuiMainMenuMixin",
     "client.gui.GuiOptionsMixin",
     "client.gui.GuiScreenTemporaryResourcePackSelectSelectionListMixin",
@@ -26,8 +27,5 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "mixins": [
-    "client.gui.GuiLanguageMixin"
-  ]
+  }
 }

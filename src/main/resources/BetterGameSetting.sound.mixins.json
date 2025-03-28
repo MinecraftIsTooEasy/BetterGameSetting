@@ -5,6 +5,7 @@
   "target": "DEFAULT",
   "minVersion": "0.8.3",
   "client": [
+    "block.BlockCakeMixin",
     "block.BlockFireMixin",
     "block.BlockFluidMixin",
     "block.BlockNoteMixin",
@@ -33,15 +34,16 @@
     "entity.EntityWitchMixin",
     "entity.EntityWolfMixin",
     "entity.EntityWoodSpiderMixin",
+    "item.ItemBlockMixin",
+    "item.ItemBowlMixin",
     "item.ItemFireballMixin",
     "item.ItemFlintAndSteelMixin",
+    "item.ItemFoodMixin",
     "network.NetClientHandlerMixin",
     "server.PlayerControllerMPMixin",
     "world.WorldMixin",
-    "block.BlockCakeMixin",
-    "item.ItemBlockMixin",
-    "item.ItemBowlMixin",
-    "item.ItemFoodMixin"
+    "client.render.RenderGlobalMixin",
+    "world.ExplosionMixin"
   ],
   "injectors": {
     "defaultRequire": 1

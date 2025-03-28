@@ -32,6 +32,17 @@ public class KeyBindingExtra extends KeyBinding implements Comparable<KeyBinding
             case "key.toggleRun" -> 15;
             case "key.zoom" -> 44;
             case "key.redrawChunks" -> 19;
+            case "key.inventory_1" -> 2;
+            case "key.inventory_2" -> 3;
+            case "key.inventory_3" -> 4;
+            case "key.inventory_4" -> 5;
+            case "key.inventory_5" -> 6;
+            case "key.inventory_6" -> 7;
+            case "key.inventory_7" -> 8;
+            case "key.inventory_8" -> 9;
+            case "key.inventory_9" -> 10;
+            case "key.printScreen" -> 60;
+            case "key.personView" -> 63;
             default -> getDefaultKeyCode();
         };
     }
@@ -40,11 +51,12 @@ public class KeyBindingExtra extends KeyBinding implements Comparable<KeyBinding
         return switch (keyDescription) {
             case "key.forward", "key.jump", "key.right", "key.back", "key.left", "key.sneak", "key.toggleRun" ->
                     I18n.getString("key.categories.movement");
-            case "key.inventory" -> I18n.getString("key.categories.inventory");
+            case "key.inventory", "key.inventory_1", "key.inventory_2", "key.inventory_3", "key.inventory_4", "key.inventory_5", "key.inventory_6", "key.inventory_7", "key.inventory_8", "key.inventory_9" ->
+                    I18n.getString("key.categories.inventory");
             case "key.drop", "key.attack", "key.use", "key.zoom", "key.pickItem" ->
                     I18n.getString("key.categories.gameplay");
             case "key.chat", "key.command", "key.playerlist" -> I18n.getString("key.categories.multiplayer");
-            case "key.redrawChunks" -> I18n.getString("key.categories.misc");
+            case "key.redrawChunks", "key.printScreen", "key.personView" -> I18n.getString("key.categories.misc");
             default -> I18n.getString("key.categories.uncategorized");
         };
     }

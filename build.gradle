@@ -15,8 +15,8 @@ static def buildTime() {
 }
 
 base {
-//	archivesName = project.archives_base_name + "-dev-build." + buildTime()
-	archivesName = "[更好的游戏设置]" + project.archives_base_name
+	archivesName = project.archives_base_name + "-dev-build." + buildTime()
+//	archivesName = "[更好的游戏设置]" + project.archives_base_name
 }
 
 repositories {

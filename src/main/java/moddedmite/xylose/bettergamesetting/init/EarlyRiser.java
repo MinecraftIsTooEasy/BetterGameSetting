@@ -15,5 +15,6 @@ public class EarlyRiser implements PreLaunchEntrypoint {
 //        EnumExtends.OPTIONS.addEnum("MIPMAP_LEVELS", "options.mipmapLevels", true, false);
 //        EnumExtends.OPTIONS.addEnum("ANISOTROPIC_FILTERING", "options.anisotropicFiltering", true, false);
         EnumExtends.OPTIONS.addEnum("FORCE_UNICODE_FONT", "options.forceUnicodeFont", false, true);
+//        EnumExtends.OPTIONS.addEnum("FULLSCREEN_RESOLUTION", "options.fullscreenResolution", true, false);
     }
 }

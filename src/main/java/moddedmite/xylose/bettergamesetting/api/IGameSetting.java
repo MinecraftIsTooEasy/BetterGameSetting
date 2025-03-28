@@ -44,4 +44,5 @@ public interface IGameSetting {
     default boolean isForceUnicodeFont() {
         return false;
     }
+
 }

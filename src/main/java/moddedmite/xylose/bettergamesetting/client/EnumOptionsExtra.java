@@ -12,4 +12,5 @@ public class EnumOptionsExtra {
     public static final EnumOptions PLAYERS = ClassTinkerers.getEnum(EnumOptions.class, "PLAYERS");
     public static final EnumOptions AMBIENT = ClassTinkerers.getEnum(EnumOptions.class, "AMBIENT");
     public static final EnumOptions FORCE_UNICODE_FONT = ClassTinkerers.getEnum(EnumOptions.class, "FORCE_UNICODE_FONT");
+//    public static final EnumOptions FULLSCREEN_RESOLUTION = ClassTinkerers.getEnum(EnumOptions.class, "FULLSCREEN_RESOLUTION");
 }

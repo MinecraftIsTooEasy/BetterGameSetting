@@ -6,7 +6,7 @@ import net.minecraft.Minecraft;
 import org.lwjgl.opengl.GL11;
 
 public class GuiOptionSlider extends GuiButton {
-    private float sliderValue;
+    float sliderValue;
     public boolean dragging;
     private EnumOptions options;
     private final float minValue;

@@ -16,10 +16,9 @@ import java.util.Objects;
 
 @Mixin(value = GuiMainMenu.class, priority = 9999)
 public class GuiMainMenuMixin extends GuiScreen {
-    @Shadow
-    private GuiButton minecraftRealmsButton;
+    @Shadow private GuiButton minecraftRealmsButton;
 
-    @Inject(method = "initGui", at = @At(value = "INVOKE", target = "Lnet/minecraft/Minecraft;isDemo()Z"), locals = LocalCapture.CAPTURE_FAILHARD)
+    @Inject(method = "initGui", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 2), locals = LocalCapture.CAPTURE_FAILHARD)
     private void disMITEResourcePack(CallbackInfo ci, Calendar var1, boolean var2, int var3) {
         if (Minecraft.MITE_resource_pack == null) {
             this.buttonList.add(new GuiButtonForum(6, this.width / 2 + 124 - 20, var3 + 72 + 12));
@@ -41,19 +40,16 @@ public class GuiMainMenuMixin extends GuiScreen {
 
     @WrapWithCondition(method = "drawScreen", at = @At(value = "INVOKE", target = "Lnet/minecraft/GuiMainMenu;drawRect(IIIII)V", ordinal = 1))
     private boolean disMITEResourcePack(int i, int j, int k, int l, int m) {
-//        return Objects.equals(this.mc.getResourcePackRepository().getResourcePackName(), this.mc.mcDefaultResourcePack.getPackName());
-        return !((IGameSetting) this.mc.gameSettings).getResourcePacks().isEmpty();
+        return ((IGameSetting) this.mc.gameSettings).getResourcePacks().isEmpty();
     }
 
     @WrapWithCondition(method = "drawScreen", at = @At(value = "INVOKE", target = "Lnet/minecraft/GuiMainMenu;drawString(Lnet/minecraft/FontRenderer;Ljava/lang/String;III)V", ordinal = 4))
     private boolean disMITEResourcePack(GuiMainMenu instance, FontRenderer fontRenderer, String string, int i, int j, int k) {
-//        return Objects.equals(this.mc.getResourcePackRepository().getResourcePackName(), this.mc.mcDefaultResourcePack.getPackName());
-        return !((IGameSetting) this.mc.gameSettings).getResourcePacks().isEmpty();
+        return ((IGameSetting) this.mc.gameSettings).getResourcePacks().isEmpty();
     }
 
     @WrapWithCondition(method = "drawScreen", at = @At(value = "INVOKE", target = "Lnet/minecraft/GuiMainMenu;drawString(Lnet/minecraft/FontRenderer;Ljava/lang/String;III)V", ordinal = 5))
     private boolean disMITEResourcePack_1(GuiMainMenu instance, FontRenderer fontRenderer, String string, int i, int j, int k) {
-//        return Objects.equals(this.mc.getResourcePackRepository().getResourcePackName(), this.mc.mcDefaultResourcePack.getPackName());
-        return !((IGameSetting) this.mc.gameSettings).getResourcePacks().isEmpty();
+        return ((IGameSetting) this.mc.gameSettings).getResourcePacks().isEmpty();
     }
 }

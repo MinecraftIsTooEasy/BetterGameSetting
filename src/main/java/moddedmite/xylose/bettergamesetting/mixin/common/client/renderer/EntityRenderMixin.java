@@ -19,10 +19,9 @@ public abstract class EntityRenderMixin {
     @Shadow private float farPlaneDistance;
     @Shadow private Minecraft mc;
     @Shadow protected abstract void setupFog(int par1, float par2);
-    @Shadow private float fogColorRed;
-    @Shadow private float fogColorGreen;
-    @Shadow private float fogColorBlue;
-    @Shadow public int debugViewDirection;
+    @Shadow float fogColorRed;
+    @Shadow float fogColorGreen;
+    @Shadow float fogColorBlue;
     @Shadow private float prevDebugCamFOV;
     @Shadow private float debugCamFOV;
     @Shadow private float fovModifierHandPrev;
@@ -63,8 +62,7 @@ public abstract class EntityRenderMixin {
 
     @ModifyExpressionValue(method = "updateFogColor", at = @At(value = "INVOKE", target = "Lnet/minecraft/GameSettings;getRenderDistance()I"))
     private int modifyRenderDistance(int original) {
-        if (original >= 4)
-            return 1;
+        if (original >= 4) return 1;
         return original;
     }
 

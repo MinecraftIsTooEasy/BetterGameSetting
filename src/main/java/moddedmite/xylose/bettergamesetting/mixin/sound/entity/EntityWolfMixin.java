@@ -14,6 +14,10 @@ public abstract class EntityWolfMixin extends EntityLivingBase {
         super(par1World);
     }
 
+    /**
+     * @author Xy_Lose
+     * @reason modify mobs sound volume
+     */
     @Overwrite
     protected float getSoundVolume(String sound) {
         return  (this.isChild() ? ((IGameSetting) Minecraft.getMinecraft().gameSettings).getNeutralVolume() * 0.2f : ((IGameSetting) Minecraft.getMinecraft().gameSettings).getNeutralVolume() * 0.4f);

@@ -37,7 +37,7 @@ public class CustomKeys {
         return keyBindPersonView.keyCode;
     }
 
-    public static KeyBinding[] getMyKeybindings() {
+    public static KeyBinding[] getNewKeybindings() {
         return new KeyBinding[]{keyBindInventory_1, keyBindInventory_2, keyBindInventory_3, keyBindInventory_4, keyBindInventory_5, keyBindInventory_6, keyBindInventory_7, keyBindInventory_8, keyBindInventory_9, keyBindPrintScreen, keyBindPersonView};
     }
 }

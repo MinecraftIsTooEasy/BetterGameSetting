@@ -27,6 +27,10 @@ public class EntityLivingBaseMixin {
             original.call(instance, sound);
         }
     }
+    /**
+     * @author Xy_Lose
+     * @reason modify mobs sound volume
+     */
     @Overwrite
     protected float getSoundVolume(String sound) {
         if ((ReflectHelper.dyCast(this) instanceof IMob) || (ReflectHelper.dyCast(this) instanceof EntityMob)) {

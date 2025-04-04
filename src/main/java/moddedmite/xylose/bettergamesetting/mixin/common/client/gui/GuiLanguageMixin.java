@@ -18,7 +18,6 @@ public class GuiLanguageMixin extends GuiScreen {
     @Shadow private GuiSmallButton doneButton;
     @Shadow @Final private GameSettings theGameSettings;
 
-    @Shadow protected GuiScreen parentGui;
     @Unique private GuiSmallButton forceUnicodeButton;
 
 

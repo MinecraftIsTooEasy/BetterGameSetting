@@ -1,6 +1,7 @@
 package moddedmite.xylose.bettergamesetting.mixin.common.client;
 
 import moddedmite.xylose.bettergamesetting.client.CustomKeys;
+import moddedmite.xylose.bettergamesetting.util.OpenGlHelperExtra;
 import net.minecraft.*;
 import org.lwjgl.input.Keyboard;
 import org.objectweb.asm.Opcodes;
@@ -12,17 +13,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MinecraftMixin {
     @Shadow public GameSettings gameSettings;
     @Shadow public GuiScreen currentScreen;
-
     @Shadow public EntityClientPlayerMP thePlayer;
 
     @Redirect(method = "runGameLoop", at = @At(value = "FIELD", target = "Lnet/minecraft/GameSettings;gammaSetting:F", opcode = Opcodes.PUTFIELD))
-    private void inject(GameSettings instance, float value) {
-        if (this.gameSettings.limitFramerate < 10)
+    private void keepGammaAndOptionsBounds(GameSettings instance, float value) {
+        if (this.gameSettings.limitFramerate < 10 || this.gameSettings.limitFramerate > 260)
             this.gameSettings.limitFramerate = 120;
-        if (this.gameSettings.fovSetting < 30)
+        if (this.gameSettings.fovSetting < 30 || this.gameSettings.fovSetting > 110)
             this.gameSettings.fovSetting = 70;
-        if (this.gameSettings.getRenderDistance() < 2)
+        if (this.gameSettings.renderDistance < 2 || this.gameSettings.renderDistance > 24)
             this.gameSettings.renderDistance = 12;
+        if (!OpenGlHelperExtra.isNvidiaGL)
+            this.gameSettings.advancedOpengl = false;
     }
 
     /**
@@ -56,8 +58,7 @@ public class MinecraftMixin {
     }
 
     @Redirect(method = "runTick", at = @At(value = "FIELD", target = "Lnet/minecraft/InventoryPlayer;currentItem:I", opcode = Opcodes.PUTFIELD))
-    private void disableVanillaItemSwitch(InventoryPlayer instance, int value) {
-    }
+    private void disableVanillaItemSwitch(InventoryPlayer instance, int value) {}
 
     @Inject(method = "runTick", at = @At(value = "FIELD", target = "Lnet/minecraft/GameSettings;showDebugInfo:Z", opcode = Opcodes.GETFIELD, ordinal = 2))
     private void customItemSwitch(CallbackInfo ci) {

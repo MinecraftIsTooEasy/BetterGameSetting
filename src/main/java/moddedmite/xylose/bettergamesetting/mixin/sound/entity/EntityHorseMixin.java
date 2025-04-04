@@ -8,6 +8,10 @@ import org.spongepowered.asm.mixin.Overwrite;
 
 @Mixin(EntityHorse.class)
 public class EntityHorseMixin {
+    /**
+     * @author Xy_Lose
+     * @reason modify mobs sound volume
+     */
     @Overwrite
     protected float getSoundVolume(String sound) {
         return ((IGameSetting) Minecraft.getMinecraft().gameSettings).getNeutralVolume() * 0.8f;

@@ -8,6 +8,10 @@ import org.spongepowered.asm.mixin.Overwrite;
 
 @Mixin(EntityOcelot.class)
 public class EntityOcelotMixin {
+    /**
+     * @author Xy_Lose
+     * @reason modify mobs sound volume
+     */
     @Overwrite
     protected float getSoundVolume(String sound) {
         return ((IGameSetting) Minecraft.getMinecraft().gameSettings).getNeutralVolume() * 0.4f;

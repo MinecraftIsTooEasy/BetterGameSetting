@@ -11,6 +11,10 @@ import org.spongepowered.asm.mixin.Shadow;
 public abstract class EntityCubicMixin {
     @Shadow public abstract int getSize();
 
+    /**
+     * @author Xy_Lose
+     * @reason modify mobs sound volume
+     */
     @Overwrite
     protected float getSoundVolume(String sound) {
         return ((IGameSetting) Minecraft.getMinecraft().gameSettings).getNeutralVolume() * (0.2f * (float)this.getSize());

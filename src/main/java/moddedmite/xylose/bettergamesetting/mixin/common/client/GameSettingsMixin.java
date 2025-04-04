@@ -7,15 +7,9 @@ import moddedmite.xylose.bettergamesetting.api.IGameSetting;
 import moddedmite.xylose.bettergamesetting.api.IKeyBinding;
 import moddedmite.xylose.bettergamesetting.client.CustomKeys;
 import moddedmite.xylose.bettergamesetting.client.EnumOptionsExtra;
-import moddedmite.xylose.bettergamesetting.client.KeyBindingExtra;
-import moddedmite.xylose.bettergamesetting.util.DisplayModeHelper;
 import moddedmite.xylose.bettergamesetting.util.OptionMathHelper;
 import net.minecraft.*;
 import net.minecraft.client.main.Main;
-import org.apache.commons.lang3.ArrayUtils;
-import org.lwjgl.LWJGLException;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
@@ -26,9 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import java.io.*;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Mixin(GameSettings.class)
@@ -43,8 +35,8 @@ public abstract class GameSettingsMixin implements IGameSetting {
     @Shadow public abstract void saveOptions();
     @Shadow public abstract float getOptionFloatValue(EnumOptions par1EnumOptions);
     @Shadow protected Minecraft mc;
-
     @Shadow public KeyBinding[] keyBindings;
+
     @Unique public boolean forceUnicodeFont;
     @Unique public float recordVolume = 1.0F;
     @Unique public float weatherVolume = 1.0F;
@@ -119,7 +111,7 @@ public abstract class GameSettingsMixin implements IGameSetting {
     @Inject(method = "initKeybindings", at = @At("RETURN"))
     private void inject(CallbackInfo ci) {
         KeyBinding[] vanillaKeyBindings = this.keyBindings;
-        KeyBinding[] myKeybindings = CustomKeys.getMyKeybindings();
+        KeyBinding[] myKeybindings = CustomKeys.getNewKeybindings();
         KeyBinding[] newKeyBindings = new KeyBinding[vanillaKeyBindings.length + myKeybindings.length];
         System.arraycopy(vanillaKeyBindings, 0, newKeyBindings, 0, vanillaKeyBindings.length);
         System.arraycopy(myKeybindings, 0, newKeyBindings, vanillaKeyBindings.length, myKeybindings.length);
@@ -323,24 +315,19 @@ public abstract class GameSettingsMixin implements IGameSetting {
         return x;
     }
 
-    @ModifyConstant(method = "saveOptions", constant = @Constant(stringValue = "viewDistance:"))
-    private String modifyViewDistanceName(String x) {
-        return "renderDistance:";
-    }
-
-    @ModifyConstant(method = "saveOptions", constant = @Constant(stringValue = "fov:"))
-    private String modifyFovName(String x) {
-        return "fovSetting:";
-    }
-
-    @ModifyConstant(method = "saveOptions", constant = @Constant(stringValue = "fpsLimit:"))
-    private String modifyFpsLimitName(String x) {
-        return "maxFps:";
-    }
+    @Redirect(method = "saveOptions", at = @At(value = "INVOKE", target = "Ljava/io/PrintWriter;println(Ljava/lang/String;)V", ordinal = 4))
+    private void disableVanillaFov(PrintWriter instance, String x) {}
+    @Redirect(method = "saveOptions", at = @At(value = "INVOKE", target = "Ljava/io/PrintWriter;println(Ljava/lang/String;)V", ordinal = 6))
+    private void disableVanillaViewDistance(PrintWriter instance, String x) {}
+    @Redirect(method = "saveOptions", at = @At(value = "INVOKE", target = "Ljava/io/PrintWriter;println(Ljava/lang/String;)V", ordinal = 12))
+    private void disableVanillaFpsLimit(PrintWriter instance, String x) {}
 
     @Inject(method = "saveOptions", at = @At(value = "INVOKE", target = "Ljava/io/PrintWriter;println(Ljava/lang/String;)V", ordinal = 40), locals = LocalCapture.CAPTURE_FAILEXCEPTION)
     private void saveExtraOption(CallbackInfo ci, PrintWriter printwriter) {
         printwriter.println("resourcePacks:" + gson.toJson(this.resourcePacks));
+        printwriter.println("fovSetting:" + this.fovSetting);
+        printwriter.println("renderDistance:" + this.renderDistance);
+        printwriter.println("maxFps:" + this.limitFramerate);
         printwriter.println("record:" + this.recordVolume);
         printwriter.println("weather:" + this.weatherVolume);
         printwriter.println("block:" + this.blockVolume);

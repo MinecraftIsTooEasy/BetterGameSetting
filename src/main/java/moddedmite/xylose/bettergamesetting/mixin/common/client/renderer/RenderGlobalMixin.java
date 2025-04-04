@@ -13,7 +13,6 @@ public abstract class RenderGlobalMixin {
     @Shadow private int renderDistance;
     @Shadow private int renderChunksTall;
     @Shadow private int renderChunksDeep;
-    @Shadow private Minecraft mc;
 
     @Inject(method = "loadRenderers", at = @At(value = "FIELD", target = "Lnet/minecraft/RenderGlobal;renderChunksDeep:I", shift = At.Shift.AFTER))
     private void loadRenderers(CallbackInfo ci) {

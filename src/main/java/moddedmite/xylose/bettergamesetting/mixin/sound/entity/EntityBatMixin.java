@@ -17,6 +17,10 @@ public abstract class EntityBatMixin extends EntityLivingBase {
         super(par1World);
     }
 
+    /**
+     * @author Xy_Lose
+     * @reason modify mobs sound volume
+     */
     @Overwrite
     protected float getSoundVolume(String sound) {
         return ((IGameSetting) Minecraft.getMinecraft().gameSettings).getNeutralVolume() * (super.getSoundVolume(sound) * 0.1f * this.getScaleFactor());

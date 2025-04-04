@@ -13,11 +13,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(GuiContainer.class)
 public abstract class GuiContainerMixin extends GuiScreen {
-    @Shadow
-    public Slot theSlot;
-
-    @Shadow
-    public abstract void handleMouseClick(Slot par1Slot, int par2, int par3, int par4);
+    @Shadow private Slot theSlot;
+    @Shadow protected abstract void handleMouseClick(Slot par1Slot, int par2, int par3, int par4);
 
     @Inject(method = "checkHotbarKeys", at = @At("HEAD"), cancellable = true)
     protected void checkHotbarKeys(int par1, CallbackInfoReturnable<Boolean> cir) {

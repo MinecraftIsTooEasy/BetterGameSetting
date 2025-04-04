@@ -8,6 +8,10 @@ import org.spongepowered.asm.mixin.Overwrite;
 
 @Mixin(EntityCow.class)
 public class EntityCowMixin {
+    /**
+     * @author Xy_Lose
+     * @reason modify mobs sound volume
+     */
     @Overwrite
     protected float getSoundVolume(String sound) {
         if (sound.equals("mob.cow.step")) {

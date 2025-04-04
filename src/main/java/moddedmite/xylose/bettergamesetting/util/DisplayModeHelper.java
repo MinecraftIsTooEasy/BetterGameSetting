@@ -11,7 +11,6 @@ public class DisplayModeHelper {
 
     public static String displayModeInfo;
 
-    // 正则表达式匹配格式：宽度x高度[@刷新率Hz][-色深bit]
     private static final Pattern DISPLAY_MODE_PATTERN = Pattern.compile(
             "^\\s*(\\d+)\\s*x\\s*(\\d+)\\s*x\\s*(\\d+)\\s*@\\s*(\\d+)Hz\\s*$"
     );
@@ -24,16 +23,10 @@ public class DisplayModeHelper {
         displayModeInfo = Display.getDisplayMode().toString();
     }
 
-    /**
-     * 将字符串解析为 DisplayMode 参数
-     * @param str 格式如 "1920x1080@60Hz-32bit"
-     * @return 包含 width, height, refreshRate, bitsPerPixel 的数组
-     * @throws IllegalArgumentException 如果格式无效
-     */
     public static int[] parseDisplayModeString(String str) {
         Matcher matcher = DISPLAY_MODE_PATTERN.matcher(str);
         if (!matcher.matches()) {
-            throw new IllegalArgumentException("无效的分辨率格式: " + str);
+            throw new IllegalArgumentException("Invalid resolution format: " + str);
         }
 
         int width = Integer.parseInt(matcher.group(1));
@@ -44,11 +37,6 @@ public class DisplayModeHelper {
         return new int[] { width, height, refreshRate, bitsPerPixel };
     }
 
-    /**
-     * 从可用模式中查找匹配的 DisplayMode
-     * @param params 包含 width, height, refreshRate, bitsPerPixel 的数组
-     * @return 匹配的 DisplayMode，找不到时返回 null
-     */
     public static DisplayMode findMatchingDisplayMode(int[] params) throws LWJGLException {
         for (DisplayMode mode : Display.getAvailableDisplayModes()) {
             boolean widthMatch = (mode.getWidth() == params[0]);
@@ -60,20 +48,14 @@ public class DisplayModeHelper {
                 return mode;
             }
         }
-        return null; // 未找到匹配项
+        return null;
     }
 
-    /**
-     * 从字符串获取 DisplayMode
-     * @param str 分辨率字符串
-     * @return 匹配的 DisplayMode
-     * @throws IllegalArgumentException 如果解析失败或找不到匹配项
-     */
     public static DisplayMode getDisplayModeFromString(String str) throws LWJGLException {
         int[] params = parseDisplayModeString(str);
         DisplayMode mode = Display.getDisplayMode();
         if (mode == null) {
-            throw new IllegalArgumentException("不支持的分辨率: " + str);
+            throw new IllegalArgumentException("Unsupported resolutions: " + str);
         }
         return mode;
     }

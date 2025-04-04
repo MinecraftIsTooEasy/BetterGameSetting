@@ -14,6 +14,10 @@ public abstract class EntityWoodSpiderMixin extends EntityLivingBase {
         super(par1World);
     }
 
+    /**
+     * @author Xy_Lose
+     * @reason modify mobs sound volume
+     */
     @Overwrite
     protected float getSoundVolume(String sound) {
         return ((IGameSetting) Minecraft.getMinecraft().gameSettings).getHostileVolume() * (super.getSoundVolume(sound) * 0.6f);

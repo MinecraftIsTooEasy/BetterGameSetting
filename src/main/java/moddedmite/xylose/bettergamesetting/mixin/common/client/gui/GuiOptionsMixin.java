@@ -17,8 +17,7 @@ public class GuiOptionsMixin extends GuiScreen {
 
     @Inject(method = "initGui", at = @At("TAIL"))
     private void addButton(CallbackInfo ci) {
-        GuiButton button_audio_settings = new GuiButton(300, this.width / 2 - 152, this.height / 6 + 96 - 30, 150, 20, I18n.getString("options.sounds"));
-        this.buttonList.add(button_audio_settings);
+        this.buttonList.add(new GuiButton(300, this.width / 2 - 152, this.height / 6 + 96 - 30, 150, 20, I18n.getString("options.sounds")));
     }
 
     @Inject(method = "actionPerformed", at = @At("TAIL"))

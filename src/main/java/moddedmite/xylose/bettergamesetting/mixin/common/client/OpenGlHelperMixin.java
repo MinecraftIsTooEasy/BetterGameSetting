@@ -15,5 +15,4 @@ public class OpenGlHelperMixin {
     private static void setIsNvidiaGL(CallbackInfo ci) {
         OpenGlHelperExtra.isNvidiaGL = GL11.glGetString(GL11.GL_VENDOR).toLowerCase().contains("nvidia");
     }
-
 }

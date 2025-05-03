@@ -11,7 +11,7 @@ import paulscode.sound.SoundSystem;
 @Mixin(SoundManager.class)
 public class SoundManagerMixin {
     @Redirect(method = "playStreaming", at = @At(value = "INVOKE", target = "Lpaulscode/sound/SoundSystem;setVolume(Ljava/lang/String;F)V"))
-    public void playStreaming(SoundSystem instance, String sourcename, float value) {
+    public void recordVolume(SoundSystem instance, String sourcename, float value) {
         instance.setVolume(sourcename, ((IGameSetting) Minecraft.getMinecraft().gameSettings).getRecordVolume() * value);
     }
 }

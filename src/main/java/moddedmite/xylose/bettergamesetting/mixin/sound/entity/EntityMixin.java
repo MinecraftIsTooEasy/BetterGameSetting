@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(Entity.class)
 public class EntityMixin {
     @WrapOperation(method = "moveEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/Entity;playSound(Ljava/lang/String;FF)V"))
-    private void moveEntity(Entity instance, String par1Str, float par2, float par3, Operation<Void> original) {
+    private void moveVolume(Entity instance, String par1Str, float par2, float par3, Operation<Void> original) {
         instance.playSound(par1Str, ((IGameSetting) Minecraft.getMinecraft().gameSettings).getAmbientVolume() * par2, par3);
     }
 }

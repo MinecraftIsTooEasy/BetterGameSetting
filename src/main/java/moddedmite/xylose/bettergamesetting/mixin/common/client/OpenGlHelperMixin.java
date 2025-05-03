@@ -2,10 +2,13 @@ package moddedmite.xylose.bettergamesetting.mixin.common.client;
 
 import moddedmite.xylose.bettergamesetting.util.OpenGlHelperExtra;
 import net.minecraft.OpenGlHelper;
+import org.lwjgl.opengl.ARBMultitexture;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(OpenGlHelper.class)

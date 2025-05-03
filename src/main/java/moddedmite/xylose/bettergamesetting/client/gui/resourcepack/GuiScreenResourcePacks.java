@@ -1,57 +1,58 @@
 package moddedmite.xylose.bettergamesetting.client.gui.resourcepack;
 
 import com.google.common.collect.Lists;
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-
 import moddedmite.xylose.bettergamesetting.api.IGameSetting;
 import moddedmite.xylose.bettergamesetting.api.IGuiSlot;
 import moddedmite.xylose.bettergamesetting.api.IResourcePackRepository;
+import moddedmite.xylose.bettergamesetting.client.gui.button.GuiOptionButton;
 import net.minecraft.*;
-import net.xiaoyu233.fml.FishModLoader;
 import org.lwjgl.Sys;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.Logger;
+
 public class GuiScreenResourcePacks extends GuiScreen {
-    private GuiScreen parentScreen;
+    private static final Logger logger = Logger.getLogger("");
+    private final GuiScreen parentScreen;
     private List availableResourcePacks;
     private List selectedResourcePacks;
     private GuiResourcePackAvailable availableResourcePacksList;
     private GuiResourcePackSelected selectedResourcePacksList;
+    private boolean changed = false;
 
-    public GuiScreenResourcePacks(GuiScreen p_i45050_1_) {
-        this.parentScreen = p_i45050_1_;
+    public GuiScreenResourcePacks(GuiScreen parentScreenIn) {
+        this.parentScreen = parentScreenIn;
     }
 
     /**
      * Adds the buttons (and other controls) to the screen in question.
      */
     public void initGui() {
-        this.buttonList.add(new GuiButton(2, this.width / 2 - 154, this.height - 48, 150, 20, I18n.getString("resourcePack.openFolder")));
-        this.buttonList.add(new GuiButton(1, this.width / 2 + 4, this.height - 48, 150, 20, I18n.getString("gui.done")));
-        this.availableResourcePacks = new ArrayList();
-        this.selectedResourcePacks = new ArrayList();
-        ResourcePackRepository resourcepackrepository = this.mc.getResourcePackRepository();
-        resourcepackrepository.updateRepositoryEntriesAll();
-        ArrayList arraylist = Lists.newArrayList(resourcepackrepository.getRepositoryEntriesAll());
-        arraylist.removeAll(resourcepackrepository.getRepositoryEntries());
-        Iterator iterator = arraylist.iterator();
-        ResourcePackRepositoryEntry entry;
+        this.buttonList.add(new GuiOptionButton(2, this.width / 2 - 154, this.height - 48, I18n.getString("resourcePack.openFolder")));
+        this.buttonList.add(new GuiOptionButton(1, this.width / 2 + 4, this.height - 48, I18n.getString("gui.done")));
 
-        while (iterator.hasNext()) {
-            entry = (ResourcePackRepositoryEntry) iterator.next();
-            this.availableResourcePacks.add(new ResourcePackListEntryFound(this, entry));
-        }
+        if (!this.changed) {
+            this.availableResourcePacks = Lists.<ResourcePackListEntry>newArrayList();
+            this.selectedResourcePacks = Lists.<ResourcePackListEntry>newArrayList();
+            ResourcePackRepository resourcepackrepository = this.mc.getResourcePackRepository();
+            resourcepackrepository.updateRepositoryEntriesAll();
+            List<ResourcePackRepositoryEntry> list = Lists.newArrayList(resourcepackrepository.getRepositoryEntriesAll());
+            list.removeAll(resourcepackrepository.getRepositoryEntries());
 
-        iterator = Lists.reverse(resourcepackrepository.getRepositoryEntries()).iterator();
+            for (ResourcePackRepositoryEntry resourcepackrepository$entry : list) {
+                this.availableResourcePacks.add(new ResourcePackListEntryFound(this, resourcepackrepository$entry));
+            }
 
-        while (iterator.hasNext()) {
-            entry = (ResourcePackRepositoryEntry) iterator.next();
-            this.selectedResourcePacks.add(new ResourcePackListEntryFound(this, entry));
+            for (Object o : Lists.reverse(resourcepackrepository.getRepositoryEntries())) {
+                ResourcePackRepositoryEntry resourcepackrepository$entry1 = (ResourcePackRepositoryEntry) o;
+                this.selectedResourcePacks.add(new ResourcePackListEntryFound(this, resourcepackrepository$entry1));
+            }
+
+//            this.selectedResourcePacks.add(new ResourcePackListEntryDefault(this));
         }
 
         this.selectedResourcePacks.add(new ResourcePackListEntryDefault(this));
@@ -87,11 +88,12 @@ public class GuiScreenResourcePacks extends GuiScreen {
 
                 if (Util.getOSType() == EnumOS.MACOS) {
                     try {
-                        FishModLoader.LOGGER.info(s);
+                        logger.info(s);
                         Runtime.getRuntime().exec(new String[]{"/usr/bin/open", s});
                         return;
                     } catch (IOException ioexception1) {
-                        FishModLoader.LOGGER.error("Couldn\'t open file", ioexception1);
+                        logger.severe("Couldn\'t open file");
+                        logger.severe(ioexception1.getMessage());
                     }
                 } else if (Util.getOSType() == EnumOS.WINDOWS) {
                     String s1 = String.format("cmd.exe /C start \"Open file\" \"%s\"", new Object[]{s});
@@ -100,7 +102,8 @@ public class GuiScreenResourcePacks extends GuiScreen {
                         Runtime.getRuntime().exec(s1);
                         return;
                     } catch (IOException ioexception) {
-                        FishModLoader.LOGGER.error("Couldn\'t open file", ioexception);
+                        logger.severe("Couldn\'t open file");
+                        logger.severe(ioexception.getMessage());
                     }
                 }
 
@@ -111,38 +114,43 @@ public class GuiScreenResourcePacks extends GuiScreen {
                     Object object = oclass.getMethod("getDesktop", new Class[0]).invoke(null, new Object[0]);
                     oclass.getMethod("browse", new Class[]{URI.class}).invoke(object, new Object[]{file1.toURI()});
                 } catch (Throwable throwable) {
-                    FishModLoader.LOGGER.error("Couldn\'t open link", throwable);
+                    logger.severe("Couldn\'t open link");
+                    logger.severe(throwable.getMessage());
                     flag = true;
                 }
 
                 if (flag) {
-                    FishModLoader.LOGGER.info("Opening via system class!");
+                    logger.info("Opening via system class!");
                     Sys.openURL("file://" + s);
                 }
             } else if (button.id == 1) {
-                ArrayList arraylist = Lists.newArrayList();
-                Iterator iterator = this.selectedResourcePacks.iterator();
+                if (this.changed) {
+                    List<ResourcePackRepositoryEntry> list = Lists.newArrayList();
 
-                while (iterator.hasNext()) {
-                    ResourcePackListEntry resourcepacklistentry = (ResourcePackListEntry) iterator.next();
-
-                    if (resourcepacklistentry instanceof ResourcePackListEntryFound) {
-                        arraylist.add(((ResourcePackListEntryFound) resourcepacklistentry).func_148318_i());
+                    for (Object o : this.selectedResourcePacks) {
+                        ResourcePackListEntry resourcepacklistentry = (ResourcePackListEntry) o;
+                        if (resourcepacklistentry instanceof ResourcePackListEntryFound) {
+                            list.add(((ResourcePackListEntryFound) resourcepacklistentry).func_148318_i());
+                        }
                     }
+
+                    Collections.reverse(list);
+                    ((IResourcePackRepository) this.mc.getResourcePackRepository()).setRepositories(list);
+                    ((IGameSetting) this.mc.gameSettings).getResourcePacks().clear();
+                    ((IGameSetting) this.mc.gameSettings).getIncompatibleResourcePacks().clear();
+
+                    for (ResourcePackRepositoryEntry resourcepackrepository$entry : list) {
+                        ((IGameSetting) this.mc.gameSettings).getResourcePacks().add(resourcepackrepository$entry.getResourcePackName());
+
+                        if (((IResourcePackRepository) resourcepackrepository$entry).getPackFormat() != 1) {
+                            ((IGameSetting) this.mc.gameSettings).getIncompatibleResourcePacks().add(resourcepackrepository$entry.getResourcePackName());
+                        }
+                    }
+
+                    this.mc.gameSettings.saveOptions();
+                    this.mc.refreshResources();
                 }
 
-                Collections.reverse(arraylist);
-                ((IResourcePackRepository) this.mc.getResourcePackRepository()).func_148527_a(arraylist);
-                ((IGameSetting) this.mc.gameSettings).getResourcePacks().clear();
-                iterator = arraylist.iterator();
-
-                while (iterator.hasNext()) {
-                    ResourcePackRepositoryEntry entry = (ResourcePackRepositoryEntry) iterator.next();
-                    ((IGameSetting) this.mc.gameSettings).getResourcePacks().add(entry.getResourcePackName());
-                }
-
-                this.mc.gameSettings.saveOptions();
-                this.mc.refreshResources();
                 this.mc.displayGuiScreen(this.parentScreen);
             }
         }
@@ -175,5 +183,9 @@ public class GuiScreenResourcePacks extends GuiScreen {
         this.drawCenteredString(this.fontRenderer, I18n.getString("resourcePack.title"), this.width / 2, 16, 16777215);
         this.drawCenteredString(this.fontRenderer, I18n.getString("resourcePack.folderInfo"), this.width / 2 - 77, this.height - 26, 8421504);
         super.drawScreen(mouseX, mouseY, partialTicks);
+    }
+
+    public void markChanged() {
+        this.changed = true;
     }
 }

@@ -1,5 +1,6 @@
 package moddedmite.xylose.bettergamesetting.mixin.common.client;
 
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -46,7 +47,8 @@ public abstract class GameSettingsMixin implements IGameSetting {
     @Unique public float playerVolume = 1.0F;
     @Unique public float ambientVolume = 1.0F;
     @Unique private static final Gson gson = new Gson();
-    @Unique public List<String> resourcePacks = new ArrayList<>();
+    @Unique public List<String> resourcePacks = Lists.<String>newArrayList();
+    @Unique public List<String> incompatibleResourcePacks = Lists.<String>newArrayList();
     @Unique private static final ParameterizedType typeListString = new ParameterizedType() {
         public Type[] getActualTypeArguments() {
             return new Type[]{String.class};
@@ -269,6 +271,13 @@ public abstract class GameSettingsMixin implements IGameSetting {
                         this.resourcePacks = new ArrayList();
                     }
                 }
+                if (astring[0].equals("incompatibleResourcePacks")) {
+                    this.incompatibleResourcePacks = (List) gson.fromJson(s.substring(s.indexOf(58) + 1), typeListString);
+
+                    if (this.incompatibleResourcePacks == null) {
+                        this.incompatibleResourcePacks = Lists.<String>newArrayList();
+                    }
+                }
                 if (astring[0].equals("forceUnicodeFont")) {
                     this.forceUnicodeFont = astring[1].equals("true");
                 }
@@ -325,6 +334,7 @@ public abstract class GameSettingsMixin implements IGameSetting {
     @Inject(method = "saveOptions", at = @At(value = "INVOKE", target = "Ljava/io/PrintWriter;println(Ljava/lang/String;)V", ordinal = 40), locals = LocalCapture.CAPTURE_FAILEXCEPTION)
     private void saveExtraOption(CallbackInfo ci, PrintWriter printwriter) {
         printwriter.println("resourcePacks:" + gson.toJson(this.resourcePacks));
+        printwriter.println("incompatibleResourcePacks:" + gson.toJson(this.incompatibleResourcePacks));
         printwriter.println("fovSetting:" + this.fovSetting);
         printwriter.println("renderDistance:" + this.renderDistance);
         printwriter.println("maxFps:" + this.limitFramerate);
@@ -397,6 +407,11 @@ public abstract class GameSettingsMixin implements IGameSetting {
     @Override
     public List<String> getResourcePacks() {
         return this.resourcePacks;
+    }
+
+    @Override
+    public List<String> getIncompatibleResourcePacks() {
+        return this.incompatibleResourcePacks;
     }
 
     @Override

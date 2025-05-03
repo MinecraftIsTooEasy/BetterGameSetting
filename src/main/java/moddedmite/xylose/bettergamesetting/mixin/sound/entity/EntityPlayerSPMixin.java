@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(ClientPlayer.class)
 public class EntityPlayerSPMixin {
     @WrapOperation(method = "onLivingUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/SoundManager;playSoundFX(Ljava/lang/String;FF)V"))
-    public void onLivingUpdate(SoundManager instance, String var4, float v, float par1Str, Operation<Void> original) {
+    public void portalVolume(SoundManager instance, String var4, float v, float par1Str, Operation<Void> original) {
         instance.playSoundFX(var4, ((IGameSetting) Minecraft.getMinecraft().gameSettings).getAmbientVolume() * v, par1Str);
     }
 }

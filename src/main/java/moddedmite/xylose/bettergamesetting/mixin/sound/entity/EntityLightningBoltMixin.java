@@ -14,6 +14,7 @@ public class EntityLightningBoltMixin {
     private float modifyLightningBoltSound(float constant) {
         return ((IGameSetting) Minecraft.getMinecraft().gameSettings).getWeatherVolume() * constant;
     }
+
     @ModifyConstant(method = "onUpdate", constant = @Constant(floatValue = 2.0f))
     private float modifyLightningBoltSound1(float constant) {
         return ((IGameSetting) Minecraft.getMinecraft().gameSettings).getWeatherVolume() * constant;

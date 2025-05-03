@@ -20,13 +20,10 @@ public class ResourcePackRepositoryMixin implements IResourcePackRepository {
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void loadResourcePacks(File resourcePack, ResourcePack metadataSerializer, MetadataSerializer gameSettings, GameSettings par4, CallbackInfo ci) {
-        Iterator iterator = ((IGameSetting) par4).getResourcePacks().iterator();
 
-        while (iterator.hasNext()) {
-            String s = (String) iterator.next();
-            Iterator iterator1 = this.repositoryEntriesAll.iterator();
-            while (iterator1.hasNext()) {
-                ResourcePackRepositoryEntry entry = (ResourcePackRepositoryEntry) iterator1.next();
+        for (String s : ((IGameSetting) par4).getResourcePacks()) {
+            for (Object o : this.repositoryEntriesAll) {
+                ResourcePackRepositoryEntry entry = (ResourcePackRepositoryEntry) o;
                 if (entry.getResourcePackName().equals(s)) {
                     this.repositoryEntries.add(entry);
                     break;
@@ -36,8 +33,8 @@ public class ResourcePackRepositoryMixin implements IResourcePackRepository {
     }
 
     @Override
-    public void func_148527_a(List<ResourcePackRepositoryEntry> p_148527_1_) {
+    public void setRepositories(List<ResourcePackRepositoryEntry> repositories) {
         this.repositoryEntries.clear();
-        this.repositoryEntries.addAll(p_148527_1_);
+        this.repositoryEntries.addAll(repositories);
     }
 }

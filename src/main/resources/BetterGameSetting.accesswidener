@@ -15,3 +15,5 @@ accessible field net/minecraft/GuiSlot right I
 accessible field net/minecraft/PlayerControllerMP last_used_item Lnet/minecraft/Item;
 accessible field net/minecraft/PlayerControllerMP last_used_item_subtype I
 accessible method net/minecraft/World chunkExists (II)Z
+accessible field net/minecraft/GuiButton width I
+accessible field net/minecraft/GuiButton height I

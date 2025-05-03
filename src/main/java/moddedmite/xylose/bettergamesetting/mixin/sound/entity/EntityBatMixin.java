@@ -1,28 +1,18 @@
 package moddedmite.xylose.bettergamesetting.mixin.sound.entity;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.llamalad7.mixinextras.sugar.Local;
 import moddedmite.xylose.bettergamesetting.api.IGameSetting;
-import net.minecraft.EntityBat;
-import net.minecraft.EntityLivingBase;
-import net.minecraft.Minecraft;
-import net.minecraft.World;
+import net.minecraft.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(EntityBat.class)
-public abstract class EntityBatMixin extends EntityLivingBase {
-    @Shadow public abstract float getScaleFactor();
-
-    public EntityBatMixin(World par1World) {
-        super(par1World);
-    }
-
-    /**
-     * @author Xy_Lose
-     * @reason modify mobs sound volume
-     */
-    @Overwrite
-    protected float getSoundVolume(String sound) {
-        return ((IGameSetting) Minecraft.getMinecraft().gameSettings).getNeutralVolume() * (super.getSoundVolume(sound) * 0.1f * this.getScaleFactor());
+public abstract class EntityBatMixin {
+    @ModifyReturnValue(method = "getSoundVolume", at = @At("TAIL"))
+    protected float batVolume(float original) {
+        return ((IGameSetting) Minecraft.getMinecraft().gameSettings).getNeutralVolume() * original;
     }
 }

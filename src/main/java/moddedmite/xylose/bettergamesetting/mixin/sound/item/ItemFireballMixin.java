@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(ItemFireball.class)
 public class ItemFireballMixin {
     @WrapOperation(method = "onItemRightClick", at = @At(value = "INVOKE", target = "Lnet/minecraft/World;playSoundAtBlock(IIILjava/lang/String;FF)V"))
-    private void onItemRightClick(World instance, int i, int x, int y, String z, float name, float volume, Operation<Void> original) {
+    private void onFireballRightClickVolume(World instance, int i, int x, int y, String z, float name, float volume, Operation<Void> original) {
         instance.playSoundAtBlock(i, x, y, z, ((IGameSetting) Minecraft.getMinecraft().gameSettings).getBlockVolume() * name, volume);
     }
 }

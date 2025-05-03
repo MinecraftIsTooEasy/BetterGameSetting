@@ -26,5 +26,9 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+    "client.gui.GuiChatMixin",
+    "client.resources.ResourcePackRepositoryEntryMixin"
+  ]
 }

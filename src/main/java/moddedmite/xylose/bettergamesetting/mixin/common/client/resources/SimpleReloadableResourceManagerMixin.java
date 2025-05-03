@@ -11,7 +11,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 
-import java.util.Iterator;
 import java.util.List;
 
 @Mixin(SimpleReloadableResourceManager.class)
@@ -29,11 +28,10 @@ public class SimpleReloadableResourceManagerMixin {
     public void reloadResources(List par1List) {
         this.clearResources();
         Minecraft.getMinecraft().getLogAgent().logInfo("Reloading ResourceManager: " + joinerResourcePacks.join(Iterables.transform(par1List, new SimpleReloadableResourceManagerINNER1(ReflectHelper.dyCast(this)))));
-        Iterator var2 = par1List.iterator();
 
-        while (var2.hasNext()) {
-            ResourcePack var3 = (ResourcePack) var2.next();
-            this.reloadResourcePack(var3);
+        for (Object o : par1List) {
+            ResourcePack resourcePack = (ResourcePack) o;
+            this.reloadResourcePack(resourcePack);
         }
 
         this.notifyReloadListeners();

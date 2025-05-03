@@ -1,17 +1,20 @@
 package moddedmite.xylose.bettergamesetting.client.gui;
 
-import moddedmite.xylose.bettergamesetting.client.EnumOptionsExtra;
 import moddedmite.xylose.bettergamesetting.client.gui.base.GuiListExtended;
 import moddedmite.xylose.bettergamesetting.client.gui.base.GuiOptionsRowList;
+import moddedmite.xylose.bettergamesetting.client.gui.button.GuiOptionButton;
 import moddedmite.xylose.bettergamesetting.util.OpenGlHelperExtra;
 import net.minecraft.*;
-import org.lwjgl.LWJGLException;
+
+import java.awt.*;
+import java.util.Arrays;
+import java.util.List;
 
 public class GuiVideoSettings extends GuiScreen {
     public GuiScreen parentGuiScreen;
     protected String screenTitle = "Video Settings";
     private GameSettings guiGameSettings;
-    private GuiListExtended optionsRowList;
+    private GuiOptionsRowList optionsRowList;
     /**
      * An array of all of EnumOptions's video options.
      */
@@ -32,24 +35,24 @@ public class GuiVideoSettings extends GuiScreen {
         this.buttonList.clear();
         this.buttonList.add(new GuiButton(200, this.width / 2 - 100, this.height - 27, I18n.getString("gui.done")));
 
-        if (OpenGlHelperExtra.isNvidiaGL) {
-            this.optionsRowList = new GuiOptionsRowList(this.mc, this.width, this.height, 32, this.height - 32, 25, videoOptions);
-        } else {
-            EnumOptions[] aoptions = new EnumOptions[videoOptions.length - 1];
-            int i = 0;
-            EnumOptions[] aoptions1 = videoOptions;
-            int j = aoptions1.length;
-
-            for (int k = 0; k < j; ++k) {
-                EnumOptions options = aoptions1[k];
-
-                if (options != EnumOptions.ADVANCED_OPENGL ) {
-                    aoptions[i] = options;
-                    ++i;
-                }
-            }
-             this.optionsRowList = new GuiOptionsRowList(this.mc, this.width, this.height, 32, this.height - 32, 25, aoptions);
-        }
+//        if (OpenGlHelperExtra.isNvidiaGL) {
+        this.optionsRowList = new GuiOptionsRowList(this.mc, this.width, this.height, 32, this.height - 32, 25, videoOptions);
+//        } else {
+//            EnumOptions[] aoptions = new EnumOptions[videoOptions.length - 1];
+//            int i = 0;
+//            EnumOptions[] aoptions1 = videoOptions;
+//            int j = aoptions1.length;
+//
+//            for (int k = 0; k < j; ++k) {
+//                EnumOptions options = aoptions1[k];
+//
+//                if (options != EnumOptions.ADVANCED_OPENGL ) {
+//                    aoptions[i] = options;
+//                    ++i;
+//                }
+//            }
+//             this.optionsRowList = new GuiOptionsRowList(this.mc, this.width, this.height, 32, this.height - 32, 25, aoptions);
+//        }
     }
 
     protected void actionPerformed(GuiButton button) {

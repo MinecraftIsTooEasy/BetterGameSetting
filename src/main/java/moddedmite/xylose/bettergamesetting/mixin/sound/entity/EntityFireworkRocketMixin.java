@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(EntityFireworkRocket.class)
 public class EntityFireworkRocketMixin {
     @WrapOperation(method = "onUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/World;playSoundAtEntity(Lnet/minecraft/Entity;Ljava/lang/String;FF)V"))
-    public void onUpdate(World instance, Entity entity, String par1Entity, float par2Str, float par3, Operation<Void> original) {
+    public void fireworkRocketVolume(World instance, Entity entity, String par1Entity, float par2Str, float par3, Operation<Void> original) {
         instance.playSoundAtEntity(entity, par1Entity, ((IGameSetting) Minecraft.getMinecraft().gameSettings).getAmbientVolume() * par2Str, par3);
     }
 }

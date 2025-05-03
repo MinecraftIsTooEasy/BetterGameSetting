@@ -10,12 +10,12 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(ItemFlintAndSteel.class)
 public class ItemFlintAndSteelMixin {
     @WrapOperation(method = "makeIgniteSoundAndApplyDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/World;playSoundAtEntity(Lnet/minecraft/Entity;Ljava/lang/String;FF)V"))
-    private void makeIgniteSoundAndApplyDamage(World instance, Entity entity, String par1Entity, float par2Str, float par3, Operation<Void> original) {
-    instance.playSoundAtEntity(entity, par1Entity, ((IGameSetting) Minecraft.getMinecraft().gameSettings).getBlockVolume() * par2Str, par3);
+    private void modifyIgniteSound(World instance, Entity entity, String par1Entity, float par2Str, float par3, Operation<Void> original) {
+        instance.playSoundAtEntity(entity, par1Entity, ((IGameSetting) Minecraft.getMinecraft().gameSettings).getBlockVolume() * par2Str, par3);
     }
 
     @WrapOperation(method = "onItemRightClick", at = @At(value = "INVOKE", target = "Lnet/minecraft/World;playSoundAtEntity(Lnet/minecraft/Entity;Ljava/lang/String;FF)V"))
-    private void onItemRightClick(World instance, Entity entity, String par1Entity, float par2Str, float par3, Operation<Void> original) {
+    private void onIgniteRightClickVolume(World instance, Entity entity, String par1Entity, float par2Str, float par3, Operation<Void> original) {
         instance.playSoundAtEntity(entity, par1Entity, ((IGameSetting) Minecraft.getMinecraft().gameSettings).getBlockVolume() * par2Str, par3);
     }
 }

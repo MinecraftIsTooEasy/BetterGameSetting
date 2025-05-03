@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(BlockFluid.class)
 public class BlockFluidMixin {
     @WrapOperation(method = "randomDisplayTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/World;playSound(DDDLjava/lang/String;FFZ)V"))
-    public final void randomDisplayTick(World instance, double par1, double par3, double par5, String par7Str, float par8, float par9, boolean par10, Operation<Void> original) {
+    public final void fluidVolume(World instance, double par1, double par3, double par5, String par7Str, float par8, float par9, boolean par10, Operation<Void> original) {
         instance.playSound(par1, par3, par5, par7Str, ((IGameSetting) Minecraft.getMinecraft().gameSettings).getAmbientVolume() * par8, par9, par10);
     }
 }

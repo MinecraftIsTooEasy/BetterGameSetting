@@ -1,22 +1,26 @@
 package moddedmite.xylose.bettergamesetting.client.gui.resourcepack;
 
 import com.google.gson.JsonParseException;
-
 import net.minecraft.*;
-import net.xiaoyu233.fml.FishModLoader;
+
+import java.util.logging.Logger;
 
 public class ResourcePackListEntryDefault extends ResourcePackListEntry {
+    private static final Logger logger = Logger.getLogger("");
     private final ResourcePack resourcePack;
     private final ResourceLocation resourcePackIcon;
 
-    public ResourcePackListEntryDefault(GuiScreenResourcePacks resourcePacksGUI) {
-        super(resourcePacksGUI);
+    public ResourcePackListEntryDefault(GuiScreenResourcePacks resourcePacksGUIIn) {
+        super(resourcePacksGUIIn);
         this.resourcePack = this.mc.getResourcePackRepository().rprDefaultResourcePack;
         DynamicTexture dynamictexture;
 
         dynamictexture = new DynamicTexture(this.resourcePack.getPackImage());
-
         this.resourcePackIcon = this.mc.getTextureManager().getDynamicTextureLocation("texturepackicon", dynamictexture);
+    }
+
+    protected int getPackFormat() {
+        return 1;
     }
 
     protected String getPackDescription() {
@@ -27,7 +31,8 @@ public class ResourcePackListEntryDefault extends ResourcePackListEntry {
                 return packmetadatasection.getPackDescription();
             }
         } catch (JsonParseException jsonparseexception) {
-            FishModLoader.LOGGER.error("Couldn\'t load metadata info", jsonparseexception);
+            logger.severe("Couldn\'t load metadata info");
+            logger.severe(jsonparseexception.getMessage());
         }
 
         return EnumChatFormatting.RED + "Missing " + "pack.mcmeta" + " :(";
@@ -60,7 +65,4 @@ public class ResourcePackListEntryDefault extends ResourcePackListEntry {
     protected boolean func_148310_d() {
         return false;
     }
-
-    @Override
-    public void setSelected(int p_178011_1_, int p_178011_2_, int p_178011_3_) {}
 }

@@ -3,15 +3,15 @@ package moddedmite.xylose.bettergamesetting.client.gui.button;
 import net.minecraft.*;
 import org.lwjgl.opengl.GL11;
 
-public class GuiScaleSlider extends GuiButton {
+public class GuiScaleSlider extends GuiOptionSlider {
     public int sliderValue;
     public boolean dragging;
-    public final GameSettings options;
+    public final EnumOptions options;
     private final int minValue;
     private final int maxValue;
 
-    public GuiScaleSlider(int buttonId, int x, int y, GameSettings optionIn, int minValueIn, int maxValue) {
-        super(buttonId, x, y, 150, 20, "");
+    public GuiScaleSlider(int buttonId, int x, int y, EnumOptions optionIn, int minValueIn, int maxValue) {
+        super(buttonId, x, y, optionIn);
         this.options = optionIn;
         this.minValue = minValueIn;
         this.maxValue = maxValue;

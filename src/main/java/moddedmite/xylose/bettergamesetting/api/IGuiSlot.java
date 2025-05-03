@@ -14,10 +14,14 @@ public interface IGuiSlot {
         return 0;
     }
 
-    default void handleMouseInput() {
+    default void setSlotXBoundsFromLeft(int p_148140_1_) {
     }
 
-    default void setSlotXBoundsFromLeft(int p_148140_1_) {
+    default void setEnabled(boolean enabledIn) {
+    }
+
+    default boolean getEnabled() {
+        return false;
     }
 
     default int getListWidth() {

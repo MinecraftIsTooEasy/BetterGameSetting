@@ -31,6 +31,27 @@ controls.reset_keybinding_info_1=§4警告:当前对模组按键的重置并未�
 
 resourcePack.available.title=可用的资源包
 resourcePack.selected.title=已选的资源包
+resourcePack.incompatible=不兼容
+resourcePack.incompatible.confirm.new=这个资源包是为更新的Minecraft版本所打造的，在此版本可能不会正常工作。
+resourcePack.incompatible.confirm.old=这个资源包是为更旧的Minecraft版本所打造的，在此版本可能不会正常工作。
+resourcePack.incompatible.confirm.title=你确定要加载此资源包吗？
+resourcePack.incompatible.new=（适用于新版本的Minecraft）
+resourcePack.incompatible.old=（适用于旧版本的Minecraft）
+
+# Desc
+options.graphics.desc=调整游戏的渲染质量，选择“快速”以提高性能或“高品质”以获得更好的视觉效果
+options.ao.desc=启用平滑光照以减少块状阴影，提供更自然的光照效果
+options.anaglyph.desc=启用或者禁用 3D 效果，需要佩戴3D眼镜
+options.particles.desc=控制游戏中粒子效果的数量（如火焰、烟雾等），减少粒子数量可以提高性能
+options.vsync.desc=同步游戏帧率与显示器刷新率，减少画面撕裂现象
+options.viewBobbing.desc=启用或禁用角色移动时的视角晃动效果，关闭可以减少晕动症
+options.advancedOpengl.desc=启用或禁用高级 OpenGL 优化，可能在某些硬件上提升性能，但可能导致兼容性问题
+options.renderClouds.desc=启用或禁用天空中的云层效果，关闭可以略微提高性能
+options.fullscreen.desc=切换游戏窗口是否以全屏模式运行，全屏模式通常更适合沉浸式体验
+options.renderDistance.desc=控制玩家能够看到的游戏世界的范围，降低此值可提升性能
+options.framerateLimit.desc=限制游戏的最大帧率，有助于节省系统资源或减少功耗
+options.guiScale.desc=调整屏幕上的用户界面大小，适合不同分辨率的显示器
+options.gamma.desc=调整游戏中的整体亮度，适合在不同光照条件下优化可见性
 
 # 翻译修正
 options.renderDistance=渲染距离

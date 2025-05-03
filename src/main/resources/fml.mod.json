@@ -29,10 +29,10 @@
   },
   "entrypoints": {
     "preLaunch": [
-      "moddedmite.xylose.bettergamesetting.init.EarlyRiser"
+      "moddedmite.xylose.bettergamesetting.init.BGSEarlyRiser"
     ],
     "client": [
-      "moddedmite.xylose.bettergamesetting.init.BetterGameSettingClient"
+      "moddedmite.xylose.bettergamesetting.init.BGSClient"
     ]
   },
   "mixins": [

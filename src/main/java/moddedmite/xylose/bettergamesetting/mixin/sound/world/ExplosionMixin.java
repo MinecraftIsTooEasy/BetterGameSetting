@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.At;
 public class ExplosionMixin {
 
     @WrapOperation(method = "doExplosionB", at = @At(value = "INVOKE", target = "Lnet/minecraft/World;playSoundEffect(DDDLjava/lang/String;FF)V"))
-    public void doExplosionB(World instance, double v, double par1, double par3, String par5, float par7Str, float par8, Operation<Void> original) {
+    public void explosionBVolume(World instance, double v, double par1, double par3, String par5, float par7Str, float par8, Operation<Void> original) {
         instance.playSoundEffect(v, par1, par3, par5, ((IGameSetting) Minecraft.getMinecraft().gameSettings).getAmbientVolume() * par7Str, par8);
     }
 }

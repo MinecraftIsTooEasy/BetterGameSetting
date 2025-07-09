@@ -37,6 +37,10 @@ public interface IGameSetting {
         return 0.0F;
     }
 
+    default float getUIVolume() {
+        return 0.0F;
+    }
+
     default List<String> getResourcePacks() {
         return null;
     }
@@ -49,4 +53,11 @@ public interface IGameSetting {
         return false;
     }
 
+    default boolean isTransparentBackground() {
+        return false;
+    }
+
+    default boolean isHighlightButtonText() {
+        return false;
+    }
 }

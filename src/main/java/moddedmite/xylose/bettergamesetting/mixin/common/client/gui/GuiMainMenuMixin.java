@@ -92,12 +92,12 @@ public abstract class GuiMainMenuMixin extends GuiScreen {
 //        var2.addVertexWithUV(0.0, var6, this.zLevel, 0.0f, 1.0);
 //        var2.draw();
 //    }
-
+//
 //    @WrapOperation(method = "renderSkybox", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glViewport(IIII)V"))
 //    private void renderSkybox(int x, int y, int width, int height, Operation<Void> original) {
 //        GL11.glViewport(x, y, mc.displayWidth, mc.displayHeight);
 //    }
-
+//
 //    @Redirect(method = "drawScreen", at = @At(value = "INVOKE", target = "Lnet/minecraft/GuiMainMenu;drawGradientRect(IIIIII)V"))
 //    private void disableBlur(GuiMainMenu instance, int i, int j, int k, int l, int m, int n) {
 //    }

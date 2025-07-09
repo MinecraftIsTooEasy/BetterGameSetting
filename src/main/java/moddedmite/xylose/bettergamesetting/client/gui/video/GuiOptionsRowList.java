@@ -1,11 +1,10 @@
-package moddedmite.xylose.bettergamesetting.client.gui.base;
+package moddedmite.xylose.bettergamesetting.client.gui.video;
 
 import com.google.common.collect.Lists;
 import moddedmite.xylose.bettergamesetting.api.IGuiSlot;
-import moddedmite.xylose.bettergamesetting.client.EnumOptionsExtra;
+import moddedmite.xylose.bettergamesetting.client.gui.base.GuiListExtended;
 import moddedmite.xylose.bettergamesetting.client.gui.button.GuiOptionButton;
 import moddedmite.xylose.bettergamesetting.client.gui.button.GuiOptionSlider;
-import moddedmite.xylose.bettergamesetting.client.gui.button.GuiResolutionSlider;
 import moddedmite.xylose.bettergamesetting.client.gui.button.GuiScaleSlider;
 import net.minecraft.*;
 
@@ -32,27 +31,26 @@ public class GuiOptionsRowList extends GuiListExtended {
         if (options == null) {
             return null;
         } else if (options == EnumOptions.GUI_SCALE) {
-            int j = 1000;
-            int max = 1;
+            int maxScale = 1000;
+            int userMaxScale = 1;
 
-            while (max < j && mcIn.displayWidth / (max + 1) >= 320 && mcIn.displayHeight / (max + 1) >= 240) {
-                ++max;
+            while (userMaxScale < maxScale && mcIn.displayWidth / userMaxScale >= 320 && mcIn.displayHeight / userMaxScale >= 240) {
+                ++userMaxScale;
             }
 
-            if (max != 1)
-                max--;
+            if (userMaxScale != 1) userMaxScale--;
 
-            return new GuiScaleSlider(options.returnEnumOrdinal(), x, y, options, 0, max);
+            return new GuiScaleSlider(options.returnEnumOrdinal(), x, y, options, 0, userMaxScale);
 //        } else if (options == EnumOptionsExtra.FULLSCREEN_RESOLUTION) {
 //            return new GuiResolutionSlider(options.returnEnumOrdinal(), x, y);
         } else {
             int i = options.returnEnumOrdinal();
-            return (GuiButton) (options.getEnumFloat() ? new GuiOptionSlider(i, x, y, options) : new GuiOptionButton(i, x, y, options, mcIn.gameSettings.getKeyBinding(options)));
+            return options.getEnumFloat() ? new GuiOptionSlider(i, x, y, options) : new GuiOptionButton(i, x, y, options, mcIn.gameSettings.getKeyBinding(options));
         }
     }
 
     public GuiOptionsRowList.Row getListEntry(int index) {
-        return (GuiOptionsRowList.Row) this.optionsRowList.get(index);
+        return this.optionsRowList.get(index);
     }
 
     protected int getSize() {
@@ -134,11 +132,11 @@ public class GuiOptionsRowList extends GuiListExtended {
         }
 
         public void mouseReleased(int slotIndex, int x, int y, int mouseEvent, int relativeX, int relativeY) {
-            if (this.buttonLeft != null) {
+            if (this.buttonLeft != null && this.buttonLeft instanceof GuiOptionSlider) {
                 this.buttonLeft.mouseReleased(x, y);
             }
 
-            if (this.buttonRight != null) {
+            if (this.buttonRight != null && this.buttonRight instanceof GuiOptionSlider) {
                 this.buttonRight.mouseReleased(x, y);
             }
         }

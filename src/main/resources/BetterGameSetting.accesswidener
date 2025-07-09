@@ -1,19 +1,28 @@
 accessWidener v2 named
+
+accessible field net/minecraft/Minecraft mcResourcePackRepository Lnet/minecraft/ResourcePackRepository;
+accessible field net/minecraft/Minecraft timer Lnet/minecraft/Timer;
+accessible field net/minecraft/Minecraft running Z
 accessible field net/minecraft/GuiSlot left I
 accessible field net/minecraft/GuiSlot width I
+accessible field net/minecraft/GuiSlot right I
 accessible field net/minecraft/GuiSlot amountScrolled F
 accessible field net/minecraft/GuiSlot field_77242_t I
-accessible field net/minecraft/GuiScreen mc Lnet/minecraft/Minecraft;
-accessible class net/minecraft/GuiScreenTemporaryResourcePackSelectSelectionList
-accessible field net/minecraft/Minecraft mcResourcePackRepository Lnet/minecraft/ResourcePackRepository;
-accessible field net/minecraft/SoundManager sndSystem Lpaulscode/sound/SoundSystem;
-accessible method net/minecraft/GuiSlot bindAmountScrolled ()V
 accessible field net/minecraft/GuiSlot field_77243_s Z
 accessible field net/minecraft/GuiSlot showSelectionBox Z
-accessible field net/minecraft/GameSettings renderDistance I
-accessible field net/minecraft/GuiSlot right I
-accessible field net/minecraft/PlayerControllerMP last_used_item Lnet/minecraft/Item;
-accessible field net/minecraft/PlayerControllerMP last_used_item_subtype I
-accessible method net/minecraft/World chunkExists (II)Z
+accessible field net/minecraft/GuiScreen mc Lnet/minecraft/Minecraft;
 accessible field net/minecraft/GuiButton width I
 accessible field net/minecraft/GuiButton height I
+accessible field net/minecraft/SoundManager sndSystem Lpaulscode/sound/SoundSystem;
+accessible field net/minecraft/GameSettings renderDistance I
+accessible field net/minecraft/PlayerControllerMP last_used_item Lnet/minecraft/Item;
+accessible field net/minecraft/PlayerControllerMP last_used_item_subtype I
+
+accessible method net/minecraft/Gui drawGradientRect (IIIIII)V
+accessible method net/minecraft/GuiMainMenu renderSkybox (IIF)V
+accessible method net/minecraft/GuiSlot bindAmountScrolled ()V
+accessible method net/minecraft/World chunkExists (II)Z
+
+accessible class net/minecraft/GuiSlotStats
+accessible class net/minecraft/GuiButtonNextPage
+accessible class net/minecraft/GuiScreenTemporaryResourcePackSelectSelectionList

@@ -1,5 +1,6 @@
 package moddedmite.xylose.bettergamesetting.client.gui.base;
 
+import moddedmite.xylose.bettergamesetting.api.IGameSetting;
 import moddedmite.xylose.bettergamesetting.api.IGuiSlot;
 import net.minecraft.GuiSlot;
 import net.minecraft.Minecraft;
@@ -14,7 +15,6 @@ public abstract class GuiListExtended extends GuiSlot {
     }
 
     protected void elementClicked(int slotIndex, boolean isDoubleClick) {
-        Minecraft.getMinecraft().sndManager.playSoundFX("random.click", 1.0F, 1.0F);
     }
 
     protected boolean isSelected(int slotIndex) {
@@ -53,6 +53,7 @@ public abstract class GuiListExtended extends GuiSlot {
                 try {
                     if (this.getListEntry(i).mousePressed(i, mouseXIn, mouseYIn, mouseEvent, l, i1)) {
                         ((IGuiSlot) this).setEnabled(false);
+                        Minecraft.getMinecraft().sndManager.playSoundFX("random.click", ((IGameSetting) Minecraft.getMinecraft().gameSettings).getUIVolume(), 1.0F);
                         return true;
                     }
                 } catch (Exception ignore) {}

@@ -4,7 +4,8 @@
   "version": "${version}",
   "depends": {
     "minecraft": "1.6.4-mite",
-    "fishmodloader": ">=3.4.0"
+    "fishmodloader": ">=3.4.0",
+    "conditional-mixin": "*"
   },
   "breaks": {
     "gamma_free": "*",
@@ -24,8 +25,8 @@
     "Debris"
   ],
   "contact": {
-    "homepage": "https://github.com/ysesiq/BetterGameSetting",
-    "issues": "https://github.com/ysesiq/BetterGameSetting/issues"
+    "homepage": "https://github.com/MinecraftIsTooEasy/BetterGameSetting",
+    "issues": "https://github.com/MinecraftIsTooEasy/BetterGameSetting/issues"
   },
   "entrypoints": {
     "preLaunch": [

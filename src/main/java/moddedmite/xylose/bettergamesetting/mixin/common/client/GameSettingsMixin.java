@@ -46,6 +46,7 @@ public abstract class GameSettingsMixin implements IGameSetting {
     @Unique public float neutralVolume = 1.0F;
     @Unique public float playerVolume = 1.0F;
     @Unique public float ambientVolume = 1.0F;
+    @Unique public float uiVolume = 1.0F;
     @Unique private static final Gson gson = new Gson();
     @Unique public List<String> resourcePacks = Lists.<String>newArrayList();
     @Unique public List<String> incompatibleResourcePacks = Lists.<String>newArrayList();
@@ -62,6 +63,8 @@ public abstract class GameSettingsMixin implements IGameSetting {
             return null;
         }
     };
+    @Unique public boolean transparentBackground;
+    @Unique public boolean highlightButtonText;
 
 //    public DisplayMode fullscreenResolution;
 
@@ -81,6 +84,8 @@ public abstract class GameSettingsMixin implements IGameSetting {
         this.fovSetting = 70.0F;
         this.resourcePacks.add("MITE Resource Pack 1.6.4.zip");
         this.forceUnicodeFont = false;
+        this.transparentBackground = true;
+        this.highlightButtonText = true;
 //        this.fullscreenResolution = Display.getDisplayMode();
         original.call(instance);
     }
@@ -96,6 +101,8 @@ public abstract class GameSettingsMixin implements IGameSetting {
         this.fovSetting = 70.0F;
         this.resourcePacks.add("MITE Resource Pack 1.6.4.zip");
         this.forceUnicodeFont = false;
+        this.transparentBackground = true;
+        this.highlightButtonText = true;
 //        this.fullscreenResolution = Display.getDisplayMode();
     }
 
@@ -125,6 +132,12 @@ public abstract class GameSettingsMixin implements IGameSetting {
         if (par1EnumOptions == EnumOptionsExtra.FORCE_UNICODE_FONT) {
             this.forceUnicodeFont = !this.forceUnicodeFont;
             this.mc.fontRenderer.setUnicodeFlag(this.mc.getLanguageManager().isCurrentLocaleUnicode() || this.forceUnicodeFont);
+        }
+        if (par1EnumOptions == EnumOptionsExtra.TRANSPARENT_BACKGROUND) {
+            this.transparentBackground = !this.transparentBackground;
+        }
+        if (par1EnumOptions == EnumOptionsExtra.HIGHLIGHT_BUTTON_TEXT) {
+            this.highlightButtonText = !this.highlightButtonText;
         }
     }
 
@@ -163,6 +176,9 @@ public abstract class GameSettingsMixin implements IGameSetting {
         if (par1EnumOptions == EnumOptionsExtra.AMBIENT) {
             this.ambientVolume = par2;
         }
+        if (par1EnumOptions == EnumOptionsExtra.UI) {
+            this.uiVolume = par2;
+        }
     }
 
     @Inject(method = "getOptionFloatValue", at = @At("HEAD"), cancellable = true)
@@ -200,6 +216,9 @@ public abstract class GameSettingsMixin implements IGameSetting {
         if (par1EnumOptions == EnumOptionsExtra.AMBIENT) {
             cir.setReturnValue(this.ambientVolume);
         }
+        if (par1EnumOptions == EnumOptionsExtra.UI) {
+            cir.setReturnValue(this.uiVolume);
+        }
     }
 
     @Inject(method = "getKeyBinding", at = @At("HEAD"), cancellable = true)
@@ -227,6 +246,12 @@ public abstract class GameSettingsMixin implements IGameSetting {
         }
         if (par1EnumOptions == EnumOptionsExtra.FORCE_UNICODE_FONT) {
             cir.setReturnValue(var2 + getTranslationBoolean(this.forceUnicodeFont));
+        }
+        if (par1EnumOptions == EnumOptionsExtra.TRANSPARENT_BACKGROUND) {
+            cir.setReturnValue(var2 + getTranslationBoolean(this.transparentBackground));
+        }
+        if (par1EnumOptions == EnumOptionsExtra.HIGHLIGHT_BUTTON_TEXT) {
+            cir.setReturnValue(var2 + getTranslationBoolean(this.highlightButtonText));
         }
     }
 
@@ -281,6 +306,12 @@ public abstract class GameSettingsMixin implements IGameSetting {
                 if (astring[0].equals("forceUnicodeFont")) {
                     this.forceUnicodeFont = astring[1].equals("true");
                 }
+                if (astring[0].equals("transparentBackground")) {
+                    this.transparentBackground = astring[1].equals("true");
+                }
+                if (astring[0].equals("highlightButtonText")) {
+                    this.highlightButtonText = astring[1].equals("true");
+                }
 //                if (astring[0].equals("fullscreenResolution")) {
 //                    this.fullscreenResolution = DisplayModeHelper.getDisplayModeFromString(astring[1]);
 //                }
@@ -304,6 +335,9 @@ public abstract class GameSettingsMixin implements IGameSetting {
                 }
                 if (astring[0].equals("ambient")) {
                     this.ambientVolume = this.parseFloat(astring[1]);
+                }
+                if (astring[0].equals("ui")) {
+                    this.uiVolume = this.parseFloat(astring[1]);
                 }
             }
         } catch (IOException e) {
@@ -345,7 +379,10 @@ public abstract class GameSettingsMixin implements IGameSetting {
         printwriter.println("neutral:" + this.neutralVolume);
         printwriter.println("player:" + this.playerVolume);
         printwriter.println("ambient:" + this.ambientVolume);
+        printwriter.println("ui:" + this.uiVolume);
         printwriter.println("forceUnicodeFont:" + this.forceUnicodeFont);
+        printwriter.println("transparentBackground:" + this.transparentBackground);
+        printwriter.println("highlightButtonText:" + this.highlightButtonText);
 //        printwriter.println("fullscreenResolution:" + this.fullscreenResolution);
     }
 
@@ -405,6 +442,11 @@ public abstract class GameSettingsMixin implements IGameSetting {
     }
 
     @Override
+    public float getUIVolume() {
+        return this.uiVolume;
+    }
+
+    @Override
     public List<String> getResourcePacks() {
         return this.resourcePacks;
     }
@@ -417,5 +459,15 @@ public abstract class GameSettingsMixin implements IGameSetting {
     @Override
     public boolean isForceUnicodeFont() {
         return this.forceUnicodeFont;
+    }
+
+    @Override
+    public boolean isTransparentBackground() {
+        return this.transparentBackground;
+    }
+
+    @Override
+    public boolean isHighlightButtonText() {
+        return this.highlightButtonText;
     }
 }

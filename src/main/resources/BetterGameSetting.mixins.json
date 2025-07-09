@@ -12,15 +12,19 @@
     "client.MinecraftMixin",
     "client.OpenGlHelperMixin",
     "client.audio.SoundsMITEMixin",
+    "client.compat.emi.ButtonWidgetMixin",
     "client.gui.GuiContainerMixin",
     "client.gui.GuiLanguageMixin",
     "client.gui.GuiMainMenuMixin",
     "client.gui.GuiOptionsMixin",
+    "client.gui.GuiScreenMixin",
     "client.gui.GuiSlotMixin",
+    "client.gui.LoadingScreenRendererMixin",
     "client.renderer.EntityRenderMixin",
     "client.renderer.RenderGlobalMixin",
     "client.renderer.RenderMixin",
     "client.resources.ResourceLocationMixin",
+    "client.resources.ResourcePackRepositoryEntryMixin",
     "client.resources.ResourcePackRepositoryMixin",
     "client.resources.SimpleReloadableResourceManagerMixin"
   ],
@@ -28,7 +32,10 @@
     "defaultRequire": 1
   },
   "mixins": [
-    "client.gui.GuiChatMixin",
-    "client.resources.ResourcePackRepositoryEntryMixin"
+    "client.compat.emi.ListWidgetMixin",
+    "client.compat.modmenu.DescriptionListWidgetMixin",
+    "client.compat.modmenu.EntryListWidgetMixin",
+    "client.gui.GuiButtonMixin",
+    "client.gui.GuiMultiplayerMixin"
   ]
 }

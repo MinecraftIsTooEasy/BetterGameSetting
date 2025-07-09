@@ -1,7 +1,7 @@
 package moddedmite.xylose.bettergamesetting.mixin.common.client;
 
 import moddedmite.xylose.bettergamesetting.client.CustomKeys;
-import moddedmite.xylose.bettergamesetting.util.OpenGlHelperExtra;
+import moddedmite.xylose.bettergamesetting.util.GuiScreenPanoramaHelp;
 import net.minecraft.*;
 import org.lwjgl.input.Keyboard;
 import org.objectweb.asm.Opcodes;
@@ -32,12 +32,17 @@ public class MinecraftMixin {
     @Overwrite
     private int getLimitFramerate() {
         if (this.currentScreen != null && (this.currentScreen instanceof GuiMainMenu)) {
-            return 24;
+            return 60;
         }
         if (!(this.gameSettings.limitFramerate >= 260)) {
             return this.gameSettings.limitFramerate;
         }
         return 9999;
+    }
+
+    @Redirect(method = "startGame", at = @At(value = "NEW", target = "net/minecraft/GuiMainMenu"))
+    private GuiMainMenu unificationPanorama() {
+        return GuiScreenPanoramaHelp.panoramaDummy;
     }
 
     @ModifyArg(method = "screenshotListener", at = @At(value = "INVOKE", target = "Lorg/lwjgl/input/Keyboard;isKeyDown(I)Z"))

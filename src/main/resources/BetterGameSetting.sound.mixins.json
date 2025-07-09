@@ -13,6 +13,7 @@
     "block.BlockPortalMixin",
     "client.audio.SoundManagerMixin",
     "client.audio.SoundUpdaterMinecartMixin",
+    "client.render.RenderGlobalMixin",
     "entity.EntityBatMixin",
     "entity.EntityCowMixin",
     "entity.EntityCubicMixin",
@@ -41,11 +42,15 @@
     "item.ItemFoodMixin",
     "network.NetClientHandlerMixin",
     "server.PlayerControllerMPMixin",
-    "world.WorldMixin",
-    "client.render.RenderGlobalMixin",
-    "world.ExplosionMixin"
+    "world.ExplosionMixin",
+    "world.WorldMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+    "client.gui.GuiButtonMixin",
+    "client.gui.GuiButtonNextPageMixin",
+    "client.gui.GuiSlotStatsMixin"
+  ]
 }

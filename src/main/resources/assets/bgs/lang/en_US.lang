@@ -12,6 +12,9 @@ options.hostile=Hostile Creatures
 options.neutral=Friendly Creatures
 options.player=Players
 options.ambient=Ambient/Environment
+options.ui=UI
+options.transparentBackground=Transparent Background
+options.highlightButtonText=Highlight Button Text
 
 options.chunks=chunks
 
@@ -52,3 +55,5 @@ options.renderDistance.desc=Control how far you can see in the game world; lower
 options.framerateLimit.desc=Limit the maximum frame rate of the game to save system resources or reduce power consumption
 options.guiScale.desc= Adjust the size of the user interface on the screen, suitable for different display resolutions
 options.gamma.desc= Adjust the overall brightness of the game to optimize visibility under different lighting conditions
+options.transparentBackground.desc=Off-game screens are backed by darkened panoramas, and in-game pause menus are framed with darkened player shots
+options.highlightButtonText.desc=Controls the color of the text when hovering over the button

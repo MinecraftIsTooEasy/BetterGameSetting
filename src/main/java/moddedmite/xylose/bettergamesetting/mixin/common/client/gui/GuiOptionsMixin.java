@@ -1,7 +1,7 @@
 package moddedmite.xylose.bettergamesetting.mixin.common.client.gui;
 
-import moddedmite.xylose.bettergamesetting.client.gui.GuiVideoSettings;
-import moddedmite.xylose.bettergamesetting.client.gui.base.GuiSoundSetting;
+import moddedmite.xylose.bettergamesetting.client.gui.video.GuiVideoSettings;
+import moddedmite.xylose.bettergamesetting.client.gui.GuiSoundSetting;
 import moddedmite.xylose.bettergamesetting.client.gui.controls.GuiNewControls;
 import moddedmite.xylose.bettergamesetting.client.gui.resourcepack.GuiScreenResourcePacks;
 import net.minecraft.*;

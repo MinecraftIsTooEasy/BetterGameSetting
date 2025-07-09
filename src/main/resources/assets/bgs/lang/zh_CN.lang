@@ -12,6 +12,9 @@ options.hostile=敌对生物
 options.neutral=友好生物
 options.player=玩家
 options.ambient=环境
+options.ui=用户界面
+options.transparentBackground=透明背景
+options.highlightButtonText=高亮按钮文字
 
 options.chunks=个区块
 
@@ -52,6 +55,8 @@ options.renderDistance.desc=控制玩家能够看到的游戏世界的范围，�
 options.framerateLimit.desc=限制游戏的最大帧率，有助于节省系统资源或减少功耗
 options.guiScale.desc=调整屏幕上的用户界面大小，适合不同分辨率的显示器
 options.gamma.desc=调整游戏中的整体亮度，适合在不同光照条件下优化可见性
+options.transparentBackground.desc=在游戏外的界面以暗化、模糊化的全景图作为背景，在游戏内暂停菜单各界面统一以暗化、模糊化的玩家镜头作为背景
+options.highlightButtonText.desc=控制悬停于按钮时的文字颜色
 
 # 翻译修正
 options.renderDistance=渲染距离

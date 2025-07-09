@@ -1,4 +1,4 @@
-package moddedmite.xylose.bettergamesetting.client.gui.base;
+package moddedmite.xylose.bettergamesetting.client.gui;
 
 import moddedmite.xylose.bettergamesetting.client.EnumOptionsExtra;
 import moddedmite.xylose.bettergamesetting.client.gui.button.GuiCustomSlider;
@@ -8,7 +8,7 @@ public class GuiSoundSetting extends GuiScreen {
     private GuiScreen parentGuiScreen;
     protected String screenTitle = "Sounds Settings";
     private GameSettings guiGameSettings;
-    private static EnumOptions[] audioOptions = new EnumOptions[] {EnumOptions.MUSIC, EnumOptions.SOUND, EnumOptionsExtra.RECORDS, EnumOptionsExtra.WEATHER, EnumOptionsExtra.BLOCKS, EnumOptionsExtra.MOBS, EnumOptionsExtra.ANIMALS, EnumOptionsExtra.PLAYERS, EnumOptionsExtra.AMBIENT};
+    private static EnumOptions[] audioOptions = new EnumOptions[] {EnumOptions.MUSIC, EnumOptions.SOUND, EnumOptionsExtra.RECORDS, EnumOptionsExtra.WEATHER, EnumOptionsExtra.BLOCKS, EnumOptionsExtra.MOBS, EnumOptionsExtra.ANIMALS, EnumOptionsExtra.PLAYERS, EnumOptionsExtra.AMBIENT, EnumOptionsExtra.UI};
 
     public GuiSoundSetting(GuiScreen par1GuiScreen, GameSettings par2GameSettings) {
         this.parentGuiScreen = par1GuiScreen;

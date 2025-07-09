@@ -9,15 +9,16 @@ public class GuiScaleSlider extends GuiOptionSlider {
     public final EnumOptions options;
     private final int minValue;
     private final int maxValue;
+    private Minecraft client;
 
     public GuiScaleSlider(int buttonId, int x, int y, EnumOptions optionIn, int minValueIn, int maxValue) {
         super(buttonId, x, y, optionIn);
         this.options = optionIn;
         this.minValue = minValueIn;
         this.maxValue = maxValue;
-        Minecraft minecraft = Minecraft.getMinecraft();
-        this.sliderValue = MathHelper.clamp_int(minecraft.gameSettings.guiScale, minValueIn, maxValue);
-        this.displayString = getDisplayString(minecraft);
+        client = Minecraft.getMinecraft();
+        this.sliderValue = MathHelper.clamp_int(client.gameSettings.guiScale, minValueIn, maxValue);
+        this.displayString = getDisplayString(client);
     }
 
     @Override
@@ -26,17 +27,17 @@ public class GuiScaleSlider extends GuiOptionSlider {
     }
 
     @Override
-    protected void mouseDragged(Minecraft mc, int mouseX, int mouseY) {
+    protected void mouseDragged(Minecraft client, int mouseX, int mouseY) {
         if (this.enabled) {
             if (this.dragging) {
                 final float index = (mouseX - (this.xPosition + 4)) / (float) (this.width - 10);
-                sliderValue = Math.round(mc.gameSettings.guiScale > maxValue ? mc.gameSettings.guiScale * index : maxValue * index);
+                sliderValue = Math.round(client.gameSettings.guiScale > maxValue ? client.gameSettings.guiScale * index : maxValue * index);
                 this.sliderValue = MathHelper.clamp_int(this.sliderValue, this.minValue, this.maxValue);
-                this.displayString = getDisplayString(mc);
+                this.displayString = getDisplayString(client);
             }
 
-            mc.getTextureManager().bindTexture(buttonTextures);
-            GL11.glColor4f(1, 1, 1, 1);
+            client.getTextureManager().bindTexture(buttonTextures);
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
             int renderX = Math.round(this.xPosition + (sliderValue * ((this.width) / maxValue)));
             renderX = Math.max(this.xPosition, renderX);
@@ -46,7 +47,7 @@ public class GuiScaleSlider extends GuiOptionSlider {
         }
     }
 
-    public String getDisplayString(Minecraft mc) {
+    public String getDisplayString(Minecraft client) {
         String ret = I18n.getString("options.guiScale") + ": ";
         if (sliderValue == 0) {
             return ret + I18n.getString("options.guiScale.auto");
@@ -56,8 +57,8 @@ public class GuiScaleSlider extends GuiOptionSlider {
     }
 
     @Override
-    public boolean mousePressed(Minecraft mc, int mouseX, int mouseY) {
-        if (super.mousePressed(mc, mouseX, mouseY)) {
+    public boolean mousePressed(Minecraft client, int mouseX, int mouseY) {
+        if (super.mousePressed(client, mouseX, mouseY)) {
             this.dragging = true;
             return true;
         } else {
@@ -68,12 +69,13 @@ public class GuiScaleSlider extends GuiOptionSlider {
     @Override
     public void mouseReleased(int mouseX, int mouseY) {
         this.dragging = false;
-        Minecraft minecraft = Minecraft.getMinecraft();
-        minecraft.gameSettings.guiScale = this.sliderValue;
-        ScaledResolution var3 = new ScaledResolution(minecraft.gameSettings, minecraft.displayWidth, minecraft.displayHeight);
-        int var4 = var3.getScaledWidth();
-        int var5 = var3.getScaledHeight();
-        minecraft.currentScreen.setWorldAndResolution(minecraft, var4, var5);
+        if (sliderValue != this.client.gameSettings.guiScale) {
+            this.client.gameSettings.guiScale = this.sliderValue;
+            ScaledResolution resolution = new ScaledResolution(this.client.gameSettings, this.client.displayWidth, this.client.displayHeight);
+            int scaledWidth = resolution.getScaledWidth();
+            int scaledHeight = resolution.getScaledHeight();
+            this.client.currentScreen.setWorldAndResolution(this.client, scaledWidth, scaledHeight);
+        }
     }
 }
 

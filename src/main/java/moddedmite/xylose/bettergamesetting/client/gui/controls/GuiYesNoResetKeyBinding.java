@@ -1,8 +1,7 @@
-package moddedmite.xylose.bettergamesetting.client.gui;
+package moddedmite.xylose.bettergamesetting.client.gui.controls;
 
 import moddedmite.xylose.bettergamesetting.api.IGameSetting;
 import moddedmite.xylose.bettergamesetting.api.IKeyBinding;
-import moddedmite.xylose.bettergamesetting.client.KeyBindingExtra;
 import net.minecraft.*;
 
 public class GuiYesNoResetKeyBinding extends GuiScreen {

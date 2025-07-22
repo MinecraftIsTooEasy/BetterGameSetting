@@ -38,11 +38,13 @@
   },
   "mixins": [
     "BetterGameSetting.mixins.json",
-    "BetterGameSetting.sound.mixins.json"
+    "BetterGameSetting.sound.mixins.json",
+    "BetterGameSetting.compat.mixins.json"
   ],
   "accessWidener": "BetterGameSetting.accesswidener",
   "custom": {
     "loom:injected_interfaces": {
+      "net/minecraft/GameSettings": ["moddedmite/xylose/bettergamesetting/api/IGameSetting"],
       "net/minecraft/EnumOptions": ["moddedmite/xylose/bettergamesetting/api/IEnumOptions"],
       "net/minecraft/KeyBinding": ["moddedmite/xylose/bettergamesetting/api/IKeyBinding"]
     },

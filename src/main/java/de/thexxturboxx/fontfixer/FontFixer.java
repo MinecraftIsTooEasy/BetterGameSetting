@@ -256,15 +256,16 @@ public class FontFixer {
             text = this.bidiReorder(text);
         }
 
-        int var6;
+        int length;
         if (shadow) {
-            var6 = this.renderString(text, x + 1, y + 1, textColor, true);
-            var6 = Math.max(var6, this.renderString(text, x, y, textColor, false));
+            float shadowDeviation = Minecraft.getMinecraft().gameSettings.isForceUnicodeFont() ? 0.5F : 1.0F;
+            length = this.renderString(text, x + shadowDeviation, y + shadowDeviation, textColor, true);
+            length = Math.max(length, this.renderString(text, x, y, textColor, false));
         } else {
-            var6 = this.renderString(text, x, y, textColor, false);
+            length = this.renderString(text, x, y, textColor, false);
         }
 
-        return var6;
+        return length;
     }
 
     private String bidiReorder(String text) {
@@ -329,120 +330,119 @@ public class FontFixer {
     }
 
     public void renderStringAtPos(String text, boolean shadow) {
-        for(int var3 = 0; var3 < text.length(); ++var3) {
-            char var4 = text.charAt(var3);
-            int var5;
-            int var6;
-            if (var4 == 167 && var3 + 1 < text.length()) {
-                var5 = "0123456789abcdefklmnor".indexOf(text.toLowerCase().charAt(var3 + 1));
-                if (var5 < 16) {
+        for (int charIndex = 0; charIndex < text.length(); ++charIndex) {
+            char currentChar = text.charAt(charIndex);
+            int colorIndex;
+            int randomCharIndex;
+            if (currentChar == 167 && charIndex + 1 < text.length()) {
+                colorIndex = "0123456789abcdefklmnor".indexOf(text.toLowerCase().charAt(charIndex + 1));
+                if (colorIndex < 16) {
                     this.randomStyle = false;
                     this.boldStyle = false;
                     this.strikethroughStyle = false;
                     this.underlineStyle = false;
                     this.italicStyle = false;
-                    if (var5 < 0 || var5 > 15) {
-                        var5 = 15;
+                    if (colorIndex < 0 || colorIndex > 15) {
+                        colorIndex = 15;
                     }
 
                     if (shadow) {
-                        var5 += 16;
+                        colorIndex += 16;
                     }
 
-                    var6 = this.colorCode[var5];
-                    this.textColor = var6;
-                    GL11.glColor4f((float)(var6 >> 16) / 255.0F, (float)(var6 >> 8 & 255) / 255.0F, (float)(var6 & 255) / 255.0F, this.alpha);
-                    var3 = applyCustomFormatCodes(this, text, shadow, var3);
-                } else if (var5 == 16) {
+                    int colorValue = this.colorCode[colorIndex];
+                    this.textColor = colorValue;
+                    GL11.glColor4f((float)(colorValue >> 16) / 255.0F, (float)(colorValue >> 8 & 255) / 255.0F, (float)(colorValue & 255) / 255.0F, alpha);
+                    charIndex = applyCustomFormatCodes(this, text, shadow, charIndex);
+                } else if (colorIndex == 16) {
                     this.randomStyle = true;
-                } else if (var5 == 17) {
+                } else if (colorIndex == 17) {
                     this.boldStyle = true;
-                } else if (var5 == 18) {
+                } else if (colorIndex == 18) {
                     this.strikethroughStyle = true;
-                } else if (var5 == 19) {
+                } else if (colorIndex == 19) {
                     this.underlineStyle = true;
-                } else if (var5 == 20) {
+                } else if (colorIndex == 20) {
                     this.italicStyle = true;
-                } else if (var5 == 21) {
+                } else if (colorIndex == 21) {
                     this.randomStyle = false;
                     this.boldStyle = false;
                     this.strikethroughStyle = false;
                     this.underlineStyle = false;
                     this.italicStyle = false;
-                    GL11.glColor4f(this.red, this.blue, this.green, this.alpha);
+                    GL11.glColor4f(red, blue, green, alpha);
                 }
 
-                ++var3;
+                ++charIndex;
             } else {
-                var5 = this.ASCII.indexOf(var4);
-                if (this.randomStyle && var5 != -1) {
+                colorIndex = this.ASCII.indexOf(currentChar);
+                if (this.randomStyle && colorIndex != -1) {
                     do {
-                        var6 = this.fontRandom.nextInt(this.charWidth.length);
-                    } while (this.charWidth[var5] != this.charWidth[var6]);
+                        randomCharIndex = this.fontRandom.nextInt(this.charWidth.length);
+                    } while (this.charWidth[colorIndex] != this.charWidth[randomCharIndex]);
 
-                    var5 = var6;
+                    colorIndex = randomCharIndex;
                 }
 
-                float var11 = var5 == -1 ? 0.5F : 1.0F;
-                boolean isUnicodeFlag = (var4 == 0 || var5 == -1) && shadow;
+                float charWidthFactor = colorIndex == -1 ? 0.5F : 1.0F;
+                boolean isUnicodeFlag = (currentChar == 0 || colorIndex == -1) && shadow;
                 if (isUnicodeFlag) {
-                    this.posX -= var11;
-                    this.posY -= var11;
+                    this.posX -= charWidthFactor;
+                    this.posY -= charWidthFactor;
                 }
 
-                float var9 = this.renderCharAtPos(var5, var4, this.italicStyle);
+                float renderedWidth = renderCharAtPos(colorIndex, currentChar, italicStyle);
                 if (isUnicodeFlag) {
-                    this.posX += var11;
-                    this.posY += var11;
+                    this.posX += charWidthFactor;
+                    this.posY += charWidthFactor;
                 }
 
-                if (this.boldStyle) {
-                    this.posX += var11;
+                if (boldStyle) {
+                    posX += charWidthFactor;
                     if (isUnicodeFlag) {
-                        this.posX -= var11;
-                        this.posY -= var11;
+                        this.posX -= charWidthFactor;
+                        this.posY -= charWidthFactor;
                     }
 
-                    this.renderCharAtPos(var5, var4, this.italicStyle);
-                    this.posX -= var11;
+                    renderCharAtPos(colorIndex, currentChar, italicStyle);
+                    posX -= charWidthFactor;
                     if (isUnicodeFlag) {
-                        this.posX += var11;
-                        this.posY += var11;
+                        this.posX += charWidthFactor;
+                        this.posY += charWidthFactor;
                     }
 
-                    ++var9;
+                    ++renderedWidth;
                 }
 
-                Tessellator var7;
+                Tessellator tessellator;
                 if (this.strikethroughStyle) {
-                    var7 = Tessellator.instance;
+                    tessellator = Tessellator.instance;
                     GL11.glDisable(3553);
-                    var7.startDrawingQuads();
-                    var7.addVertex((double)this.posX, (double)(this.posY + (float)(this.FONT_HEIGHT / 2)), 0.0);
-                    var7.addVertex((double)(this.posX + var9), (double)(this.posY + (float)(this.FONT_HEIGHT / 2)), 0.0);
-                    var7.addVertex((double)(this.posX + var9), (double)(this.posY + (float)(this.FONT_HEIGHT / 2) - 1.0F), 0.0);
-                    var7.addVertex((double)this.posX, (double)(this.posY + (float)(this.FONT_HEIGHT / 2) - 1.0F), 0.0);
-                    var7.draw();
+                    tessellator.startDrawingQuads();
+                    tessellator.addVertex(this.posX, (this.posY + (float)(this.FONT_HEIGHT / 2)), 0.0);
+                    tessellator.addVertex((this.posX + renderedWidth), (this.posY + (float)(this.FONT_HEIGHT / 2)), 0.0);
+                    tessellator.addVertex((this.posX + renderedWidth), (this.posY + (float)(this.FONT_HEIGHT / 2) - 1.0F), 0.0);
+                    tessellator.addVertex(this.posX, (this.posY + (float)(this.FONT_HEIGHT / 2) - 1.0F), 0.0);
+                    tessellator.draw();
                     GL11.glEnable(3553);
                 }
 
                 if (this.underlineStyle) {
-                    var7 = Tessellator.instance;
+                    tessellator = Tessellator.instance;
                     GL11.glDisable(3553);
-                    var7.startDrawingQuads();
-                    int var8 = this.underlineStyle ? -1 : 0;
-                    var7.addVertex((double)(this.posX + (float)var8), (double)(this.posY + (float)this.FONT_HEIGHT), 0.0);
-                    var7.addVertex((double)(this.posX + var9), (double)(this.posY + (float)this.FONT_HEIGHT), 0.0);
-                    var7.addVertex((double)(this.posX + var9), (double)(this.posY + (float)this.FONT_HEIGHT - 1.0F), 0.0);
-                    var7.addVertex((double)(this.posX + (float)var8), (double)(this.posY + (float)this.FONT_HEIGHT - 1.0F), 0.0);
-                    var7.draw();
+                    tessellator.startDrawingQuads();
+                    int underlineOffset = this.underlineStyle ? -1 : 0;
+                    tessellator.addVertex((this.posX + (float) underlineOffset), (this.posY + (float) this.FONT_HEIGHT), 0.0);
+                    tessellator.addVertex((this.posX + renderedWidth), (posY + (float) this.FONT_HEIGHT), 0.0);
+                    tessellator.addVertex((this.posX + renderedWidth), (posY + (float) this.FONT_HEIGHT - 1.0F), 0.0);
+                    tessellator.addVertex((this.posX + (float) underlineOffset), (posY + (float) this.FONT_HEIGHT - 1.0F), 0.0);
+                    tessellator.draw();
                     GL11.glEnable(3553);
                 }
 
-                this.posX += (float) ((int) var9);
+                this. posX += (float) ((int) renderedWidth);
             }
         }
-
     }
 
     /**
@@ -475,7 +475,7 @@ public class FontFixer {
         return this.renderString(text, x, y, textColor, shadow);
     }
 
-    private int renderString(String text, int x, int y, int textColor, boolean shadow) {
+    private int renderString(String text, float x, float y, int textColor, boolean shadow) {
         if (text != null && this.bidiFlag) {
             text = this.bidiReorder(text);
         }
@@ -496,8 +496,8 @@ public class FontFixer {
             this.green = (float) (textColor & 0xFF) / 255.0F;
             this.alpha = (float) (textColor >> 24 & 0xFF) / 255.0F;
             GL11.glColor4f(this.red, this.blue, this.green, this.alpha);
-            this.posX = (float) x;
-            this.posY = (float) y;
+            this.posX = x;
+            this.posY = y;
             this.renderStringAtPos(text, shadow);
             return (int) this.posX;
         }

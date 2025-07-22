@@ -1,4 +1,4 @@
-package moddedmite.xylose.bettergamesetting.mixin.common.client.compat.modmenu;
+package moddedmite.xylose.bettergamesetting.mixin.compat.modmenu;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.mojang.blaze3d.vertex.BufferBuilder;
@@ -26,16 +26,14 @@ public abstract class DescriptionListWidgetMixin extends EntryListWidget {
     @WrapWithCondition(method = "drawScreen", at = @At(value = "INVOKE", target = "Lnet/minecraft/TextureManager;bindTexture(Lnet/minecraft/ResourceLocation;)V"))
     private boolean transparentBackground(TextureManager instance, ResourceLocation par1ResourceLocation) {
         if (((IGameSetting) minecraft.gameSettings).isTransparentBackground()) {
-
-            Minecraft client = Minecraft.getMinecraft();
             Gui.drawRect(this.left, this.top, this.right, this.bottom, 0x66000000);//draw slot dark background
             //draw slot frame line
             Gui.drawRect(this.left, this.top, this.right, this.top - 1, 0xCC000000);
             Gui.drawRect(this.left, this.bottom, this.right, this.bottom + 1, 0xCC000000);
             Gui.drawRect(this.left, this.top - 1, this.right, this.top - 2, 0x66ADB1B1);
             Gui.drawRect(this.left, this.bottom + 1, this.right, this.bottom + 2, 0x66ADB1B1);
-            ScaledResolution sr = new ScaledResolution(client.gameSettings, client.displayWidth, client.displayHeight);
-            GL11.glScissor((this.left * sr.getScaleFactor()), (client.displayHeight - this.bottom * sr.getScaleFactor()), ((this.right - this.left) * sr.getScaleFactor()), ((this.bottom - this.top) * sr.getScaleFactor()));
+            ScaledResolution sr = new ScaledResolution(minecraft.gameSettings, minecraft.displayWidth, minecraft.displayHeight);
+            GL11.glScissor((this.left * sr.getScaleFactor()), (minecraft.displayHeight - this.bottom * sr.getScaleFactor()), ((this.right - this.left) * sr.getScaleFactor()), ((this.bottom - this.top) * sr.getScaleFactor()));
             GL11.glEnable(GL11.GL_SCISSOR_TEST);
         }
         return !((IGameSetting) minecraft.gameSettings).isTransparentBackground();
@@ -50,6 +48,26 @@ public abstract class DescriptionListWidgetMixin extends EntryListWidget {
     private boolean transparentBackgroundEnd(BufferBuilder instance) {
         if (((IGameSetting) minecraft.gameSettings).isTransparentBackground())
             GL11.glDisable(GL11.GL_SCISSOR_TEST);
+        return !((IGameSetting) minecraft.gameSettings).isTransparentBackground();
+    }
+
+    @WrapWithCondition(method = "drawScreen", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/BufferBuilder;start(I)V", ordinal = 1))
+    private boolean delGradientMatteStart_1(BufferBuilder instance, int drawMode) {
+        return !((IGameSetting) minecraft.gameSettings).isTransparentBackground();
+    }
+
+    @WrapWithCondition(method = "drawScreen", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/BufferBuilder;end()I", ordinal = 1))
+    private boolean delGradientMatteEnd_1(BufferBuilder instance) {
+        return !((IGameSetting) minecraft.gameSettings).isTransparentBackground();
+    }
+
+    @WrapWithCondition(method = "drawScreen", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/BufferBuilder;start(I)V", ordinal = 2))
+    private boolean delGradientMatteStart_2(BufferBuilder instance, int drawMode) {
+        return !((IGameSetting) minecraft.gameSettings).isTransparentBackground();
+    }
+
+    @WrapWithCondition(method = "drawScreen", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/BufferBuilder;end()I", ordinal = 2))
+    private boolean delGradientMatteEnd_2(BufferBuilder instance) {
         return !((IGameSetting) minecraft.gameSettings).isTransparentBackground();
     }
 }

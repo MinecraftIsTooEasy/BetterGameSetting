@@ -1,4 +1,4 @@
-package moddedmite.xylose.bettergamesetting.mixin.common.client.compat.emi;
+package moddedmite.xylose.bettergamesetting.mixin.compat.emi;
 
 import me.fallenbreath.conditionalmixin.api.annotation.Condition;
 import me.fallenbreath.conditionalmixin.api.annotation.Restriction;

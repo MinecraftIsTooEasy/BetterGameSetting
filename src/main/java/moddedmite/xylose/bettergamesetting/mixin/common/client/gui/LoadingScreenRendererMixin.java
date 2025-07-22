@@ -18,18 +18,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class LoadingScreenRendererMixin {
     @Shadow private Minecraft mc;
 
-    @Inject(method = "func_73722_d", at = @At("TAIL"))
-    private void transparentBackground(String par1, CallbackInfo ci) {
-        if (mc.currentScreen == null) return;
+    @WrapWithCondition(method = "setLoadingProgress", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glClear(I)V", ordinal = 0))
+    private boolean transparentBackgroundGLClear(int mask) {
+        return !((IGameSetting) mc.gameSettings).isTransparentBackground();
+    }
+
+    @WrapWithCondition(method = "setLoadingProgress", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glClear(I)V", ordinal = 1))
+    private boolean transparentBackgroundGLClear_1(int mask) {
+        if (mc.currentScreen == null) return false;
         if (((IGameSetting) mc.gameSettings).isTransparentBackground()) {
-            GL11.glClear(16640);
+            GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
             GuiScreenPanoramaHelp.drawPanorama(mc.currentScreen);
             Gui.drawRect(0, 0, mc.currentScreen.width, mc.currentScreen.height, 1140850688);
         }
-    }
-
-    @WrapWithCondition(method = "setLoadingProgress", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glClear(I)V"))
-    private boolean transparentBackgroundGLClear(int mask) {
         return !((IGameSetting) mc.gameSettings).isTransparentBackground();
     }
 

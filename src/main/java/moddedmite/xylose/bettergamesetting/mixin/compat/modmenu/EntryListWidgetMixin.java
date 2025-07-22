@@ -1,4 +1,4 @@
-package moddedmite.xylose.bettergamesetting.mixin.common.client.compat.modmenu;
+package moddedmite.xylose.bettergamesetting.mixin.compat.modmenu;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -48,12 +48,22 @@ public abstract class EntryListWidgetMixin extends GuiSlot {
     }
 
     @WrapWithCondition(method = "drawScreen", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/BufferBuilder;start()V", ordinal = 1))
-    private boolean delGradientMatteStart(BufferBuilder instance) {
+    private boolean delGradientMatteStart_1(BufferBuilder instance) {
         return !((IGameSetting) client.gameSettings).isTransparentBackground();
     }
 
     @WrapWithCondition(method = "drawScreen", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/BufferBuilder;end()I", ordinal = 1))
-    private boolean delGradientMatteEnd(BufferBuilder instance) {
+    private boolean delGradientMatteEnd_1(BufferBuilder instance) {
+        return !((IGameSetting) client.gameSettings).isTransparentBackground();
+    }
+
+    @WrapWithCondition(method = "drawScreen", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/BufferBuilder;start()V", ordinal = 2))
+    private boolean delGradientMatteStart_2(BufferBuilder instance) {
+        return !((IGameSetting) client.gameSettings).isTransparentBackground();
+    }
+
+    @WrapWithCondition(method = "drawScreen", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/BufferBuilder;end()I", ordinal = 2))
+    private boolean delGradientMatteEnd_2(BufferBuilder instance) {
         return !((IGameSetting) client.gameSettings).isTransparentBackground();
     }
 

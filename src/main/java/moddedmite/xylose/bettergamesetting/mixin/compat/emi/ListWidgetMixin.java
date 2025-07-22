@@ -1,7 +1,6 @@
-package moddedmite.xylose.bettergamesetting.mixin.common.client.compat.emi;
+package moddedmite.xylose.bettergamesetting.mixin.compat.emi;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import com.llamalad7.mixinextras.sugar.Local;
 import dev.emi.emi.screen.widget.config.ListWidget;
 import me.fallenbreath.conditionalmixin.api.annotation.Condition;
 import me.fallenbreath.conditionalmixin.api.annotation.Restriction;
@@ -19,16 +18,12 @@ import shims.java.net.minecraft.client.gui.DrawContext;
 @Restriction(require = @Condition("emi"))
 @Mixin(ListWidget.class)
 public abstract class ListWidgetMixin {
-
     @Shadow protected int left;
     @Shadow protected int top;
     @Shadow protected int right;
     @Shadow protected int bottom;
-
     @Shadow public abstract int getRowLeft();
-
     @Shadow public abstract double getScrollAmount();
-
     @Shadow protected abstract void renderList(DrawContext draw, int x, int y, int mouseX, int mouseY, float delta);
 
     @Unique private Minecraft client;

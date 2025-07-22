@@ -32,11 +32,11 @@ public abstract class GameSettingsMixin implements IGameSetting {
     @Shadow public float gammaSetting;
     @Shadow public float fovSetting;
     @Shadow public boolean clouds;
+    @Shadow protected Minecraft mc;
+    @Shadow public KeyBinding[] keyBindings;
     @Shadow protected abstract float parseFloat(String var1);
     @Shadow public abstract void saveOptions();
     @Shadow public abstract float getOptionFloatValue(EnumOptions par1EnumOptions);
-    @Shadow protected Minecraft mc;
-    @Shadow public KeyBinding[] keyBindings;
 
     @Unique public boolean forceUnicodeFont;
     @Unique public float recordVolume = 1.0F;
@@ -118,7 +118,7 @@ public abstract class GameSettingsMixin implements IGameSetting {
     }
 
     @Inject(method = "initKeybindings", at = @At("RETURN"))
-    private void inject(CallbackInfo ci) {
+    private void addKeybindings(CallbackInfo ci) {
         KeyBinding[] vanillaKeyBindings = this.keyBindings;
         KeyBinding[] myKeybindings = CustomKeys.getNewKeybindings();
         KeyBinding[] newKeyBindings = new KeyBinding[vanillaKeyBindings.length + myKeybindings.length];

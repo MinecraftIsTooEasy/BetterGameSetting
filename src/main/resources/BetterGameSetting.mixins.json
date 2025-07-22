@@ -12,7 +12,8 @@
     "client.MinecraftMixin",
     "client.OpenGlHelperMixin",
     "client.audio.SoundsMITEMixin",
-    "client.compat.emi.ButtonWidgetMixin",
+    "client.gui.GuiButtonMixin",
+    "client.gui.GuiMultiplayerMixin",
     "client.gui.GuiContainerMixin",
     "client.gui.GuiLanguageMixin",
     "client.gui.GuiMainMenuMixin",
@@ -30,12 +31,5 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "mixins": [
-    "client.compat.emi.ListWidgetMixin",
-    "client.compat.modmenu.DescriptionListWidgetMixin",
-    "client.compat.modmenu.EntryListWidgetMixin",
-    "client.gui.GuiButtonMixin",
-    "client.gui.GuiMultiplayerMixin"
-  ]
+  }
 }

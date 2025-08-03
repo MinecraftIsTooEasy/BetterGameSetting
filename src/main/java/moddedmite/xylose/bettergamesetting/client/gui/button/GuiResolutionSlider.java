@@ -17,7 +17,7 @@ public class GuiResolutionSlider extends GuiOptionSlider {
     private static boolean resolutionsInitialized = false;
 
     public GuiResolutionSlider(int buttonId, int x, int y) throws LWJGLException {
-        super(buttonId, x, y, EnumOptions.RENDER_DISTANCE); // 使用特定选项标识
+        super(buttonId, x, y, EnumOptions.RENDER_DISTANCE);
         initResolutions();
         updateDisplayString();
     }
@@ -55,7 +55,6 @@ public class GuiResolutionSlider extends GuiOptionSlider {
         return 0;
     }
 
-    // 更新显示文字
     private void updateDisplayString() {
         DisplayMode current = Display.getDisplayMode();
         this.sliderValue = getResolutionIndex(current) / (float) (resolutions.size() - 1);
@@ -98,7 +97,6 @@ public class GuiResolutionSlider extends GuiOptionSlider {
         return false;
     }
 
-    // 应用分辨率
     private void applyResolution(DisplayMode mode) throws LWJGLException {
         try {
             Display.setDisplayMode(mode);

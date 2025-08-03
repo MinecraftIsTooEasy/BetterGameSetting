@@ -1,20 +1,14 @@
 package moddedmite.xylose.bettergamesetting.client.gui.base;
 
-import moddedmite.xylose.bettergamesetting.api.IGameSetting;
-import moddedmite.xylose.bettergamesetting.api.IGuiSlot;
-import net.minecraft.GuiSlot;
-import net.minecraft.Minecraft;
-import net.minecraft.ScaledResolution;
-import net.minecraft.Tessellator;
-import org.lwjgl.input.Mouse;
+import net.minecraft.*;
 
-public abstract class GuiListExtended extends GuiSlot {
+public abstract class GuiListExtended extends GuiSlotModern {
 
     public GuiListExtended(Minecraft mcIn, int widthIn, int heightIn, int topIn, int bottomIn, int slotHeightIn) {
         super(mcIn, widthIn, heightIn, topIn, bottomIn, slotHeightIn);
     }
 
-    protected void elementClicked(int slotIndex, boolean isDoubleClick) {
+    protected void elementClicked(int slotIndex, boolean isDoubleClick, int mouseX, int mouseY) {
     }
 
     protected boolean isSelected(int slotIndex) {
@@ -24,16 +18,9 @@ public abstract class GuiListExtended extends GuiSlot {
     protected void drawBackground() {
     }
 
-    protected void drawSlot(int entryID, int par2, int par3, int par4, Tessellator par5Tessellator) {
-        Minecraft mc = Minecraft.getMinecraft();
-        ScaledResolution scaledresolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
-        int width = scaledresolution.getScaledWidth();
-        int height = scaledresolution.getScaledHeight();
-        int mouseXIn = Mouse.getX() * width / mc.displayWidth;
-        int mouseYIn = height - Mouse.getY() * height / mc.displayHeight - 1;
-        if (this.getListEntry(entryID) != null)
-            this.getListEntry(entryID).drawEntry(entryID, par2, par3, ((IGuiSlot) this).getListWidth(), par4, mouseXIn, mouseYIn, ((IGuiSlot) this).getSlotIndexFromScreenCoords(mouseXIn, mouseYIn) == entryID);
-
+    protected void drawSlot(int slotIndex, int x, int y, int slotHeight, Tessellator tessellator, int mouseX, int mouseY) {
+        if (this.getListEntry(slotIndex) != null)
+            this.getListEntry(slotIndex).drawEntry(slotIndex, x, y, this.getListWidth(), slotHeight, mouseX, mouseY, this.getSlotIndexFromScreenCoords(mouseX, mouseY) == slotIndex);
     }
 
     protected void func_178040_a(int p_178040_1_, int p_178040_2_, int p_178040_3_) {
@@ -41,19 +28,19 @@ public abstract class GuiListExtended extends GuiSlot {
     }
 
     public boolean mouseClicked(int mouseXIn, int mouseYIn, int mouseEvent) {
-        if (((IGuiSlot) this).isMouseYWithinSlotBounds(mouseYIn)) {
-            int i = ((IGuiSlot) this).getSlotIndexFromScreenCoords(mouseXIn, mouseYIn);
+        if (this.isMouseYWithinSlotBounds(mouseYIn)) {
+            int i = this.getSlotIndexFromScreenCoords(mouseXIn, mouseYIn);
 
             if (i >= 0) {
-                int j = this.left + this.width / 2 - ((IGuiSlot) this).getListWidth() / 2 + 2;
-                int k = (int) (this.top + 4 - this.amountScrolled + i * this.slotHeight + this.field_77242_t);
+                int j = this.left + this.width / 2 - this.getListWidth() / 2 + 2;
+                int k = this.top + 4 - this.getAmountScrolled() + i * this.slotHeight + this.headerPadding;
                 int l = mouseXIn - j;
                 int i1 = mouseYIn - k;
 
                 try {
                     if (this.getListEntry(i).mousePressed(i, mouseXIn, mouseYIn, mouseEvent, l, i1)) {
-                        ((IGuiSlot) this).setEnabled(false);
-                        Minecraft.getMinecraft().sndManager.playSoundFX("random.click", ((IGameSetting) Minecraft.getMinecraft().gameSettings).getUIVolume(), 1.0F);
+                        this.setEnabled(false);
+                        Minecraft.getMinecraft().sndManager.playSoundFX("random.click", 1.0F, 1.0F);
                         return true;
                     }
                 } catch (Exception ignore) {}
@@ -65,14 +52,14 @@ public abstract class GuiListExtended extends GuiSlot {
 
     public boolean mouseReleased(int mouseXIn, int mouseYIn, int mouseEvent) {
         for (int i = 0; i < this.getSize(); ++i) {
-            int j = this.left + this.width / 2 - ((IGuiSlot) this).getListWidth() / 2 + 2;
-            int k = (int) (this.top + 4 - this.amountScrolled + i * this.slotHeight + this.field_77242_t);
+            int j = this.left + this.width / 2 - this.getListWidth() / 2 + 2;
+            int k = this.top + 4 - this.getAmountScrolled() + i * this.slotHeight + this.headerPadding;
             int l = mouseXIn - j;
             int i1 = mouseYIn - k;
             this.getListEntry(i).mouseReleased(i, mouseXIn, mouseYIn, mouseEvent, l, i1);
         }
 
-        ((IGuiSlot) this).setEnabled(true);
+        this.setEnabled(true);
         return false;
     }
 

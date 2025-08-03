@@ -25,7 +25,7 @@ public abstract class DescriptionListWidgetMixin extends EntryListWidget {
 
     @WrapWithCondition(method = "drawScreen", at = @At(value = "INVOKE", target = "Lnet/minecraft/TextureManager;bindTexture(Lnet/minecraft/ResourceLocation;)V"))
     private boolean transparentBackground(TextureManager instance, ResourceLocation par1ResourceLocation) {
-        if (((IGameSetting) minecraft.gameSettings).isTransparentBackground()) {
+        if (minecraft.gameSettings.isTransparentBackground()) {
             Gui.drawRect(this.left, this.top, this.right, this.bottom, 0x66000000);//draw slot dark background
             //draw slot frame line
             Gui.drawRect(this.left, this.top, this.right, this.top - 1, 0xCC000000);
@@ -36,38 +36,38 @@ public abstract class DescriptionListWidgetMixin extends EntryListWidget {
             GL11.glScissor((this.left * sr.getScaleFactor()), (minecraft.displayHeight - this.bottom * sr.getScaleFactor()), ((this.right - this.left) * sr.getScaleFactor()), ((this.bottom - this.top) * sr.getScaleFactor()));
             GL11.glEnable(GL11.GL_SCISSOR_TEST);
         }
-        return !((IGameSetting) minecraft.gameSettings).isTransparentBackground();
+        return !minecraft.gameSettings.isTransparentBackground();
     }
 
     @WrapWithCondition(method = "drawScreen", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/BufferBuilder;start(I)V", ordinal = 0))
     private boolean transparentBackgroundStart(BufferBuilder instance, int drawMode) {
-        return !((IGameSetting) minecraft.gameSettings).isTransparentBackground();
+        return !minecraft.gameSettings.isTransparentBackground();
     }
 
     @WrapWithCondition(method = "drawScreen", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/BufferBuilder;end()I", ordinal = 0))
     private boolean transparentBackgroundEnd(BufferBuilder instance) {
-        if (((IGameSetting) minecraft.gameSettings).isTransparentBackground())
+        if (minecraft.gameSettings.isTransparentBackground())
             GL11.glDisable(GL11.GL_SCISSOR_TEST);
-        return !((IGameSetting) minecraft.gameSettings).isTransparentBackground();
+        return !minecraft.gameSettings.isTransparentBackground();
     }
 
     @WrapWithCondition(method = "drawScreen", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/BufferBuilder;start(I)V", ordinal = 1))
     private boolean delGradientMatteStart_1(BufferBuilder instance, int drawMode) {
-        return !((IGameSetting) minecraft.gameSettings).isTransparentBackground();
+        return !minecraft.gameSettings.isTransparentBackground();
     }
 
     @WrapWithCondition(method = "drawScreen", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/BufferBuilder;end()I", ordinal = 1))
     private boolean delGradientMatteEnd_1(BufferBuilder instance) {
-        return !((IGameSetting) minecraft.gameSettings).isTransparentBackground();
+        return !minecraft.gameSettings.isTransparentBackground();
     }
 
     @WrapWithCondition(method = "drawScreen", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/BufferBuilder;start(I)V", ordinal = 2))
     private boolean delGradientMatteStart_2(BufferBuilder instance, int drawMode) {
-        return !((IGameSetting) minecraft.gameSettings).isTransparentBackground();
+        return !minecraft.gameSettings.isTransparentBackground();
     }
 
     @WrapWithCondition(method = "drawScreen", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/BufferBuilder;end()I", ordinal = 2))
     private boolean delGradientMatteEnd_2(BufferBuilder instance) {
-        return !((IGameSetting) minecraft.gameSettings).isTransparentBackground();
+        return !minecraft.gameSettings.isTransparentBackground();
     }
 }

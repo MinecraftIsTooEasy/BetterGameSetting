@@ -1,12 +1,13 @@
 package moddedmite.xylose.bettergamesetting.client.gui.video;
 
 import com.google.common.collect.Lists;
-import moddedmite.xylose.bettergamesetting.api.IGuiSlot;
 import moddedmite.xylose.bettergamesetting.client.gui.base.GuiListExtended;
 import moddedmite.xylose.bettergamesetting.client.gui.button.GuiOptionButton;
 import moddedmite.xylose.bettergamesetting.client.gui.button.GuiOptionSlider;
 import moddedmite.xylose.bettergamesetting.client.gui.button.GuiScaleSlider;
-import net.minecraft.*;
+import net.minecraft.EnumOptions;
+import net.minecraft.GuiButton;
+import net.minecraft.Minecraft;
 
 import java.util.List;
 
@@ -15,15 +16,14 @@ public class GuiOptionsRowList extends GuiListExtended {
 
     public GuiOptionsRowList(Minecraft mcIn, int widthIn, int heightIn, int topIn, int bottomIn, int slotHeightIn, EnumOptions... options) {
         super(mcIn, widthIn, heightIn, topIn, bottomIn, slotHeightIn);
-//        this.field_148163_i = false;
-        ((IGuiSlot) this).setListWidth(400);
+        this.field_148163_i = false;
 
         for (int i = 0; i < options.length; i += 2) {
-            EnumOptions gamesettings$options = options[i];
-            EnumOptions gamesettings$options1 = i < options.length - 1 ? options[i + 1] : null;
-            GuiButton guibutton = this.getOptionButtons(mcIn, widthIn / 2 - 155, 0, gamesettings$options);
-            GuiButton guibutton1 = this.getOptionButtons(mcIn, widthIn / 2 - 155 + 160, 0, gamesettings$options1);
-            this.optionsRowList.add(new GuiOptionsRowList.Row(guibutton, guibutton1));
+            EnumOptions optionLeft = options[i];
+            EnumOptions optionRight = i < options.length - 1 ? options[i + 1] : null;
+            GuiButton buttonLeft = this.getOptionButtons(mcIn, widthIn / 2 - 155, 0, optionLeft);
+            GuiButton buttonRight = this.getOptionButtons(mcIn, widthIn / 2 - 155 + 160, 0, optionRight);
+            this.optionsRowList.add(new GuiOptionsRowList.Row(buttonLeft, buttonRight));
         }
     }
 

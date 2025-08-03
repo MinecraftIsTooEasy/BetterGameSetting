@@ -34,47 +34,47 @@ public abstract class EntryListWidgetMixin extends GuiSlot {
 
     @WrapWithCondition(method = "drawScreen", at = @At(value = "INVOKE", target = "Lnet/minecraft/TextureManager;bindTexture(Lnet/minecraft/ResourceLocation;)V"))
     private boolean transparentBackground(TextureManager instance, ResourceLocation par1ResourceLocation) {
-        return !((IGameSetting) client.gameSettings).isTransparentBackground();
+        return !client.gameSettings.isTransparentBackground();
     }
 
     @WrapWithCondition(method = "drawScreen", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/BufferBuilder;start()V", ordinal = 0))
     private boolean transparentBackgroundStart(BufferBuilder instance) {
-        return !((IGameSetting) client.gameSettings).isTransparentBackground();
+        return !client.gameSettings.isTransparentBackground();
     }
 
     @WrapWithCondition(method = "drawScreen", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/BufferBuilder;end()I", ordinal = 0))
     private boolean transparentBackgroundEnd(BufferBuilder instance) {
-        return !((IGameSetting) client.gameSettings).isTransparentBackground();
+        return !client.gameSettings.isTransparentBackground();
     }
 
     @WrapWithCondition(method = "drawScreen", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/BufferBuilder;start()V", ordinal = 1))
     private boolean delGradientMatteStart_1(BufferBuilder instance) {
-        return !((IGameSetting) client.gameSettings).isTransparentBackground();
+        return !client.gameSettings.isTransparentBackground();
     }
 
     @WrapWithCondition(method = "drawScreen", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/BufferBuilder;end()I", ordinal = 1))
     private boolean delGradientMatteEnd_1(BufferBuilder instance) {
-        return !((IGameSetting) client.gameSettings).isTransparentBackground();
+        return !client.gameSettings.isTransparentBackground();
     }
 
     @WrapWithCondition(method = "drawScreen", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/BufferBuilder;start()V", ordinal = 2))
     private boolean delGradientMatteStart_2(BufferBuilder instance) {
-        return !((IGameSetting) client.gameSettings).isTransparentBackground();
+        return !client.gameSettings.isTransparentBackground();
     }
 
     @WrapWithCondition(method = "drawScreen", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/BufferBuilder;end()I", ordinal = 2))
     private boolean delGradientMatteEnd_2(BufferBuilder instance) {
-        return !((IGameSetting) client.gameSettings).isTransparentBackground();
+        return !client.gameSettings.isTransparentBackground();
     }
 
     @WrapWithCondition(method = "drawScreen", at = @At(value = "INVOKE", target = "Lcom/terraformersmc/modmenu/gui/widget/entries/EntryListWidget;renderList(IIII)V"))
     private boolean delRenderList(EntryListWidget instance, int n5, int entryY, int slotHeight, int i) {
-        return !((IGameSetting) client.gameSettings).isTransparentBackground();
+        return !client.gameSettings.isTransparentBackground();
     }
 
     @Inject(method = "drawScreen", at = @At(value = "INVOKE", target = "Lcom/terraformersmc/modmenu/gui/widget/entries/EntryListWidget;renderHoleBackground(IIII)V", ordinal = 1, shift = At.Shift.AFTER))
     private void addRenderList(int mouseX, int mouseY, float tickDelta, CallbackInfo ci, @Local(name = "n4") int n4, @Local(name = "n5") int n5) {
-        if (((IGameSetting) client.gameSettings).isTransparentBackground()) {
+        if (client.gameSettings.isTransparentBackground()) {
             ScaledResolution sr = new ScaledResolution(client.gameSettings, client.displayWidth, client.displayHeight);
             GL11.glScissor((this.left * sr.getScaleFactor()), (client.displayHeight - this.bottom * sr.getScaleFactor()), ((this.right - this.left) * sr.getScaleFactor()), ((this.bottom - this.top) * sr.getScaleFactor()));
             GL11.glEnable(GL11.GL_SCISSOR_TEST);
@@ -85,7 +85,7 @@ public abstract class EntryListWidgetMixin extends GuiSlot {
 
     @WrapWithCondition(method = "renderHoleBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/TextureManager;bindTexture(Lnet/minecraft/ResourceLocation;)V"))
     private boolean transparentHoleBackground(TextureManager instance, ResourceLocation par1ResourceLocation) {
-        if (((IGameSetting) client.gameSettings).isTransparentBackground()) {
+        if (client.gameSettings.isTransparentBackground()) {
             Gui.drawRect(this.left, this.top, this.right, this.bottom, 0x66000000);//draw slot dark background
             //draw slot frame line
             Gui.drawRect(this.left, this.top, this.right, this.top - 1, 0xCC000000);
@@ -96,18 +96,18 @@ public abstract class EntryListWidgetMixin extends GuiSlot {
             GL11.glScissor((this.left * sr.getScaleFactor()), (client.displayHeight - this.bottom * sr.getScaleFactor()), ((this.right - this.left) * sr.getScaleFactor()), ((this.bottom - this.top) * sr.getScaleFactor()));
             GL11.glEnable(GL11.GL_SCISSOR_TEST);
         }
-        return !((IGameSetting) client.gameSettings).isTransparentBackground();
+        return !client.gameSettings.isTransparentBackground();
     }
 
     @WrapWithCondition(method = "renderHoleBackground", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/BufferBuilder;start()V"))
     private boolean transparentHoleBackgroundStart(BufferBuilder instance) {
-        return !((IGameSetting) client.gameSettings).isTransparentBackground();
+        return !client.gameSettings.isTransparentBackground();
     }
 
     @WrapWithCondition(method = "renderHoleBackground", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/BufferBuilder;end()I"))
     private boolean transparentHoleBackgroundEnd(BufferBuilder instance) {
-        if (((IGameSetting) client.gameSettings).isTransparentBackground())
+        if (client.gameSettings.isTransparentBackground())
             GL11.glDisable(GL11.GL_SCISSOR_TEST);
-        return !((IGameSetting) client.gameSettings).isTransparentBackground();
+        return !client.gameSettings.isTransparentBackground();
     }
 }

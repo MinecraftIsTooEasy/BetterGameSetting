@@ -9,14 +9,14 @@ public class GuiScaleSlider extends GuiOptionSlider {
     public final EnumOptions options;
     private final int minValue;
     private final int maxValue;
-    private Minecraft client;
+    private final Minecraft client;
 
     public GuiScaleSlider(int buttonId, int x, int y, EnumOptions optionIn, int minValueIn, int maxValue) {
         super(buttonId, x, y, optionIn);
         this.options = optionIn;
         this.minValue = minValueIn;
         this.maxValue = maxValue;
-        client = Minecraft.getMinecraft();
+        this.client = Minecraft.getMinecraft();
         this.sliderValue = MathHelper.clamp_int(client.gameSettings.guiScale, minValueIn, maxValue);
         this.displayString = getDisplayString(client);
     }
@@ -39,7 +39,7 @@ public class GuiScaleSlider extends GuiOptionSlider {
             client.getTextureManager().bindTexture(buttonTextures);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-            int renderX = Math.round(this.xPosition + (sliderValue * ((this.width) / maxValue)));
+            int renderX = Math.round(this.xPosition + (sliderValue * ((float) (this.width) / maxValue)));
             renderX = Math.max(this.xPosition, renderX);
             renderX = Math.min(this.xPosition + width - 8, renderX);
             this.drawTexturedModalRect(renderX, this.yPosition, 0, 66, 4, 20);

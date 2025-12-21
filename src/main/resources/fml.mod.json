@@ -22,7 +22,8 @@
   "contributors": [
     "jaredlll08",
     "ThexXTURBOXx",
-    "Debris"
+    "Debris",
+    "dfdvdsf"
   ],
   "contact": {
     "homepage": "https://github.com/MinecraftIsTooEasy/BetterGameSetting",
@@ -34,10 +35,14 @@
     ],
     "client": [
       "moddedmite.xylose.bettergamesetting.init.BGSClient"
+    ],
+    "main": [
+      "moddedmite.xylose.bettergamesetting.init.BGSClient"
     ]
   },
   "mixins": [
-    "BetterGameSetting.mixins.json",
+    "BetterGameSetting.client.mixins.json",
+    "BetterGameSetting.common.mixins.json",
     "BetterGameSetting.sound.mixins.json",
     "BetterGameSetting.compat.mixins.json"
   ],
@@ -46,7 +51,9 @@
     "loom:injected_interfaces": {
       "net/minecraft/GameSettings": ["moddedmite/xylose/bettergamesetting/api/IGameSetting"],
       "net/minecraft/EnumOptions": ["moddedmite/xylose/bettergamesetting/api/IEnumOptions"],
-      "net/minecraft/KeyBinding": ["moddedmite/xylose/bettergamesetting/api/IKeyBinding"]
+      "net/minecraft/KeyBinding": ["moddedmite/xylose/bettergamesetting/api/IKeyBinding", "java/lang/Comparable"],
+      "net/minecraft/GuiButton": ["moddedmite/xylose/bettergamesetting/api/IButton"],
+      "net/minecraft/GuiTextField": ["moddedmite/xylose/bettergamesetting/api/ITextField"]
     },
     "modmenu:clientsideOnly": true
   }

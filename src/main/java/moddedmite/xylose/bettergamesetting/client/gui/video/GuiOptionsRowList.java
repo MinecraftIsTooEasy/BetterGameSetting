@@ -5,6 +5,7 @@ import moddedmite.xylose.bettergamesetting.client.gui.base.GuiListExtended;
 import moddedmite.xylose.bettergamesetting.client.gui.button.GuiOptionButton;
 import moddedmite.xylose.bettergamesetting.client.gui.button.GuiOptionSlider;
 import moddedmite.xylose.bettergamesetting.client.gui.button.GuiScaleSlider;
+import moddedmite.xylose.bettergamesetting.util.ScreenUtil;
 import net.minecraft.EnumOptions;
 import net.minecraft.GuiButton;
 import net.minecraft.Minecraft;
@@ -65,6 +66,35 @@ public class GuiOptionsRowList extends GuiListExtended {
         return super.getScrollBarX() + 32;
     }
 
+    @Override
+    protected void drawTooltip(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY) {
+        Row row = this.getListEntry(slotIndex);
+
+        if (row.buttonLeft instanceof GuiOptionButton button) {
+            if (button.isMouseOver(mouseX, mouseY)) {
+                ScreenUtil.getInstance().drawHoveringTranslatedText(button.returnEnumOptions().getEnumString() + ".description", mouseX, mouseY);
+            }
+        }
+
+        if (row.buttonLeft instanceof GuiOptionSlider button) {
+            if (button.isMouseOver(mouseX, mouseY)) {
+                ScreenUtil.getInstance().drawHoveringTranslatedText(button.options.getEnumString() + ".description", mouseX, mouseY);
+            }
+        }
+
+        if (row.buttonRight instanceof GuiOptionButton button) {
+            if (button.isMouseOver(mouseX, mouseY)) {
+                ScreenUtil.getInstance().drawHoveringTranslatedText(button.returnEnumOptions().getEnumString() + ".description", mouseX, mouseY);
+            }
+        }
+
+        if (row.buttonRight instanceof GuiOptionSlider button) {
+            if (button.isMouseOver(mouseX, mouseY)) {
+                ScreenUtil.getInstance().drawHoveringTranslatedText(button.options.getEnumString() + ".description", mouseX, mouseY);
+            }
+        }
+    }
+
     public static class Row implements GuiListExtended.IGuiListEntry {
         private final Minecraft minecraft = Minecraft.getMinecraft();
         private final GuiButton buttonLeft;
@@ -84,30 +114,6 @@ public class GuiOptionsRowList extends GuiListExtended {
             if (this.buttonRight != null) {
                 this.buttonRight.yPosition = y;
                 this.buttonRight.drawButton(this.minecraft, mouseX, mouseY);
-            }
-
-            if (this.buttonLeft instanceof GuiOptionButton button) {
-                if (button.isMouseOver(mouseX, mouseY)) {
-                    button.drawTooltip(button.returnEnumOptions().getEnumString() + ".desc", mouseX, mouseY);
-                }
-            }
-
-            if (this.buttonRight instanceof GuiOptionButton button) {
-                if (button.isMouseOver(mouseX, mouseY)) {
-                    button.drawTooltip(button.returnEnumOptions().getEnumString() + ".desc", mouseX, mouseY);
-                }
-            }
-
-            if (this.buttonLeft instanceof GuiOptionSlider button) {
-                if (button.isMouseOver(mouseX, mouseY)) {
-                    button.drawTooltip(button.options.getEnumString() + ".desc", mouseX, mouseY);
-                }
-            }
-
-            if (this.buttonRight instanceof GuiOptionSlider button) {
-                if (button.isMouseOver(mouseX, mouseY)) {
-                    button.drawTooltip(button.options.getEnumString() + ".desc", mouseX, mouseY);
-                }
             }
         }
 

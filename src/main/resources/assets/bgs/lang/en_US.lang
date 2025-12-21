@@ -29,8 +29,7 @@ key.categories.gameplay=Gameplay
 key.categories.ui=Game Interface
 key.categories.inventory=Inventory
 key.categories.uncategorized=Uncategorized
-controls.reset_keybinding_info_0=Are you sure reset all the keybindings?
-controls.reset_keybinding_info_1=§4Warning: The current reset keybindings of the mod keybindings is not compatible!
+controls.reset_keybinding_info=Are you sure reset all the keybindings?
 
 resourcePack.available.title=Available Resource Packs
 resourcePack.selected.title=Selected Resource Packs
@@ -41,19 +40,48 @@ resourcePack.incompatible.confirm.title=Are you sure you want to load this resou
 resourcePack.incompatible.confirm.old=This resource pack was made for an older version of Minecraft and may no longer work correctly.
 resourcePack.incompatible.confirm.new=This resource pack was made for a newer version of Minecraft and may no longer work correctly.
 
-# Desc
-options.graphics.desc=Adjust the rendering quality of the game; choose "Fast" for better performance or "Fancy" for improved visuals
-options.ao.desc= Enable smooth lighting to reduce blocky shadows and provide more natural lighting effects
-options.anaglyph.desc=Enable or disable 3D effects, 3D glasses are required
-options.particles.desc=Control the number of particles in the game (e.g., fire, smoke); reducing them improves performance
-options.vsync.desc=Synchronize the game's frame rate with your monitor's refresh rate to reduce screen tearing
-options.viewBobbing.desc=Enable or disable the camera bobbing effect when moving; disabling it can reduce motion sickness
-options.advancedOpengl.desc=Enable or disable advanced OpenGL optimizations; may improve performance on some hardware but could cause compatibility issues.
-options.renderClouds.desc=Enable or disable cloud effects in the sky; disabling them can slightly improve performance
-options.fullscreen.desc=Toggle whether the game runs in fullscreen mode; fullscreen is often better for immersive experiences
-options.renderDistance.desc=Control how far you can see in the game world; lowering this value improves performance
-options.framerateLimit.desc=Limit the maximum frame rate of the game to save system resources or reduce power consumption
-options.guiScale.desc= Adjust the size of the user interface on the screen, suitable for different display resolutions
-options.gamma.desc= Adjust the overall brightness of the game to optimize visibility under different lighting conditions
-options.transparentBackground.desc=Off-game screens are backed by darkened panoramas, and in-game pause menus are framed with darkened player shots
-options.highlightButtonText.desc=Controls the color of the text when hovering over the button
+options.language.search=§oSearch…
+
+# description
+options.graphics.description=Adjust the rendering quality of the game; choose "Fast" for better performance or "Fancy" for improved visuals
+options.ao.description= Enable smooth lighting to reduce blocky shadows and provide more natural lighting effects
+options.anaglyph.description=Enable or disable 3D effects, 3D glasses are required
+options.particles.description=Control the number of particles in the game (e.g., fire, smoke); reducing them improves performance
+options.vsync.description=Synchronize the game's frame rate with your monitor's refresh rate to reduce screen tearing
+options.viewBobbing.description=Enable or disable the camera bobbing effect when moving; disabling it can reduce motion sickness
+options.advancedOpengl.description=Enable or disable advanced OpenGL optimizations; may improve performance on some hardware but could cause compatibility issues.
+options.renderClouds.description=Enable or disable cloud effects in the sky; disabling them can slightly improve performance
+options.fullscreen.description=Toggle whether the game runs in fullscreen mode; fullscreen is often better for immersive experiences
+options.renderDistance.description=Control how far you can see in the game world; lowering this value improves performance
+options.framerateLimit.description=Limit the maximum frame rate of the game to save system resources or reduce power consumption
+options.guiScale.description= Adjust the size of the user interface on the screen, suitable for different display resolutions
+options.gamma.description= Adjust the overall brightness of the game to optimize visibility under different lighting conditions
+options.transparentBackground.description=Off-game screens are backed by darkened panoramas, and in-game pause menus are framed with darkened player shots
+options.highlightButtonText.description=Controls the color of the text when hovering over the button
+
+options.save=Save
+options.reset=Reset
+
+selectWorld.tab.game=Game
+selectWorld.tab.world=World
+selectWorld.tab.more=More
+selectWorld.hover.worldName=Save Folder: §o%s
+selectWorld.button.gameRuleEditor=GameRules
+
+options.gameRules=Edit Game Rules
+gamerules.default=§7Default：%s
+gamerules.doFireTick.name=Fire spread
+gamerules.mobGriefing.name=Allow destructive mob actions
+gamerules.keepInventory.name=Keep inventory after death
+gamerules.doMobSpawning.name=Spawn mobs
+gamerules.doMobSpawning.description=Some entity might have separate rules.
+gamerules.doMobLoot.name=Drop mob loot
+gamerules.doMobLoot.description=Controls resource drops from mobs, including experience orbs.
+gamerules.doTileDrops.name=Drop blocks
+gamerules.doTileDrops.description=Controls resource drops from blocks, including experience orbs.
+gamerules.commandBlockOutput.name=Command block output
+gamerules.naturalRegeneration.name=Regenerate health
+gamerules.doDaylightCycle.name=Advance time of day
+
+selectWorld.experimental.warning=Experimental settings may affect stability
+

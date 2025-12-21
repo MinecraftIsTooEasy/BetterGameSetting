@@ -1,12 +1,32 @@
 package moddedmite.xylose.bettergamesetting.init;
 
+import moddedmite.xylose.bettergamesetting.util.BGSConfig;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.api.ModInitializer;
+import net.minecraft.GameRules;
 import net.xiaoyu233.fml.ModResourceManager;
+import net.xiaoyu233.fml.config.ConfigRegistry;
 
-public class BGSClient implements ClientModInitializer {
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
+public class BGSClient implements ClientModInitializer, ModInitializer {
     public static String resourceId = "bgs";
+    public static final GameRules gameRules = new GameRules();
+    public static Map<String, String> pendingRules = new HashMap<>();
+
     @Override
     public void onInitializeClient() {
         ModResourceManager.addResourcePackDomain(resourceId);
+    }
+
+    @Override
+    public void onInitialize() {
+    }
+
+    @Override
+    public Optional<ConfigRegistry> createConfig() {
+        return Optional.of(BGSConfig.INSTANCE);
     }
 }

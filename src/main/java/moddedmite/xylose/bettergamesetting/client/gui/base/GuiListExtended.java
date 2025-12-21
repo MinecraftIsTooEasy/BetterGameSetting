@@ -27,6 +27,8 @@ public abstract class GuiListExtended extends GuiSlotModern {
         this.getListEntry(p_178040_1_).setSelected(p_178040_1_, p_178040_2_, p_178040_3_);
     }
 
+    protected abstract void drawTooltip(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY);
+
     public boolean mouseClicked(int mouseXIn, int mouseYIn, int mouseEvent) {
         if (this.isMouseYWithinSlotBounds(mouseYIn)) {
             int i = this.getSlotIndexFromScreenCoords(mouseXIn, mouseYIn);

@@ -23,6 +23,15 @@ accessible method net/minecraft/GuiMainMenu renderSkybox (IIF)V
 accessible method net/minecraft/GuiSlot bindAmountScrolled ()V
 accessible method net/minecraft/World chunkExists (II)Z
 
+accessible class net/minecraft/GameRuleValue
 accessible class net/minecraft/GuiSlotStats
+accessible class net/minecraft/GuiSlotLanguage
 accessible class net/minecraft/GuiButtonNextPage
 accessible class net/minecraft/GuiScreenTemporaryResourcePackSelectSelectionList
+
+accessible field net/minecraft/GuiTextField xPos I
+accessible field net/minecraft/GuiTextField yPos I
+accessible field net/minecraft/GuiTextField height I
+
+accessible method net/minecraft/StringTranslate getInstance ()Lnet/minecraft/StringTranslate;
+accessible method net/minecraft/GameRuleValue getGameRuleBooleanValue ()Z

@@ -9,7 +9,7 @@ public class GuiOptionButton extends GuiButton {
     private final EnumOptions enumOptions;
 
     public GuiOptionButton(int buttonId, int x, int y, String displayString) {
-        this(buttonId, x, y, (EnumOptions) null, displayString);
+        this(buttonId, x, y, null, displayString);
     }
 
     public GuiOptionButton(int buttonId, int x, int y, int buttonLength, int buttonWidth, String displayString) {

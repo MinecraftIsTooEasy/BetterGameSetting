@@ -1,7 +1,5 @@
 package moddedmite.xylose.bettergamesetting.client.gui.controls;
 
-import moddedmite.xylose.bettergamesetting.api.IGameSetting;
-import moddedmite.xylose.bettergamesetting.api.IKeyBinding;
 import net.minecraft.*;
 
 public class GuiYesNoResetKeyBinding extends GuiScreen {
@@ -23,7 +21,7 @@ public class GuiYesNoResetKeyBinding extends GuiScreen {
     protected void actionPerformed(GuiButton guiButton) {
         if (guiButton.id == 0) {
             for (KeyBinding keybinding : this.mc.gameSettings.keyBindings) {
-                ((IGameSetting) this.mc.gameSettings).setOptionKeyBinding(keybinding, ((IKeyBinding) keybinding).getDefaultKeyCode(keybinding.keyDescription, keybinding.keyCode));
+                this.mc.gameSettings.setOptionKeyBinding(keybinding, keybinding.getDefaultKeyCode(keybinding.keyDescription));
             }
             KeyBinding.resetKeyBindingArrayAndHash();
             this.mc.displayGuiScreen(this.parentScreen);
@@ -43,8 +41,7 @@ public class GuiYesNoResetKeyBinding extends GuiScreen {
 
     public void drawScreen(int i, int j, float f) {
         this.drawDefaultBackground();
-        this.drawCenteredString(this.fontRenderer, I18n.getString("controls.reset_keybinding_info_0"), this.width / 2, 70, 16777215);
-        this.drawCenteredString(this.fontRenderer, I18n.getString("controls.reset_keybinding_info_1"), this.width / 2, 90, 16777215);
+        this.drawCenteredString(this.fontRenderer, I18n.getString("controls.reset_keybinding_info"), this.width / 2, 70, 16777215);
         super.drawScreen(i, j, f);
     }
 }

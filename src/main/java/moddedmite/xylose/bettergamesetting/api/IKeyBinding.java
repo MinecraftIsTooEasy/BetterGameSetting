@@ -3,12 +3,8 @@ package moddedmite.xylose.bettergamesetting.api;
 import net.minecraft.KeyBinding;
 
 public interface IKeyBinding extends Comparable<KeyBinding> {
-    default String getKeyCategory() {
+    default String getKeyCategory(String keyDescription) {
         return "";
-    }
-
-    default int compareTo(KeyBinding p_compareTo_1_) {
-        return 0;
     }
 
     default int getKeyCode() {
@@ -19,7 +15,7 @@ public interface IKeyBinding extends Comparable<KeyBinding> {
         return;
     }
 
-    default int getDefaultKeyCode(String keyDescription, int keyCode) {
+    default int getDefaultKeyCode(String keyDescription) {
         return 0;
     }
 }

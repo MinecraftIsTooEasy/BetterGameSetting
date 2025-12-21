@@ -1,6 +1,5 @@
 package moddedmite.xylose.bettergamesetting.api;
 
-import moddedmite.xylose.bettergamesetting.client.KeyBindingExtra;
 import net.minecraft.KeyBinding;
 
 import java.util.List;

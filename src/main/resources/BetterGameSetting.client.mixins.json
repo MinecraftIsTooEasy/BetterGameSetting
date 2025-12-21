@@ -1,0 +1,41 @@
+{
+  "required": true,
+  "package": "moddedmite.xylose.bettergamesetting.mixin.client",
+  "compatibilityLevel": "JAVA_17",
+  "target": "CLIENT",
+  "minVersion": "0.8.3",
+  "client": [
+    "EnumOptionsMixin",
+    "FontRendererMixin",
+    "GameSettingsMixin",
+    "KeyBindingMixin",
+    "MinecraftMixin",
+    "OpenGlHelperMixin",
+    "audio.SoundsMITEMixin",
+    "gui.GuiButtonMixin",
+    "gui.GuiContainerMixin",
+    "gui.GuiCreateWorldMixin",
+    "gui.GuiLanguageMixin",
+    "gui.GuiMainMenuMixin",
+    "gui.GuiMultiplayerMixin",
+    "gui.GuiOptionsMixin",
+    "gui.GuiScreenMixin",
+    "gui.GuiSlotLanguageMixin",
+    "gui.GuiSlotMixin",
+    "gui.GuiTextFieldMixin",
+    "gui.LoadingScreenRendererMixin",
+    "invoker.GuiSlotLanguageInvoker",
+    "renderer.EntityRenderMixin",
+    "renderer.RenderGlobalMixin",
+    "renderer.RenderMixin",
+    "renderer.WorldRendererMixin",
+    "resources.ResourceLocationMixin",
+    "resources.ResourcePackRepositoryEntryMixin",
+    "resources.ResourcePackRepositoryMixin",
+    "resources.SimpleReloadableResourceManagerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "plugin": "moddedmite.xylose.bettergamesetting.util.BGSMixinConfig"
+}

@@ -177,7 +177,7 @@ public class FontFixer {
         if (glyphWidth == ' ') {
             return 4.0F;
         } else {
-            return (this.ASCII.indexOf(glyphWidth) != -1) && !((IGameSetting) Minecraft.getMinecraft().gameSettings).isForceUnicodeFont() ? this.renderDefaultChar(charWidth, par3) : this.renderUnicodeChar(glyphWidth, par3);
+            return (this.ASCII.indexOf(glyphWidth) != -1) && !Minecraft.getMinecraft().gameSettings.isForceUnicodeFont() ? this.renderDefaultChar(charWidth, par3) : this.renderUnicodeChar(glyphWidth, par3);
         }
     }
 
@@ -677,7 +677,7 @@ public class FontFixer {
         int var5 = 0;
         int var6 = -1;
 
-        for(boolean var7 = false; var5 < var3; ++var5) {
+        for (boolean var7 = false; var5 < var3; ++var5) {
             char var8 = text.charAt(var5);
             switch (var8) {
                 case '\n':

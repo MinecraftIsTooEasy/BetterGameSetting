@@ -275,22 +275,7 @@ public abstract class GuiSlotModern {
         GL11.glDisable(GL11.GL_FOG);
         Tessellator tessellator = Tessellator.instance;
         drawContainerBackground(tessellator);
-        ScaledResolution sr = new ScaledResolution(this.client.gameSettings, this.client.displayWidth, this.client.displayHeight);
-        GL11.glScissor((this.left * sr.getScaleFactor()), (this.client.displayHeight - this.bottom * sr.getScaleFactor()), ((this.right - this.left) * sr.getScaleFactor()), ((this.bottom - this.top) * sr.getScaleFactor()));
-        GL11.glEnable(GL11.GL_SCISSOR_TEST);
-        l1 = this.left + this.width / 2 - this.getListWidth() / 2 + 2;
-        i2 = this.top + 4 - (int) this.amountScrolled;
-
-        if (this.hasListHeader) {
-            this.drawListHeader(l1, i2, tessellator);
-        }
-
-        this.drawSelectionBox(l1, i2, mouseXR, mouseYR);
-        GL11.glDisable(GL11.GL_DEPTH_TEST);
         byte b0 = 4;
-        GL11.glDisable(GL11.GL_SCISSOR_TEST);
-        this.overlayBackground(0, this.top, 255, 255);
-        this.overlayBackground(this.bottom, this.height, 255, 255);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(770, 771);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
@@ -362,6 +347,30 @@ public abstract class GuiSlotModern {
         GL11.glShadeModel(GL11.GL_FLAT);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glDisable(GL11.GL_BLEND);
+        ScaledResolution sr = new ScaledResolution(this.client.gameSettings, this.client.displayWidth, this.client.displayHeight);
+        GL11.glScissor((this.left * sr.getScaleFactor()), (this.client.displayHeight - this.bottom * sr.getScaleFactor()), ((this.right - this.left) * sr.getScaleFactor()), ((this.bottom - this.top) * sr.getScaleFactor()));
+        GL11.glEnable(GL11.GL_SCISSOR_TEST);
+        l1 = this.left + this.width / 2 - this.getListWidth() / 2 + 2;
+        i2 = this.top + 4 - (int) this.amountScrolled;
+
+        if (this.hasListHeader) {
+            this.drawListHeader(l1, i2, tessellator);
+        }
+
+        this.drawSelectionBox(l1, i2, mouseXR, mouseYR);
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        GL11.glDisable(GL11.GL_SCISSOR_TEST);
+        this.overlayBackground(0, this.top, 255, 255);
+        this.overlayBackground(this.bottom, this.height, 255, 255);
+
+        if (this instanceof GuiListExtended) {
+            int slotIndex = this.getSlotIndexFromScreenCoords(mouseXR, mouseYR);
+            if (slotIndex >= 0) {
+                int slotX = l1;
+                int slotY = i2 + slotIndex * this.slotHeight + this.headerPadding;
+                ((GuiListExtended)this).drawTooltip(slotIndex, slotX, slotY, this.getListWidth(), this.slotHeight, mouseXR, mouseYR);
+            }
+        }
     }
 
     public void setEnabled(boolean enabledIn) {

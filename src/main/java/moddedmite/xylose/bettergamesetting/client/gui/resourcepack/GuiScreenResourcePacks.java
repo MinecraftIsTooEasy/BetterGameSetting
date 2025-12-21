@@ -17,8 +17,8 @@ import java.util.logging.Logger;
 public class GuiScreenResourcePacks extends GuiScreen {
     private static final Logger logger = Logger.getLogger("");
     private final GuiScreen parentScreen;
-    private List availableResourcePacks;
-    private List selectedResourcePacks;
+    private List<ResourcePackListEntry> availableResourcePacks;
+    private List<ResourcePackListEntry> selectedResourcePacks;
     private GuiResourcePackAvailable availableResourcePacksList;
     private GuiResourcePackSelected selectedResourcePacksList;
     private boolean changed = false;
@@ -90,17 +90,17 @@ public class GuiScreenResourcePacks extends GuiScreen {
                         Runtime.getRuntime().exec(new String[]{"/usr/bin/open", s});
                         return;
                     } catch (IOException ioexception1) {
-                        logger.severe("Couldn\'t open file");
+                        logger.severe("Couldn't open file");
                         logger.severe(ioexception1.getMessage());
                     }
                 } else if (Util.getOSType() == EnumOS.WINDOWS) {
-                    String s1 = String.format("cmd.exe /C start \"Open file\" \"%s\"", new Object[]{s});
+                    String s1 = String.format("cmd.exe /C start \"Open file\" \"%s\"", s);
 
                     try {
                         Runtime.getRuntime().exec(s1);
                         return;
                     } catch (IOException ioexception) {
-                        logger.severe("Couldn\'t open file");
+                        logger.severe("Couldn't open file");
                         logger.severe(ioexception.getMessage());
                     }
                 }
@@ -109,10 +109,10 @@ public class GuiScreenResourcePacks extends GuiScreen {
 
                 try {
                     Class oclass = Class.forName("java.awt.Desktop");
-                    Object object = oclass.getMethod("getDesktop", new Class[0]).invoke(null, new Object[0]);
-                    oclass.getMethod("browse", new Class[]{URI.class}).invoke(object, new Object[]{file1.toURI()});
+                    Object object = oclass.getMethod("getDesktop").invoke(null);
+                    oclass.getMethod("browse", URI.class).invoke(object, file1.toURI());
                 } catch (Throwable throwable) {
-                    logger.severe("Couldn\'t open link");
+                    logger.severe("Couldn't open link");
                     logger.severe(throwable.getMessage());
                     flag = true;
                 }
@@ -125,8 +125,7 @@ public class GuiScreenResourcePacks extends GuiScreen {
                 if (this.changed) {
                     List<ResourcePackRepositoryEntry> list = Lists.newArrayList();
 
-                    for (Object o : this.selectedResourcePacks) {
-                        ResourcePackListEntry resourcepacklistentry = (ResourcePackListEntry) o;
+                    for (ResourcePackListEntry resourcepacklistentry : this.selectedResourcePacks) {
                         if (resourcepacklistentry instanceof ResourcePackListEntryFound) {
                             list.add(((ResourcePackListEntryFound) resourcepacklistentry).func_148318_i());
                         }
@@ -134,14 +133,14 @@ public class GuiScreenResourcePacks extends GuiScreen {
 
                     Collections.reverse(list);
                     ((IResourcePackRepository) this.mc.getResourcePackRepository()).setRepositories(list);
-                    ((IGameSetting) this.mc.gameSettings).getResourcePacks().clear();
-                    ((IGameSetting) this.mc.gameSettings).getIncompatibleResourcePacks().clear();
+                    this.mc.gameSettings.getResourcePacks().clear();
+                    this.mc.gameSettings.getIncompatibleResourcePacks().clear();
 
                     for (ResourcePackRepositoryEntry resourcepackrepository$entry : list) {
-                        ((IGameSetting) this.mc.gameSettings).getResourcePacks().add(resourcepackrepository$entry.getResourcePackName());
+                        this.mc.gameSettings.getResourcePacks().add(resourcepackrepository$entry.getResourcePackName());
 
                         if (((IResourcePackRepository) resourcepackrepository$entry).getPackFormat() != 1) {
-                            ((IGameSetting) this.mc.gameSettings).getIncompatibleResourcePacks().add(resourcepackrepository$entry.getResourcePackName());
+                            this.mc.gameSettings.getIncompatibleResourcePacks().add(resourcepackrepository$entry.getResourcePackName());
                         }
                     }
 

@@ -55,4 +55,8 @@ public abstract class GuiResourcePackList extends GuiListExtended {
     protected int getScrollBarX() {
         return this.right - 6;
     }
+
+    @Override
+    protected void drawTooltip(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY) {
+    }
 }

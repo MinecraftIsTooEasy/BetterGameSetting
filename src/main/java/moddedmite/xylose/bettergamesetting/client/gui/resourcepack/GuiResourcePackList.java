@@ -9,14 +9,16 @@ import java.util.List;
 
 public abstract class GuiResourcePackList extends GuiListExtended {
     protected final Minecraft mc;
-    protected final List<ResourcePackListEntry> resourcePacksGUI;
+    protected final List<ResourcePackListEntry> resourcePacksEntry;
+    protected int selectedSlotIndex = -1;
 
     public GuiResourcePackList(Minecraft mcIn, int widthIn, int heightIn, List<ResourcePackListEntry> resourcePackList) {
         super(mcIn, widthIn, heightIn, 32, heightIn - 55 + 4, 36);
         this.mc = mcIn;
-        this.resourcePacksGUI = resourcePackList;
+        this.resourcePacksEntry = resourcePackList;
         this.field_148163_i = false;
         this.setHasListHeader(true, (int) ((float) mcIn.fontRenderer.FONT_HEIGHT * 1.5F));
+        this.selectionBoxColor = 0xDDFFFFFF;
     }
 
     /**
@@ -31,7 +33,7 @@ public abstract class GuiResourcePackList extends GuiListExtended {
     protected abstract String getListHeader();
 
     public List<ResourcePackListEntry> getResourcePackList() {
-        return this.resourcePacksGUI;
+        return this.resourcePacksEntry;
     }
 
     protected int getSize() {
@@ -41,15 +43,15 @@ public abstract class GuiResourcePackList extends GuiListExtended {
     /**
      * Gets the IGuiListEntry object for the given index
      */
-    public ResourcePackListEntry getListEntry(int p_148180_1_) {
-        return this.getResourcePackList().get(p_148180_1_);
+    public ResourcePackListEntry getListEntry(int index) {
+        return this.getResourcePackList().get(index);
     }
 
     /**
      * Gets the width of the list
      */
     public int getListWidth() {
-        return this.width;
+        return this.width - 12;
     }
 
     protected int getScrollBarX() {
@@ -58,5 +60,22 @@ public abstract class GuiResourcePackList extends GuiListExtended {
 
     @Override
     protected void drawTooltip(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY) {
+    }
+
+    @Override
+    protected boolean isSelected(int slotIndex) {
+        return slotIndex == this.selectedSlotIndex;
+    }
+
+    @Override
+    protected void elementClicked(int slotIndex, boolean isDoubleClick, int mouseX, int mouseY) {
+        this.selectedSlotIndex = slotIndex;
+
+        for (int i = 0; i < this.getSize(); i++) {
+            ResourcePackListEntry entry = this.getListEntry(i);
+            entry.setIsSelected(i == slotIndex);
+        }
+
+        this.getListEntry(slotIndex).setSelected(slotIndex, mouseX, mouseY);
     }
 }

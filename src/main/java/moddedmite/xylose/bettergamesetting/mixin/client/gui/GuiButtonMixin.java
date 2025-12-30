@@ -54,6 +54,6 @@ public class GuiButtonMixin extends Gui implements IButton {
     private void renderScrollingString(FontRenderer font, int margin, int color) {
         int left = this.xPosition + margin;
         int right = this.xPosition + this.width - margin;
-        ScreenUtil.getInstance().renderScrollingString(font, this.displayString, left, this.yPosition, right, this.yPosition + this.height, color);
+        ScreenUtil.renderScrollingString(font, this.displayString, left, this.yPosition, right, this.yPosition + this.height, color);
     }
 }

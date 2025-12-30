@@ -45,23 +45,23 @@ public class ScreenUtil extends Gui {
         tessellator.draw();
     }
 
-    public void drawHoveringTranslatedText(String text, int x, int y, Object ... objects) {
-        this.drawHoveringText(List.of(I18n.getStringParams(text, objects)), x, y, this.client.fontRenderer, this.client.currentScreen.width, this.client.currentScreen.height);
+    public void drawTooltipTranslated(String text, int x, int y, Object... objects) {
+        this.drawTooltip(List.of(I18n.getStringParams(text, objects)), x, y, this.client.fontRenderer, this.client.currentScreen.width, this.client.currentScreen.height);
     }
 
-    public void drawHoveringTranslatedText(String text, int x, int y) {
-        this.drawHoveringText(List.of(I18n.getString(text)), x, y, this.client.fontRenderer, this.client.currentScreen.width, this.client.currentScreen.height);
+    public void drawTooltipTranslated(String text, int x, int y) {
+        this.drawTooltip(List.of(I18n.getString(text)), x, y, this.client.fontRenderer, this.client.currentScreen.width, this.client.currentScreen.height);
     }
 
-    public void drawHoveringText(String text, int x, int y) {
-        this.drawHoveringText(List.of(text), x, y, this.client.fontRenderer, this.client.currentScreen.width, this.client.currentScreen.height);
+    public void drawTooltip(String text, int x, int y) {
+        this.drawTooltip(List.of(text), x, y, this.client.fontRenderer, this.client.currentScreen.width, this.client.currentScreen.height);
     }
 
-    public void drawHoveringText(List<String> textLines, int x, int y) {
-        this.drawHoveringText(textLines, x, y, this.client.fontRenderer, this.client.currentScreen.width, this.client.currentScreen.height);
+    public void drawTooltip(List<String> textLines, int x, int y) {
+        this.drawTooltip(textLines, x, y, this.client.fontRenderer, this.client.currentScreen.width, this.client.currentScreen.height);
     }
 
-    public void drawHoveringText(List<String> textLines, int x, int y, FontRenderer font, int width, int height) {
+    public void drawTooltip(List<String> textLines, int x, int y, FontRenderer font, int width, int height) {
         if (!textLines.isEmpty()) {
             GL11.glDisable(GL11.GL_DEPTH_TEST);
 
@@ -71,8 +71,8 @@ public class ScreenUtil extends Gui {
             for (String textLine : textLines) {
                 int lineWidth = font.getStringWidth(textLine);
 
-                if (lineWidth > width - 24) {
-                    List<String> wrapped = wrapText(textLine, font, width - 24);
+                if (lineWidth > 160) {
+                    List<String> wrapped = wrapText(textLine, font, 160);
                     wrappedLines.addAll(wrapped);
 
                     for (String wrappedLine : wrapped) {
@@ -92,7 +92,7 @@ public class ScreenUtil extends Gui {
             textLines = wrappedLines;
 
             int tooltipX = x + 12;
-            int tooltipY = y - 12;
+            int tooltipY = y - 20;
             int tooltipHeight = 8;
 
             if (textLines.size() > 1) {
@@ -145,6 +145,115 @@ public class ScreenUtil extends Gui {
         }
     }
 
+    public void drawButtonTooltipTranslated(String text, int x, int y, Object... objects) {
+        this.drawButtonTooltip(List.of(I18n.getStringParams(text, objects)), x, y, this.client.fontRenderer, this.client.currentScreen.width, this.client.currentScreen.height);
+    }
+
+    public void drawButtonTooltipTranslated(String text, int x, int y) {
+        this.drawButtonTooltip(List.of(I18n.getString(text)), x, y, this.client.fontRenderer, this.client.currentScreen.width, this.client.currentScreen.height);
+    }
+
+    public void drawButtonTooltip(String text, int x, int y) {
+        this.drawButtonTooltip(List.of(text), x, y, this.client.fontRenderer, this.client.currentScreen.width, this.client.currentScreen.height);
+    }
+
+    public void drawButtonTooltip(List<String> textLines, int x, int y) {
+        this.drawButtonTooltip(textLines, x, y, this.client.fontRenderer, this.client.currentScreen.width, this.client.currentScreen.height);
+    }
+
+    public void drawButtonTooltip(List<String> textLines, int x, int y, FontRenderer font, int width, int height) {
+        if (!textLines.isEmpty()) {
+            GL11.glDisable(GL11.GL_DEPTH_TEST);
+
+            List<String> wrappedLines = new ArrayList<>();
+            int maxWidth = 0;
+
+            for (String textLine : textLines) {
+                int lineWidth = font.getStringWidth(textLine);
+
+                if (lineWidth > 160) {
+                    List<String> wrapped = wrapText(textLine, font, 160);
+                    wrappedLines.addAll(wrapped);
+
+                    for (String wrappedLine : wrapped) {
+                        int wrappedWidth = font.getStringWidth(wrappedLine);
+                        if (wrappedWidth > maxWidth) {
+                            maxWidth = wrappedWidth;
+                        }
+                    }
+                } else {
+                    wrappedLines.add(textLine);
+                    if (lineWidth > maxWidth) {
+                        maxWidth = lineWidth;
+                    }
+                }
+            }
+
+            textLines = wrappedLines;
+
+            int tooltipHeight = 8;
+            if (textLines.size() > 1) {
+                tooltipHeight += 2 + (textLines.size() - 1) * 10;
+            } else {
+                tooltipHeight += 2;
+            }
+
+            int tooltipY;
+            int verticalOffset = 20;
+
+            int belowY = y + verticalOffset;
+            int aboveY = y - tooltipHeight - verticalOffset;
+
+            if (y < height / 2) {
+                tooltipY = Math.min(belowY, height - tooltipHeight - 4);
+            } else {
+                tooltipY = Math.max(aboveY, 4);
+            }
+
+            tooltipY = Math.max(4, Math.min(tooltipY, height - tooltipHeight - 4));
+
+            int tooltipX = x + 12;
+
+            if (tooltipX + maxWidth > width) {
+                tooltipX = x - maxWidth - 12;
+            }
+
+            if (tooltipX < 4) {
+                tooltipX = 4;
+            }
+
+            this.zLevel = 300.0F;
+            int backgroundColor = -267386864;
+            this.drawGradientRect(tooltipX - 3, tooltipY - 4, tooltipX + maxWidth + 3, tooltipY - 3, backgroundColor, backgroundColor);
+            this.drawGradientRect(tooltipX - 3, tooltipY + tooltipHeight + 3, tooltipX + maxWidth + 3, tooltipY + tooltipHeight + 4, backgroundColor, backgroundColor);
+            this.drawGradientRect(tooltipX - 3, tooltipY - 3, tooltipX + maxWidth + 3, tooltipY + tooltipHeight + 3, backgroundColor, backgroundColor);
+            this.drawGradientRect(tooltipX - 4, tooltipY - 3, tooltipX - 3, tooltipY + tooltipHeight + 3, backgroundColor, backgroundColor);
+            this.drawGradientRect(tooltipX + maxWidth + 3, tooltipY - 3, tooltipX + maxWidth + 4, tooltipY + tooltipHeight + 3, backgroundColor, backgroundColor);
+            int borderColorStart = 1347420415;
+            int borderColorEnd = (borderColorStart & 16711422) >> 1 | borderColorStart & -16777216;
+            this.drawGradientRect(tooltipX - 3, tooltipY - 3 + 1, tooltipX - 3 + 1, tooltipY + tooltipHeight + 3 - 1, borderColorStart, borderColorEnd);
+            this.drawGradientRect(tooltipX + maxWidth + 2, tooltipY - 3 + 1, tooltipX + maxWidth + 3, tooltipY + tooltipHeight + 3 - 1, borderColorStart, borderColorEnd);
+            this.drawGradientRect(tooltipX - 3, tooltipY - 3, tooltipX + maxWidth + 3, tooltipY - 3 + 1, borderColorStart, borderColorStart);
+            this.drawGradientRect(tooltipX - 3, tooltipY + tooltipHeight + 2, tooltipX + maxWidth + 3, tooltipY + tooltipHeight + 3, borderColorEnd, borderColorEnd);
+
+            int currentY = tooltipY;
+            for (int i = 0; i < textLines.size(); ++i) {
+                String line = textLines.get(i);
+                font.drawStringWithShadow(line, tooltipX, currentY, -1);
+
+                if (i == 0) {
+                    currentY += 2;
+                }
+
+                currentY += 10;
+            }
+
+            this.zLevel = 0.0F;
+            GL11.glEnable(GL11.GL_DEPTH_TEST);
+        }
+    }
+
+
     private List<String> wrapText(String text, FontRenderer font, int maxWidth) {
         List<String> lines = new ArrayList<>();
 
@@ -157,12 +266,12 @@ public class ScreenUtil extends Gui {
         StringBuilder currentLine = new StringBuilder();
 
         for (String word : words) {
-            String testLine = currentLine.length() > 0 ? currentLine + " " + word : word;
+            String testLine = !currentLine.isEmpty() ? currentLine + " " + word : word;
 
             if (font.getStringWidth(testLine) <= maxWidth) {
                 currentLine = new StringBuilder(testLine);
             } else {
-                if (currentLine.length() > 0) {
+                if (!currentLine.isEmpty()) {
                     lines.add(currentLine.toString());
                 }
                 if (font.getStringWidth(word) > maxWidth) {
@@ -175,7 +284,7 @@ public class ScreenUtil extends Gui {
             }
         }
 
-        if (currentLine.length() > 0) {
+        if (!currentLine.isEmpty()) {
             lines.add(currentLine.toString());
         }
 
@@ -191,14 +300,14 @@ public class ScreenUtil extends Gui {
             if (font.getStringWidth(testPart) <= maxWidth) {
                 currentPart.append(c);
             } else {
-                if (currentPart.length() > 0) {
+                if (!currentPart.isEmpty()) {
                     parts.add(currentPart.toString());
                 }
                 currentPart = new StringBuilder(String.valueOf(c));
             }
         }
 
-        if (currentPart.length() > 0) {
+        if (!currentPart.isEmpty()) {
             parts.add(currentPart.toString());
         }
 

@@ -11,7 +11,23 @@ public class GuiVideoSettings extends GuiScreen {
     /**
      * An array of all of EnumOptions's video options.
      */
-    private static final EnumOptions[] videoOptions = new EnumOptions[]{EnumOptions.GRAPHICS, EnumOptions.RENDER_DISTANCE, EnumOptions.AMBIENT_OCCLUSION, EnumOptions.FRAMERATE_LIMIT, EnumOptions.ANAGLYPH, EnumOptions.VIEW_BOBBING, EnumOptions.GUI_SCALE, EnumOptions.ADVANCED_OPENGL, EnumOptions.GAMMA, EnumOptions.RENDER_CLOUDS, EnumOptions.PARTICLES, EnumOptions.USE_FULLSCREEN, EnumOptions.ENABLE_VSYNC, EnumOptionsExtra.TRANSPARENT_BACKGROUND, EnumOptionsExtra.HIGHLIGHT_BUTTON_TEXT
+    private static final EnumOptions[] videoOptions = new EnumOptions[]{
+            EnumOptions.GRAPHICS,
+            EnumOptions.RENDER_DISTANCE,
+            EnumOptions.AMBIENT_OCCLUSION,
+            EnumOptions.FRAMERATE_LIMIT,
+            EnumOptions.ANAGLYPH,
+            EnumOptions.VIEW_BOBBING,
+            EnumOptions.GUI_SCALE,
+            EnumOptions.ADVANCED_OPENGL,
+            EnumOptions.GAMMA,
+            EnumOptions.RENDER_CLOUDS,
+            EnumOptions.PARTICLES,
+            EnumOptions.USE_FULLSCREEN,
+            EnumOptions.ENABLE_VSYNC,
+            EnumOptions.USE_SERVER_TEXTURES,
+            EnumOptionsExtra.TRANSPARENT_BACKGROUND,
+            EnumOptionsExtra.HIGHLIGHT_BUTTON_TEXT
 //            ,EnumOptions.MIPMAP_LEVELS, EnumOptions.ANISOTROPIC_FILTERING
     };
 

@@ -26,6 +26,10 @@ public class GuiYesNoModern extends GuiScreen {
     protected int parentScreenId;
     private int disableTimer;
 
+    public GuiYesNoModern(GuiYesNoCallback parentScreen, String messageLine, int parentScreenId) {
+        this(parentScreen, messageLine, "", parentScreenId);
+    }
+
     public GuiYesNoModern(GuiYesNoCallback parentScreen, String messageLine1, String messageLine2, int parentScreenId) {
         this.parentScreen = parentScreen;
         this.messageLine1 = messageLine1;

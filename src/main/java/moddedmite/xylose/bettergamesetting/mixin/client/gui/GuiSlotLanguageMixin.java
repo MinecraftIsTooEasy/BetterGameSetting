@@ -18,6 +18,7 @@ import java.util.Map;
 public abstract class GuiSlotLanguageMixin extends GuiSlot {
     @Shadow @Final private List<String> field_77251_g;
     @Shadow @Final private Map<String, Language> field_77253_h;
+    @Shadow @Final GuiLanguage languageGui;
 
     @Unique private List<String> filteredLanguages = new ArrayList<>();
 
@@ -28,6 +29,11 @@ public abstract class GuiSlotLanguageMixin extends GuiSlot {
     @Inject(method = "<init>", at = @At("TAIL"))
     private void injectConstructor(GuiLanguage guiLanguage, CallbackInfo ci) {
         this.filteredLanguages.addAll(this.field_77251_g);
+    }
+
+    @Inject(method = "elementClicked", at = @At("TAIL"))
+    private void refreshGui(int bl, boolean par2, CallbackInfo ci) {
+        this.languageGui.initGui();
     }
 
     /**

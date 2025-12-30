@@ -29,7 +29,7 @@ public class GuiLanguageMixin extends GuiScreen {
         this.buttonList.add(this.doneButton = new GuiSmallButton(6, this.width / 2 - 155 + 160, this.height - 38, I18n.getString("gui.done")));
         this.searchField = new GuiTextField(this.fontRenderer, this.width / 2 - 100, 14, 200, 15);
         this.searchField.setMaxStringLength(50);
-        this.searchField.setHint(I18n.getString("options.language.search"));
+        this.searchField.setHint(I18n.getString("options.search"));
         return true;
     }
 

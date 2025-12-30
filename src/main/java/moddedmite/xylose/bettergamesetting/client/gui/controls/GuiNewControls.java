@@ -1,5 +1,6 @@
 package moddedmite.xylose.bettergamesetting.client.gui.controls;
 
+import moddedmite.xylose.bettergamesetting.client.gui.base.GuiYesNoModern;
 import net.minecraft.*;
 import org.lwjgl.input.Mouse;
 
@@ -21,9 +22,9 @@ public class GuiNewControls extends GuiScreen {
 
     public void initGui() {
         this.keyBindingList = new GuiKeyBindingList(this, this.mc);
-        this.buttonList.add(new GuiButton(200, this.width / 2 - 155 + 160, this.height - 29, 150, 20, I18n.getString("gui.done")));
+        this.buttonList.add(new GuiButton(200, this.width / 2 + 5, this.height - 29, 150, 20, I18n.getString("gui.done")));
         this.buttonList.add(this.buttonReset = new GuiButton(201, this.width / 2 - 155, this.height - 29, 150, 20, I18n.getString("controls.resetAll")));
-        this.buttonList.add(new GuiButton(202, this.width / 2 - 155 + 160, 18 + 22, 150, 20, I18n.getString("controls.classicControls")));
+        this.buttonList.add(new GuiButton(202, this.width / 2 + 5, 18 + 22, 150, 20, I18n.getString("controls.classicControls")));
         this.screenTitle = I18n.getString("controls.title");
         int i = 0;
 
@@ -39,18 +40,19 @@ public class GuiNewControls extends GuiScreen {
         }
     }
 
-    public void handleMouseInput() {
-        super.handleMouseInput();
-//        this.keyBindingList.handleMouseInput();
-//        Mouse.getEventButton();
-    }
-
     protected void actionPerformed(GuiButton button) {
         if (button.id == 200) {
             this.mc.displayGuiScreen(this.parentScreen);
         } else if (button.id == 201) {
-            this.mc.displayGuiScreen(new GuiYesNoResetKeyBinding(this));
-        } else if (button.id == 202) {
+            this.mc.displayGuiScreen(new GuiYesNoModern((result, id) -> {
+                this.mc.displayGuiScreen(this);
+                if (result) {
+                    for (KeyBinding keybinding : this.mc.gameSettings.keyBindings) {
+                        this.mc.gameSettings.setOptionKeyBinding(keybinding, keybinding.getDefaultKeyCode(keybinding.keyDescription));
+                    }
+                    KeyBinding.resetKeyBindingArrayAndHash();
+                }
+            }, I18n.getString("controls.reset_keybinding_info"), 0));        } else if (button.id == 202) {
             this.mc.displayGuiScreen(new GuiControls(this, this.options));
             this.options.saveOptions();
         } else if (button.id < 100 && button instanceof GuiSmallButton) {

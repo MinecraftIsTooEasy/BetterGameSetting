@@ -30,6 +30,7 @@ key.categories.ui=游戏界面
 key.categories.inventory=道具栏
 key.categories.uncategorized=未分类
 controls.reset_keybinding_info=确定要重置所有按键吗?
+
 resourcePack.available.title=可用的资源包
 resourcePack.selected.title=已选的资源包
 resourcePack.incompatible=不兼容
@@ -39,7 +40,7 @@ resourcePack.incompatible.confirm.title=你确定要加载此资源包吗？
 resourcePack.incompatible.new=（适用于新版本的Minecraft）
 resourcePack.incompatible.old=（适用于旧版本的Minecraft）
 
-options.language.search=§o搜索…
+options.search=§o搜索…
 
 # description
 options.graphics.description=调整游戏的渲染质量，选择“快速”以提高性能或“高品质”以获得更好的视觉效果
@@ -55,6 +56,7 @@ options.renderDistance.description=控制玩家能够看到的游戏世界的范
 options.framerateLimit.description=限制游戏的最大帧率，有助于节省系统资源或减少功耗
 options.guiScale.description=调整屏幕上的用户界面大小，适合不同分辨率的显示器
 options.gamma.description=调整游戏中的整体亮度，适合在不同光照条件下优化可见性
+options.serverTextures.description=使用服务器的资源包
 options.transparentBackground.description=在游戏外的界面以暗化、模糊化的全景图作为背景，在游戏内暂停菜单各界面统一以暗化、模糊化的玩家镜头作为背景
 options.highlightButtonText.description=控制悬停于按钮时的文字颜色
 

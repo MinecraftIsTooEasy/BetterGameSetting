@@ -17,6 +17,7 @@ public abstract class ResourcePackListEntry extends GuiScreen implements GuiList
     private static final ChatMessageComponent field_183022_f = ChatMessageComponent.createFromTranslationKey("resourcePack.incompatible.new");
     protected final Minecraft mc;
     protected final GuiScreenResourcePacks resourcePacksGUI;
+    private boolean isSelected = false;
 
     public ResourcePackListEntry(GuiScreenResourcePacks resourcePacksGUIIn) {
         this.resourcePacksGUI = resourcePacksGUIIn;
@@ -28,7 +29,7 @@ public abstract class ResourcePackListEntry extends GuiScreen implements GuiList
 
         if (i != 1) {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            Gui.drawRect(x - 1, y - 1, x + listWidth - 9, y + slotHeight + 1, -8978432);
+            Gui.drawRect(x - 1, y - 1, x + listWidth - 3, y + slotHeight + 1, 0xFF770000);
         }
 
         this.getPackIcon();
@@ -39,7 +40,7 @@ public abstract class ResourcePackListEntry extends GuiScreen implements GuiList
 
         if ((this.mc.gameSettings.touchscreen || isSelected) && this.func_148310_d()) {
             this.mc.getTextureManager().bindTexture(RESOURCE_PACKS_TEXTURE);
-            Gui.drawRect(x, y, x + 32, y + 32, -1601138544);
+            Gui.drawRect(x, y, x + 32, y + 32, 0xA0909090);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             int j = mouseX - x;
             int k = mouseY - y;
@@ -87,15 +88,15 @@ public abstract class ResourcePackListEntry extends GuiScreen implements GuiList
 
         int i1 = this.mc.fontRenderer.getStringWidth(s);
 
-        if (i1 > 157) {
-            s = this.mc.fontRenderer.trimStringToWidth(s, 157 - this.mc.fontRenderer.getStringWidth("...")) + "...";
+        if (i1 > 145) {
+            s = this.mc.fontRenderer.trimStringToWidth(s, 145 - this.mc.fontRenderer.getStringWidth("...")) + "...";
         }
 
         this.mc.fontRenderer.drawStringWithShadow(s, (x + 32 + 2), (y + 1), 16777215);
-        List<String> list = this.mc.fontRenderer.listFormattedStringToWidth(s1, 157);
+        List<String> list = this.mc.fontRenderer.listFormattedStringToWidth(s1, 145);
 
         for (int l = 0; l < 2 && l < list.size(); ++l) {
-            this.mc.fontRenderer.drawStringWithShadow((String) list.get(l), (x + 32 + 2), (y + 12 + 10 * l), 8421504);
+            this.mc.fontRenderer.drawStringWithShadow(list.get(l), (x + 32 + 2), (y + 12 + 10 * l), 8421504);
         }
     }
 
@@ -189,10 +190,23 @@ public abstract class ResourcePackListEntry extends GuiScreen implements GuiList
         return false;
     }
 
-    public void setSelected(int p_178011_1_, int p_178011_2_, int p_178011_3_) {}
+    public void setSelected(int slotIndex, int mouseX, int mouseY) {
+        this.isSelected = true;
+    }
+
+    public boolean getIsSelected() {
+        return this.isSelected;
+    }
+
+    public void setIsSelected(boolean selected) {
+        this.isSelected = selected;
+    }
 
     /**
      * Fired when the mouse button is released. Arguments: index, x, y, mouseEvent, relativeX, relativeY
      */
     public void mouseReleased(int slotIndex, int x, int y, int mouseEvent, int relativeX, int relativeY) {}
+
+    public void keyTyped(int slotIndex, char typedChar, int keyCode) {
+    }
 }

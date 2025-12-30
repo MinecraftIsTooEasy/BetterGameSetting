@@ -27,6 +27,7 @@ public abstract class GuiSlotModern {
     private boolean hasListHeader;
     public int headerPadding;
     private boolean enabled = true;
+    protected int selectionBoxColor = 0x808080;
 
     public GuiSlotModern(Minecraft client, int width, int height, int top, int bottom, int slotHeight) {
         this.client = client;
@@ -282,7 +283,7 @@ public abstract class GuiSlotModern {
         GL11.glShadeModel(GL11.GL_SMOOTH);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         // draw top and bottom block gradient matte
-        if (!client.gameSettings.isTransparentBackground()) {
+        if (!this.client.gameSettings.isTransparentBackground()) {
             tessellator.startDrawingQuads();
             tessellator.setColorRGBA_I(0, 0);
             tessellator.addVertexWithUV(this.left, (this.top + b0), 0.0D, 0.0D, 1.0D);
@@ -406,7 +407,7 @@ public abstract class GuiSlotModern {
                     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
                     GL11.glDisable(GL11.GL_TEXTURE_2D);
                     tessellator.startDrawingQuads();
-                    tessellator.setColorOpaque_I(8421504);
+                    tessellator.setColorOpaque_I(this.selectionBoxColor);
                     tessellator.addVertexWithUV(i2, k1 + l1 + 2, 0.0D, 0.0D, 1.0D);
                     tessellator.addVertexWithUV(j2, k1 + l1 + 2, 0.0D, 1.0D, 1.0D);
                     tessellator.addVertexWithUV(j2, k1 - 2, 0.0D, 1.0D, 0.0D);
@@ -433,7 +434,7 @@ public abstract class GuiSlotModern {
      * Overlays the background to hide scrolled items
      */
     private void overlayBackground(int startY, int endY, int startAlpha, int endAlpha) {
-        if (client.gameSettings.isTransparentBackground()) return;
+        if (this.client.gameSettings.isTransparentBackground()) return;
         Tessellator tessellator = Tessellator.instance;
         this.client.getTextureManager().bindTexture(Gui.optionsBackground);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -461,7 +462,7 @@ public abstract class GuiSlotModern {
     }
 
     protected void drawContainerBackground(Tessellator tessellator) {
-        if (client.gameSettings.isTransparentBackground()) {
+        if (this.client.gameSettings.isTransparentBackground()) {
             Gui.drawRect(this.left, this.top, this.right, this.bottom, 0x66000000);//draw slot dark background
             //draw slot frame line
             Gui.drawRect(this.left, this.top, this.right, this.top - 1, 0xCC000000);
@@ -480,5 +481,6 @@ public abstract class GuiSlotModern {
             tessellator.addVertexWithUV(this.left, this.top, 0.0D, ((float) this.left / f1), ((float) (this.top + (int) this.amountScrolled) / f1));
             tessellator.draw();
         }
+
     }
 }

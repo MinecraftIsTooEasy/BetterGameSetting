@@ -142,42 +142,42 @@ public abstract class GameSettingsMixin implements IGameSetting {
     }
 
     @Inject(method = "setOptionFloatValue", at = @At("TAIL"))
-    public void setOptionFloatValue(EnumOptions par1EnumOptions, float par2, CallbackInfo ci) {
-        if (par1EnumOptions == EnumOptions.RENDER_DISTANCE) {
-            this.renderDistance = (int) par2;
+    public void setOptionFloatValue(EnumOptions options, float value, CallbackInfo ci) {
+        if (options == EnumOptions.RENDER_DISTANCE) {
+            this.renderDistance = (int) value;
         }
-        if (par1EnumOptions == EnumOptions.FRAMERATE_LIMIT) {
-            this.limitFramerate = (int) par2;
+        if (options == EnumOptions.FRAMERATE_LIMIT) {
+            this.limitFramerate = (int) value;
         }
-        if (par1EnumOptions == EnumOptions.FOV) {
-            this.fovSetting = (int) Mth.denormalizeValue(par2, 30.0F, 110.0F, 1.0F);
+        if (options == EnumOptions.FOV) {
+            this.fovSetting = (int) Mth.denormalizeValue(value, 30.0F, 110.0F, 1.0F);
         }
-        if (par1EnumOptions == EnumOptions.GAMMA) {
-            this.gammaSetting = par2;
+        if (options == EnumOptions.GAMMA) {
+            this.gammaSetting = value;
         }
-        if (par1EnumOptions == EnumOptionsExtra.RECORDS) {
-            this.recordVolume = par2;
+        if (options == EnumOptionsExtra.RECORDS) {
+            this.recordVolume = value;
         }
-        if (par1EnumOptions == EnumOptionsExtra.WEATHER) {
-            this.weatherVolume = par2;
+        if (options == EnumOptionsExtra.WEATHER) {
+            this.weatherVolume = value;
         }
-        if (par1EnumOptions == EnumOptionsExtra.BLOCKS) {
-            this.blockVolume = par2;
+        if (options == EnumOptionsExtra.BLOCKS) {
+            this.blockVolume = value;
         }
-        if (par1EnumOptions == EnumOptionsExtra.MOBS) {
-            this.hostileVolume = par2;
+        if (options == EnumOptionsExtra.MOBS) {
+            this.hostileVolume = value;
         }
-        if (par1EnumOptions == EnumOptionsExtra.ANIMALS) {
-            this.neutralVolume = par2;
+        if (options == EnumOptionsExtra.ANIMALS) {
+            this.neutralVolume = value;
         }
-        if (par1EnumOptions == EnumOptionsExtra.PLAYERS) {
-            this.playerVolume = par2;
+        if (options == EnumOptionsExtra.PLAYERS) {
+            this.playerVolume = value;
         }
-        if (par1EnumOptions == EnumOptionsExtra.AMBIENT) {
-            this.ambientVolume = par2;
+        if (options == EnumOptionsExtra.AMBIENT) {
+            this.ambientVolume = value;
         }
-        if (par1EnumOptions == EnumOptionsExtra.UI) {
-            this.uiVolume = par2;
+        if (options == EnumOptionsExtra.UI) {
+            this.uiVolume = value;
         }
     }
 
@@ -222,36 +222,36 @@ public abstract class GameSettingsMixin implements IGameSetting {
     }
 
     @Inject(method = "getKeyBinding", at = @At("HEAD"), cancellable = true)
-    public void getKeyBinding(EnumOptions par1EnumOptions, CallbackInfoReturnable<String> cir) {
-        String var2 = I18n.getString(par1EnumOptions.getEnumString()) + ": ";
-        float var5 = this.getOptionFloatValue(par1EnumOptions);
-        if (par1EnumOptions == EnumOptions.RENDER_DISTANCE) {
-            cir.setReturnValue(var2 + this.renderDistance + I18n.getString("options.chunks"));
+    public void getKeyBinding(EnumOptions options, CallbackInfoReturnable<String> cir) {
+        String string = I18n.getString(options.getEnumString()) + ": ";
+        float value = this.getOptionFloatValue(options);
+        if (options == EnumOptions.RENDER_DISTANCE) {
+            cir.setReturnValue(string + this.renderDistance + I18n.getString("options.chunks"));
         }
-        if (par1EnumOptions == EnumOptions.FRAMERATE_LIMIT) {
+        if (options == EnumOptions.FRAMERATE_LIMIT) {
             if (this.limitFramerate >= 260) {
-                cir.setReturnValue(var2 + I18n.getString("options.framerateLimit.max"));
+                cir.setReturnValue(string + I18n.getString("options.framerateLimit.max"));
             } else {
-                cir.setReturnValue(var2 + this.limitFramerate + " fps");
+                cir.setReturnValue(string + this.limitFramerate + " fps");
             }
         }
-        if (par1EnumOptions == EnumOptions.FOV) {
-            if (var5 == 0.5F) {
-                cir.setReturnValue(var2 + I18n.getString("options.fov.min"));
-            } else if (var5 == 1.0F) {
-                cir.setReturnValue(var2 + I18n.getString("options.fov.max"));
+        if (options == EnumOptions.FOV) {
+            if (value == 0.5F) {
+                cir.setReturnValue(string + I18n.getString("options.fov.min"));
+            } else if (value == 1.0F) {
+                cir.setReturnValue(string + I18n.getString("options.fov.max"));
             } else {
-                cir.setReturnValue(var2 + (int) this.fovSetting);
+                cir.setReturnValue(string + (int) this.fovSetting);
             }
         }
-        if (par1EnumOptions == EnumOptionsExtra.FORCE_UNICODE_FONT) {
-            cir.setReturnValue(var2 + getTranslationBoolean(this.forceUnicodeFont));
+        if (options == EnumOptionsExtra.FORCE_UNICODE_FONT) {
+            cir.setReturnValue(string + getTranslationBoolean(this.forceUnicodeFont));
         }
-        if (par1EnumOptions == EnumOptionsExtra.TRANSPARENT_BACKGROUND) {
-            cir.setReturnValue(var2 + getTranslationBoolean(this.transparentBackground));
+        if (options == EnumOptionsExtra.TRANSPARENT_BACKGROUND) {
+            cir.setReturnValue(string + getTranslationBoolean(this.transparentBackground));
         }
-        if (par1EnumOptions == EnumOptionsExtra.HIGHLIGHT_BUTTON_TEXT) {
-            cir.setReturnValue(var2 + getTranslationBoolean(this.highlightButtonText));
+        if (options == EnumOptionsExtra.HIGHLIGHT_BUTTON_TEXT) {
+            cir.setReturnValue(string + getTranslationBoolean(this.highlightButtonText));
         }
     }
 
@@ -291,14 +291,13 @@ public abstract class GameSettingsMixin implements IGameSetting {
                     this.fovSetting = this.parseFloat(astring[1]);
                 }
                 if (astring[0].equals("resourcePacks")) {
-                    this.resourcePacks = (List) gson.fromJson(s.substring(s.indexOf(58) + 1), typeListString);
+                    this.resourcePacks = gson.fromJson(s.substring(s.indexOf(58) + 1), typeListString);
                     if (this.resourcePacks == null) {
-                        this.resourcePacks = new ArrayList();
+                        this.resourcePacks = Lists.<String>newArrayList();
                     }
                 }
                 if (astring[0].equals("incompatibleResourcePacks")) {
-                    this.incompatibleResourcePacks = (List) gson.fromJson(s.substring(s.indexOf(58) + 1), typeListString);
-
+                    this.incompatibleResourcePacks = gson.fromJson(s.substring(s.indexOf(58) + 1), typeListString);
                     if (this.incompatibleResourcePacks == null) {
                         this.incompatibleResourcePacks = Lists.<String>newArrayList();
                     }
@@ -402,7 +401,7 @@ public abstract class GameSettingsMixin implements IGameSetting {
 
     @Override
     public void setOptionKeyBinding(KeyBinding key, int keyCode) {
-        ((IKeyBinding) key).setKeyCode(keyCode);
+        key.setKeyCode(keyCode);
         this.saveOptions();
     }
 

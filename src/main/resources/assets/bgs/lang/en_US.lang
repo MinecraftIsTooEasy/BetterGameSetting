@@ -40,7 +40,7 @@ resourcePack.incompatible.confirm.title=Are you sure you want to load this resou
 resourcePack.incompatible.confirm.old=This resource pack was made for an older version of Minecraft and may no longer work correctly.
 resourcePack.incompatible.confirm.new=This resource pack was made for a newer version of Minecraft and may no longer work correctly.
 
-options.language.search=§oSearch…
+options.search=§oSearch…
 
 # description
 options.graphics.description=Adjust the rendering quality of the game; choose "Fast" for better performance or "Fancy" for improved visuals
@@ -56,6 +56,7 @@ options.renderDistance.description=Control how far you can see in the game world
 options.framerateLimit.description=Limit the maximum frame rate of the game to save system resources or reduce power consumption
 options.guiScale.description= Adjust the size of the user interface on the screen, suitable for different display resolutions
 options.gamma.description= Adjust the overall brightness of the game to optimize visibility under different lighting conditions
+options.serverTextures.description=Use the server's resource pack
 options.transparentBackground.description=Off-game screens are backed by darkened panoramas, and in-game pause menus are framed with darkened player shots
 options.highlightButtonText.description=Controls the color of the text when hovering over the button
 

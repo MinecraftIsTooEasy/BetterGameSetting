@@ -27,18 +27,10 @@ public abstract class EnumOptionsMixin implements IEnumOptions {
 
     @Inject(method = "<clinit>", at = @At("TAIL"))
     private static void setMinMaxStepValue(CallbackInfo ci) {
-        GAMMA.setValueMin(0.0F);
-        GAMMA.setValueMax(BGSConfig.LightOptionLimit.get());
-        GAMMA.setValueStep(0.01F);
-        RENDER_DISTANCE.setValueMin(2.0F);
-        RENDER_DISTANCE.setValueMax(24.0F);
-        RENDER_DISTANCE.setValueStep(1.0F);
-        FRAMERATE_LIMIT.setValueMin(10.0F);
-        FRAMERATE_LIMIT.setValueMax(260.0F);
-        FRAMERATE_LIMIT.setValueStep(10.0F);
-        GUI_SCALE.setValueMin(0.0F);
-        GUI_SCALE.setValueMax(10.0F);
-        GUI_SCALE.setValueStep(1.0F);
+        GAMMA.setValue(.0F, BGSConfig.LightOptionLimit.get(), .01F);
+        RENDER_DISTANCE.setValue(2.0F, 16.0F, 1.0F);
+        FRAMERATE_LIMIT.setValue(10.0F, 260.0F, 10.0F);
+        GUI_SCALE.setValue(.0F, 10.0F, 1.0F);
 //        EnumOptionsExtra.MIPMAP_LEVELS.setValueMin(0.0F);
 //        EnumOptionsExtra.MIPMAP_LEVELS.setValueMax(4.0F);
 //        EnumOptionsExtra.MIPMAP_LEVELS.setValueStep(1.0F);
@@ -107,5 +99,12 @@ public abstract class EnumOptionsMixin implements IEnumOptions {
     @Override
     public void setValueStep(float valueStep) {
         this.valueStep = valueStep;
+    }
+
+    @Override
+    public void setValue(float min, float max, float step) {
+        this.valueMin = min;
+        this.valueMax = max;
+        this.valueStep = step;
     }
 }

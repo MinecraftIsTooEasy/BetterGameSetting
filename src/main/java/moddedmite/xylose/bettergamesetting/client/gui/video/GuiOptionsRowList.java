@@ -8,9 +8,12 @@ import moddedmite.xylose.bettergamesetting.client.gui.button.GuiScaleSlider;
 import moddedmite.xylose.bettergamesetting.util.ScreenUtil;
 import net.minecraft.EnumOptions;
 import net.minecraft.GuiButton;
+import net.minecraft.I18n;
 import net.minecraft.Minecraft;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 public class GuiOptionsRowList extends GuiListExtended {
     public final List<GuiOptionsRowList.Row> optionsRowList = Lists.<GuiOptionsRowList.Row>newArrayList();
@@ -69,30 +72,34 @@ public class GuiOptionsRowList extends GuiListExtended {
     @Override
     protected void drawTooltip(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY) {
         Row row = this.getListEntry(slotIndex);
+        this.drawTooltipsStream(row, mouseX, mouseY);
+    }
 
-        if (row.buttonLeft instanceof GuiOptionButton button) {
-            if (button.isMouseOver(mouseX, mouseY)) {
-                ScreenUtil.getInstance().drawHoveringTranslatedText(button.returnEnumOptions().getEnumString() + ".description", mouseX, mouseY);
-            }
-        }
+    private void drawTooltipsStream(Row row, int mouseX, int mouseY) {
+        Stream.of(row.buttonLeft, row.buttonRight)
+                .filter(Objects::nonNull)
+                .filter(GuiButton::func_82252_a)
+                .findFirst()
+                .ifPresent(button -> {
+                    String tooltipKey = getTooltipKey(button);
+                    if (tooltipKey != null) {
+                        ScreenUtil.getInstance().drawButtonTooltipTranslated(tooltipKey, mouseX, mouseY);
+                    }
+                });
+    }
 
-        if (row.buttonLeft instanceof GuiOptionSlider button) {
-            if (button.isMouseOver(mouseX, mouseY)) {
-                ScreenUtil.getInstance().drawHoveringTranslatedText(button.options.getEnumString() + ".description", mouseX, mouseY);
-            }
+    private String getTooltipKey(GuiButton button) {
+        if (button instanceof GuiOptionButton optionButton) {
+            return getTranslatedTooltipKey(optionButton.returnEnumOptions().getEnumString());
+        } else if (button instanceof GuiOptionSlider sliderButton) {
+            return getTranslatedTooltipKey(sliderButton.options.getEnumString());
         }
+        return null;
+    }
 
-        if (row.buttonRight instanceof GuiOptionButton button) {
-            if (button.isMouseOver(mouseX, mouseY)) {
-                ScreenUtil.getInstance().drawHoveringTranslatedText(button.returnEnumOptions().getEnumString() + ".description", mouseX, mouseY);
-            }
-        }
-
-        if (row.buttonRight instanceof GuiOptionSlider button) {
-            if (button.isMouseOver(mouseX, mouseY)) {
-                ScreenUtil.getInstance().drawHoveringTranslatedText(button.options.getEnumString() + ".description", mouseX, mouseY);
-            }
-        }
+    private String getTranslatedTooltipKey(String baseKey) {
+        String tooltipKey = baseKey + ".description";
+        return !I18n.getString(tooltipKey).equals(tooltipKey) ? tooltipKey : null;
     }
 
     public static class Row implements GuiListExtended.IGuiListEntry {
@@ -147,7 +154,11 @@ public class GuiOptionsRowList extends GuiListExtended {
             }
         }
 
-        public void setSelected(int p_178011_1_, int p_178011_2_, int p_178011_3_) {
+        @Override
+        public void keyTyped(int slotIndex, char typedChar, int keyCode) {
+        }
+
+        public void setSelected(int slotIndex, int mouseX, int mouseY) {
         }
     }
 }

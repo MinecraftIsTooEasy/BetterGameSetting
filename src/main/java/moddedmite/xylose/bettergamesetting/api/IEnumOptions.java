@@ -25,6 +25,9 @@ public interface IEnumOptions {
     default void setValueStep(float valueStep) {
     }
 
+    default void setValue(float min, float max, float step) {
+    }
+
     default float normalizeValue(float value, EnumOptions options) {
         return 0;
     }

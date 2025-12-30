@@ -1,101 +1,263 @@
 package moddedmite.xylose.bettergamesetting.client.gui.gamerule;
 
 import moddedmite.xylose.bettergamesetting.client.gui.base.GuiListExtended;
+import moddedmite.xylose.bettergamesetting.init.BGSClient;
 import moddedmite.xylose.bettergamesetting.util.ScreenUtil;
 import net.minecraft.*;
+import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class GuiGameRulesList extends GuiListExtended {
-    private final List<String> gameRuleNames;
-    private final GuiGameRuleEditor guiGameRules;
+    private final List<Entry> entries = new ArrayList<>();
+    private final GameRules gameRules;
+    private Entry focusedEntry = null;
 
-    public GuiGameRulesList(GuiGameRuleEditor guiGameRules) {
-        super(guiGameRules.mc, guiGameRules.width, guiGameRules.height, 32, guiGameRules.height - 32, 24);
-        this.guiGameRules = guiGameRules;
-        this.gameRuleNames = Arrays.asList(GuiGameRuleEditor.getGameRules(guiGameRules).getRules());
-    }
+    public GuiGameRulesList(GuiGameRules gui) {
+        super(gui.mc, gui.width, gui.height, 32, gui.height - 32, 24);
+        this.field_148163_i = false;
+        this.gameRules = gui.gameRules;
 
-    protected int getSize() {
-        return this.gameRuleNames.size();
-    }
+        String[] ruleNames = this.gameRules.getRules();
+        Arrays.sort(ruleNames);
 
-    protected int getContentHeight() {
-        return this.getSize() * 24;
-    }
-
-    protected int getScrollBarX() {
-        return super.getScrollBarX() + 10;
-    }
-
-    protected void drawBackground() {
-        this.guiGameRules.drawDefaultBackground();
-    }
-
-    @Override
-    public IGuiListEntry getListEntry(int index) {
-        return new GameRuleEntry(this.gameRuleNames.get(index));
+        for (String ruleName : ruleNames) {
+            boolean isBoolean = this.isBooleanRule(ruleName);
+            this.entries.add(new Entry(ruleName, isBoolean));
+        }
     }
 
     @Override
     protected void drawTooltip(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY) {
-        String ruleName = this.gameRuleNames.get(slotIndex);
-        String description = I18n.getString("gamerules." + ruleName + ".description");
-        String defaultValue = I18n.getStringParams("gamerules.default", GuiGameRuleEditor.getGameRules(this.guiGameRules).getGameRuleStringValue(ruleName));
-        List<String> tooltip = new ArrayList<>(List.of("§e" + ruleName));
+        Entry entry = this.getListEntry(slotIndex);
+        if (entry != null) {
+            String ruleName = entry.ruleName;
+            String descriptionKey = "gamerules." + ruleName + ".description";
+            String description = I18n.getString(descriptionKey);
+            String defaultValue = I18n.getStringParams("gamerules.default", BGSClient.DEFAULT_GAMERULE_VALUE.get(ruleName));
+            List<String> tooltip = new ArrayList<>();
+            tooltip.add("§e" + ruleName);
 
-        if (!description.equals("gamerules." + ruleName + ".description")) {
-            tooltip.add(description);
-        }
-        tooltip.add(defaultValue);
-        if (!description.isEmpty()) {
-            ScreenUtil.getInstance().drawHoveringText(tooltip, mouseX, mouseY);
+            if (!description.equals(descriptionKey)) {
+                tooltip.add(description);
+            }
+            tooltip.add(defaultValue);
+
+            if (!description.equals(descriptionKey) || !defaultValue.isEmpty()) {
+                ScreenUtil.getInstance().drawTooltip(tooltip, mouseX, mouseY);
+            }
         }
     }
 
-    public class GameRuleEntry implements IGuiListEntry {
-        private final String ruleName;
-        private final GuiButton btnToggle;
+    private boolean isBooleanRule(String ruleName) {
+        String value = this.gameRules.getGameRuleStringValue(ruleName);
+        return value.equalsIgnoreCase("true") || value.equalsIgnoreCase("false");
+    }
 
-        private GameRuleEntry(String ruleName) {
-            this.ruleName = ruleName;
-            this.btnToggle = new GuiButton(0, 0, 0, 40, 20, "");
+    @Override
+    public GuiGameRulesList.Entry getListEntry(int index) {
+        return this.entries.get(index);
+    }
+
+    @Override
+    protected int getSize() {
+        return this.entries.size();
+    }
+
+    @Override
+    public int getListWidth() {
+        return super.getListWidth() + 10;
+    }
+
+    @Override
+    protected int getScrollBarX() {
+        return super.getScrollBarX() + 5;
+    }
+
+    public void resetAllRules() {
+        for (Entry entry : this.entries) {
+            entry.resetToDefault();
+        }
+    }
+
+    public void updateScreen() {
+        if (this.focusedEntry != null) {
+            this.focusedEntry.updateCursorCounter();
+        }
+    }
+
+    @Override
+    public boolean mouseClicked(int mouseX, int mouseY, int mouseButton) {
+        super.mouseClicked(mouseX, mouseY, mouseButton);
+        if (!this.isMouseYWithinSlotBounds(mouseY)) {
+            this.clearFocus();
+        }
+        return false;
+    }
+
+    public void clearFocus() {
+        if (this.focusedEntry != null) {
+            this.focusedEntry.setFocused(false);
+            this.focusedEntry = null;
+        }
+    }
+
+    private void setFocusedEntry(Entry entry) {
+        if (this.focusedEntry != null && this.focusedEntry != entry) {
+            this.focusedEntry.setFocused(false);
         }
 
+        this.focusedEntry = entry;
+        if (entry != null) {
+            entry.setFocused(true);
+        }
+    }
+
+    public class Entry implements GuiListExtended.IGuiListEntry {
+        private final Minecraft mc = Minecraft.getMinecraft();
+        private final String ruleName;
+        private final boolean isBoolean;
+        private GuiButton toggleButton;
+        private GuiTextField valueField;
+        private boolean isFocused = false;
+
+        public Entry(String ruleName, boolean isBoolean) {
+            this.ruleName = ruleName;
+            this.isBoolean = isBoolean;
+
+            if (isBoolean) {
+                this.toggleButton = new GuiButton(0, 0, 0, 40, 20, "");
+                this.updateToggleButtonText();
+            } else {
+                this.valueField = new GuiTextField(this.mc.fontRenderer, 0, 0, 40, 20);
+                this.valueField.setMaxStringLength(256);
+                this.valueField.setText(gameRules.getGameRuleStringValue(ruleName));
+            }
+        }
+
+        @Override
         public void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean isSelected) {
-            String unlocalizedRuleName= this.ruleName;
-            String ruleValue = GuiGameRuleEditor.getGameRules(GuiGameRulesList.this.guiGameRules).getGameRuleStringValue(unlocalizedRuleName);
+            int nameX = x + 10;
+            int nameY = y + (slotHeight - 8) / 2;
+            String unlocalizedRuleName = this.ruleName;
 
             String ruleName = I18n.getString("gamerules." + unlocalizedRuleName + ".name");
             if (ruleName.equals("gamerules." + unlocalizedRuleName + ".name")) {
                 ruleName = unlocalizedRuleName;
             }
-            GuiGameRulesList.this.guiGameRules.drawString(GuiGameRulesList.this.guiGameRules.mc.fontRenderer, ruleName, x + 2, y + 2, 16777215);
+            this.mc.fontRenderer.drawString(ruleName, nameX, nameY, 0xFFFFFFFF);
 
-            this.btnToggle.xPosition = x + 190;
-            this.btnToggle.yPosition = y;
-            this.btnToggle.displayString = ruleValue;
-            this.btnToggle.drawButton(GuiGameRulesList.this.guiGameRules.mc, mouseX, mouseY);
+            int controlX = x + listWidth - 35;
+            int controlY = y + (slotHeight - 20) / 2;
+
+            if (this.isBoolean) {
+                this.toggleButton.xPosition = controlX;
+                this.toggleButton.yPosition = controlY;
+                this.toggleButton.drawButton(this.mc, mouseX, mouseY);
+            } else {
+                this.valueField.setPosition(controlX, controlY);
+                this.valueField.drawTextBox();
+            }
         }
 
+        @Override
         public boolean mousePressed(int slotIndex, int x, int y, int mouseEvent, int relativeX, int relativeY) {
-            String ruleValue = GuiGameRuleEditor.getGameRules(GuiGameRulesList.this.guiGameRules).getGameRuleStringValue(this.ruleName);
-            if (!this.btnToggle.mousePressed(GuiGameRulesList.this.guiGameRules.mc, x, y)) {
-                GuiGameRuleEditor.getGameRules(GuiGameRulesList.this.guiGameRules)
-                        .setOrCreateGameRule(this.ruleName, String.valueOf(!Boolean.parseBoolean(ruleValue)));
-                return true;
+            if (this.isBoolean) {
+                if (this.toggleButton.mousePressed(this.mc, x, y)) {
+                    boolean currentValue = gameRules.getGameRuleBooleanValue(this.ruleName);
+                    gameRules.setOrCreateGameRule(this.ruleName, String.valueOf(!currentValue));
+                    this.updateToggleButtonText();
+                    GuiGameRulesList.this.clearFocus();
+                    return true;
+                }
+            } else {
+                boolean clickedTextField = x >= this.valueField.xPos && x < this.valueField.xPos + this.valueField.getWidth()
+                        && y >= this.valueField.yPos && relativeY < this.valueField.yPos + this.valueField.height;
+                if (clickedTextField) {
+                    setFocusedEntry(this);
+                    this.valueField.mouseClicked(x, y, mouseEvent);
+                    return true;
+                } else {
+                    this.setFocused(false);
+                    if (focusedEntry == this) {
+                        focusedEntry = null;
+                    }
+                }
             }
-
             return false;
         }
 
+        @Override
         public void mouseReleased(int slotIndex, int x, int y, int mouseEvent, int relativeX, int relativeY) {
-            this.btnToggle.mouseReleased(x, y);
+            if (this.isBoolean) {
+                this.toggleButton.mouseReleased(x, y);
+            }
         }
 
-        public void setSelected(int p_178011_1_, int p_178011_2_, int p_178011_3_) {
+        @Override
+        public void keyTyped(int slotIndex, char typedChar, int keyCode) {
+            if (this == focusedEntry && !this.isBoolean && this.valueField.isFocused()) {
+                if (keyCode == Keyboard.KEY_RETURN) {
+                    this.saveTextFieldValue();
+                    this.setFocused(false);
+                    focusedEntry = null;
+                } else if (keyCode == Keyboard.KEY_ESCAPE) {
+                    this.valueField.setText(gameRules.getGameRuleStringValue(this.ruleName));
+                    this.setFocused(false);
+                    focusedEntry = null;
+                } else {
+                    String oldText = this.valueField.getText();
+                    this.valueField.textboxKeyTyped(typedChar, keyCode);
+
+                    if (!oldText.equals(this.valueField.getText())) {
+                        this.saveTextFieldValue();
+                    }
+                }
+            }
+        }
+
+        @Override
+        public void setSelected(int slotIndex, int mouseX, int mouseY) {
+        }
+
+        private void saveTextFieldValue() {
+            String value = this.valueField.getText();
+            gameRules.setOrCreateGameRule(this.ruleName, value);
+        }
+
+        public void updateCursorCounter() {
+            if (!this.isBoolean && this.valueField != null && this.isFocused) {
+                this.valueField.updateCursorCounter();
+            }
+        }
+
+        private void updateToggleButtonText() {
+            if (this.toggleButton != null) {
+                boolean value = gameRules.getGameRuleBooleanValue(this.ruleName);
+                this.toggleButton.displayString = (value ? I18n.getString("gui.yes") : I18n.getString("gui.no"));
+            }
+        }
+
+        public void resetToDefault() {
+            String defaultValue = BGSClient.DEFAULT_GAMERULE_VALUE.get(this.ruleName);
+            gameRules.setOrCreateGameRule(this.ruleName, defaultValue);
+            this.updateToggleButtonText();
+            if (this.valueField != null) {
+                this.valueField.setText(defaultValue);
+            }
+        }
+
+        public void setFocused(boolean focused) {
+            this.isFocused = focused;
+            if (this.valueField != null) {
+                this.valueField.setFocused(focused);
+            }
+        }
+
+        public boolean isFocused() {
+            return this.isFocused;
         }
     }
 }

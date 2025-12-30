@@ -22,7 +22,6 @@ public class BGSMixinConfig implements IMixinConfigPlugin {
     @Override
     public boolean shouldApplyMixin(String s, String s1) {
         if (s1.contains("GuiCreateWorldMixin")) return BGSConfig.useModernCreateWorldGui.get();
-        System.out.println("useModernCreateWorldGui value:" + BGSConfig.useModernCreateWorldGui.get());
         return true;
     }
 

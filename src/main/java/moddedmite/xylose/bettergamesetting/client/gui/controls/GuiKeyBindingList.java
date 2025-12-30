@@ -17,7 +17,7 @@ public class GuiKeyBindingList extends GuiListExtended {
         this.guiControls = controls;
         this.mc = mcIn;
         KeyBinding[] akeybinding = ArrayUtils.clone(mcIn.gameSettings.keyBindings);
-        this.listEntries = new IGuiListEntry[(int) (akeybinding.length + 6)];//6 represents 6 key Categories
+        this.listEntries = new IGuiListEntry[(int) (akeybinding.length + 6)];//6 key Categories
         Arrays.sort(akeybinding);
         int i = 0;
         String s = null;
@@ -85,7 +85,11 @@ public class GuiKeyBindingList extends GuiListExtended {
         public void mouseReleased(int slotIndex, int x, int y, int mouseEvent, int relativeX, int relativeY) {
         }
 
-        public void setSelected(int p_178011_1_, int p_178011_2_, int p_178011_3_) {
+        @Override
+        public void keyTyped(int slotIndex, char typedChar, int keyCode) {
+        }
+
+        public void setSelected(int slotIndex, int mouseX, int mouseY) {
         }
     }
 
@@ -150,7 +154,11 @@ public class GuiKeyBindingList extends GuiListExtended {
             this.btnReset.mouseReleased(x, y);
         }
 
-        public void setSelected(int p_178011_1_, int p_178011_2_, int p_178011_3_) {
+        @Override
+        public void keyTyped(int slotIndex, char typedChar, int keyCode) {
+        }
+
+        public void setSelected(int slotIndex, int mouseX, int mouseY) {
         }
     }
 }

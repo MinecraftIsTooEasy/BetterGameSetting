@@ -1,33 +1,24 @@
-### IntelliJ IDEA ###
+# gradle
+.gradle/
+build/
 out/
-!**/src/main/**/out/
-!**/src/test/**/out/
-.idea
+classes/
 
-### Eclipse ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
+# eclipse
+*.launch
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
+# idea
+.idea/
 
-### VS Code ###
+# vscode
+.settings/
 .vscode/
+bin/
+.classpath
+.project
 
-### Mac OS ###
-.DS_Store
+# fabric
+run/
 
-### project ###
-run
+# macos
+*.DS_Store

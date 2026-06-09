@@ -7,7 +7,7 @@ import net.minecraft.*;
 public class GuiSoundSetting extends GuiScreen {
     private GuiScreen parentGuiScreen;
     protected String screenTitle = "Sounds Settings";
-    private GameSettings guiGameSettings;
+    private GameSettings option;
     private static EnumOptions[] audioOptions = new EnumOptions[] {
             EnumOptions.MUSIC,
             EnumOptions.SOUND,
@@ -20,41 +20,41 @@ public class GuiSoundSetting extends GuiScreen {
             EnumOptionsExtra.AMBIENT,
             EnumOptionsExtra.UI
     };
-    public GuiSoundSetting(GuiScreen par1GuiScreen, GameSettings par2GameSettings) {
-        this.parentGuiScreen = par1GuiScreen;
-        this.guiGameSettings = par2GameSettings;
+    public GuiSoundSetting(GuiScreen parentGuiScreen, GameSettings option) {
+        this.parentGuiScreen = parentGuiScreen;
+        this.option = option;
     }
 
     public void initGui() {
         this.screenTitle = I18n.getString("options.sounds.title");
         this.buttonList.clear();
-        int var1 = 2;
+        int j = 2;
         int audioOptionsLength = audioOptions.length;
         this.buttonList.add(new GuiButton(200, this.width / 2 - 100, this.height / 6 + 168, I18n.getString("gui.done")));
 
         for (int i = 0; i < audioOptionsLength; ++i) {
             EnumOptions audioOptionsSingle = audioOptions[i];
             if (audioOptionsSingle == EnumOptions.SOUND) {
-                this.buttonList.add(new GuiCustomSlider(EnumOptions.SOUND.returnEnumOrdinal(), this.width / 2 - 155, this.height / 7, 310, 20, audioOptionsSingle, this.guiGameSettings.getKeyBinding(audioOptionsSingle), this.guiGameSettings.getOptionFloatValue(audioOptionsSingle)));
+                this.buttonList.add(new GuiCustomSlider(EnumOptions.SOUND.returnEnumOrdinal(), this.width / 2 - 155, this.height / 7, 310, 20, audioOptionsSingle, this.option.getKeyBinding(audioOptionsSingle), this.option.getOptionFloatValue(audioOptionsSingle)));
             } else {
-                this.buttonList.add(new GuiSlider(audioOptionsSingle.returnEnumOrdinal(), this.width / 2 - 155 + var1 % 2 * 160, this.height / 7 + 24 * (var1 >> 1), audioOptionsSingle, this.guiGameSettings.getKeyBinding(audioOptionsSingle), this.guiGameSettings.getOptionFloatValue(audioOptionsSingle)));
-                ++var1;
+                this.buttonList.add(new GuiSlider(audioOptionsSingle.returnEnumOrdinal(), this.width / 2 - 155 + j % 2 * 160, this.height / 7 + 24 * (j >> 1), audioOptionsSingle, this.option.getKeyBinding(audioOptionsSingle), this.option.getOptionFloatValue(audioOptionsSingle)));
+                ++j;
             }
         }
     }
 
-    protected void actionPerformed(GuiButton par1GuiButton) {
-        if (par1GuiButton.enabled) {
-            if (par1GuiButton.id == 200) {
+    protected void actionPerformed(GuiButton button) {
+        if (button.enabled) {
+            if (button.id == 200) {
                 this.mc.gameSettings.saveOptions();
                 this.mc.displayGuiScreen(this.parentGuiScreen);
             }
         }
     }
 
-    public void drawScreen(int par1, int par2, float par3) {
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         this.drawDefaultBackground();
         this.drawCenteredString(this.fontRenderer, this.screenTitle, this.width / 2, 20, 16777215);
-        super.drawScreen(par1, par2, par3);
+        super.drawScreen(mouseX, mouseY, partialTicks);
     }
 }

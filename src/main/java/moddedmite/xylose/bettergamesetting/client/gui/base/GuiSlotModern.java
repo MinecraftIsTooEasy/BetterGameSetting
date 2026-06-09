@@ -1,11 +1,12 @@
 package moddedmite.xylose.bettergamesetting.client.gui.base;
 
+import moddedmite.xylose.bettergamesetting.util.ScreenUtil;
 import net.minecraft.*;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 public abstract class GuiSlotModern {
-    private final Minecraft client;
+    protected final Minecraft client;
     public int width;
     public int height;
     public int top;
@@ -348,9 +349,7 @@ public abstract class GuiSlotModern {
         GL11.glShadeModel(GL11.GL_FLAT);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glDisable(GL11.GL_BLEND);
-        ScaledResolution sr = new ScaledResolution(this.client.gameSettings, this.client.displayWidth, this.client.displayHeight);
-        GL11.glScissor((this.left * sr.getScaleFactor()), (this.client.displayHeight - this.bottom * sr.getScaleFactor()), ((this.right - this.left) * sr.getScaleFactor()), ((this.bottom - this.top) * sr.getScaleFactor()));
-        GL11.glEnable(GL11.GL_SCISSOR_TEST);
+        ScreenUtil.scissorHead(this.left, this.top, this.right, this.bottom - this.top);
         l1 = this.left + this.width / 2 - this.getListWidth() / 2 + 2;
         i2 = this.top + 4 - (int) this.amountScrolled;
 
@@ -360,7 +359,7 @@ public abstract class GuiSlotModern {
 
         this.drawSelectionBox(l1, i2, mouseXR, mouseYR);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
-        GL11.glDisable(GL11.GL_SCISSOR_TEST);
+        ScreenUtil.scissorTail();
         this.overlayBackground(0, this.top, 255, 255);
         this.overlayBackground(this.bottom, this.height, 255, 255);
 
@@ -482,5 +481,9 @@ public abstract class GuiSlotModern {
             tessellator.draw();
         }
 
+    }
+
+    protected boolean isMouseOver(int mouseX, int mouseY) {
+        return mouseX >= this.left && mouseX < this.left + this.width && mouseY >= this.top && mouseY < this.bottom;
     }
 }

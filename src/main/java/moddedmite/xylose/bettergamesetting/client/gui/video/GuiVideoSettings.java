@@ -12,6 +12,7 @@ public class GuiVideoSettings extends GuiScreen {
      * An array of all of EnumOptions's video options.
      */
     private static final EnumOptions[] videoOptions = new EnumOptions[]{
+//            EnumOptionsExtra.FULLSCREEN_RESOLUTION,
             EnumOptions.GRAPHICS,
             EnumOptions.RENDER_DISTANCE,
             EnumOptions.AMBIENT_OCCLUSION,

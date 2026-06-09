@@ -17,6 +17,7 @@ options.transparentBackground=Transparent Background
 options.highlightButtonText=Highlight Button Text
 
 options.chunks=chunks
+options.gamma.default=Default
 
 controls.classicControls=Classic Controls
 controls.title=Controls
@@ -40,7 +41,7 @@ resourcePack.incompatible.confirm.title=Are you sure you want to load this resou
 resourcePack.incompatible.confirm.old=This resource pack was made for an older version of Minecraft and may no longer work correctly.
 resourcePack.incompatible.confirm.new=This resource pack was made for a newer version of Minecraft and may no longer work correctly.
 
-options.search=§oSearch…
+options.search=§oSearch...
 
 # description
 options.graphics.description=Adjust the rendering quality of the game; choose "Fast" for better performance or "Fancy" for improved visuals
@@ -52,7 +53,7 @@ options.viewBobbing.description=Enable or disable the camera bobbing effect when
 options.advancedOpengl.description=Enable or disable advanced OpenGL optimizations; may improve performance on some hardware but could cause compatibility issues.
 options.renderClouds.description=Enable or disable cloud effects in the sky; disabling them can slightly improve performance
 options.fullscreen.description=Toggle whether the game runs in fullscreen mode; fullscreen is often better for immersive experiences
-options.renderDistance.description=Control how far you can see in the game world; lowering this value improves performance
+options.renderDistance.description=Control how far you can see in the game world; lowering this value improves performance; Notice: Rendering distance with 16+ chunks will take up a lot of memory and seriously affect performance, so please use it with caution
 options.framerateLimit.description=Limit the maximum frame rate of the game to save system resources or reduce power consumption
 options.guiScale.description= Adjust the size of the user interface on the screen, suitable for different display resolutions
 options.gamma.description= Adjust the overall brightness of the game to optimize visibility under different lighting conditions
@@ -63,11 +64,23 @@ options.highlightButtonText.description=Controls the color of the text when hove
 options.save=Save
 options.reset=Reset
 
+options.worldOptions.button=World Options...
+options.worldOptions.title=World Options
+editGamerule.inGame.button=Edit Game Rules...
+
 selectWorld.tab.game=Game
 selectWorld.tab.world=World
 selectWorld.tab.more=More
 selectWorld.hover.worldName=Save Folder: §o%s
+selectWorld.hover.seed=Once the world is created, the seed will be saved in MITE/world_seeds.txt
 selectWorld.button.gameRuleEditor=GameRules
+
+selectWorld.experimental.message=Be careful!\nThis configuration requires features that are still under development. Your world might crash, break, or not work with future updates.
+selectWorld.experimental.title=Experimental Features Warning
+selectWorld.experiments=Experiments
+selectWorld.experiments.info=Experiments are potential new features. Be careful as things might break. Experiments can't be turned off directly after world creation.
+selectWorld.experimental.skills=Skills
+selectWorld.experimental.skills.description=Players are restricted from crafting, repairing, and other behaviors, and need to learn skills to unlock related functions
 
 options.gameRules=Edit Game Rules
 gamerules.default=§7Default：%s
@@ -83,6 +96,13 @@ gamerules.doTileDrops.description=Controls resource drops from blocks, including
 gamerules.commandBlockOutput.name=Command block output
 gamerules.naturalRegeneration.name=Regenerate health
 gamerules.doDaylightCycle.name=Advance time of day
+gamerules.category.player=Player
+gamerules.category.mobs=Mobs
+gamerules.category.spawning=Spawning
+gamerules.category.drops=Drops
+gamerules.category.updates=World Updates
+gamerules.category.chat=Chat
+gamerules.category.misc=Miscellaneous
 
 selectWorld.experimental.warning=Experimental settings may affect stability
 

@@ -17,6 +17,7 @@ options.transparentBackground=透明背景
 options.highlightButtonText=高亮按钮文字
 
 options.chunks=个区块
+options.gamma.default=默认
 
 controls.classicControls=经典控制
 controls.reset=重置
@@ -52,7 +53,7 @@ options.viewBobbing.description=启用或禁用角色移动时的视角晃动效
 options.advancedOpengl.description=启用或禁用高级 OpenGL 优化，可能在某些硬件上提升性能，但可能导致兼容性问题
 options.renderClouds.description=启用或禁用天空中的云层效果，关闭可以略微提高性能
 options.fullscreen.description=切换游戏窗口是否以全屏模式运行，全屏模式通常更适合沉浸式体验
-options.renderDistance.description=控制玩家能够看到的游戏世界的范围，降低此值可提升性能
+options.renderDistance.description=控制玩家能够看到的游戏世界的范围，降低此值可提升性能； 注意:启用16+区块的渲染距离会极大占用内存并严重影响性能,请谨慎使用。
 options.framerateLimit.description=限制游戏的最大帧率，有助于节省系统资源或减少功耗
 options.guiScale.description=调整屏幕上的用户界面大小，适合不同分辨率的显示器
 options.gamma.description=调整游戏中的整体亮度，适合在不同光照条件下优化可见性
@@ -69,11 +70,23 @@ options.vsync=垂直同步
 options.save=保存
 options.reset=重置
 
+options.worldOptions.button=世界选项…
+options.worldOptions.title=世界选项
+editGamerule.inGame.button=编辑游戏规则…
+
 selectWorld.tab.game=游戏
 selectWorld.tab.world=世界
 selectWorld.tab.more=更多
 selectWorld.hover.worldName=存档文件夹：§o%s
+selectWorld.hover.seed=创建世界后，种子将在MITE/world_seeds.txt中被保存
 selectWorld.button.gameRuleEditor=游戏规则
+
+selectWorld.experimental.message=请注意！\n此配置需要使用仍在开发中的功能。你的世界可能会崩溃、损坏或不兼容未来的更新。
+selectWorld.experimental.title=实验性功能警告
+selectWorld.experiments=实验性内容
+selectWorld.experiments.info=实验性内容，即仍在开发的新功能。请小心，启用这些内容有损坏风险。已开启的实验性内容在创建世界后将无法直接关闭。
+selectWorld.experimental.skills=技能
+selectWorld.experimental.skills.description=使玩家合成、修复等行为受到限制，需要学习技能以解锁相关功能
 
 options.gameRules=编辑游戏规则
 gamerules.default=§7默认：%s
@@ -89,3 +102,10 @@ gamerules.doTileDrops.description=控制破坏方块后是否掉落资源，包�
 gamerules.commandBlockOutput.name=广播命令方块输出
 gamerules.naturalRegeneration.name=生命值自然恢复
 gamerules.doDaylightCycle.name=游戏内时间流逝
+gamerules.category.player=玩家
+gamerules.category.mobs=生物
+gamerules.category.spawning=生成
+gamerules.category.drops=掉落
+gamerules.category.updates=世界更新
+gamerules.category.chat=聊天
+gamerules.category.misc=杂项

@@ -15,8 +15,8 @@ static def buildTime() {
 }
 
 base {
-//	archivesName = project.archives_base_name + "-dev-build." + buildTime()
-	archivesName = "[更好的游戏设置]" + project.archives_base_name
+	archivesName = project.archives_base_name + "-dev-build." + buildTime()
+//	archivesName = "[更好的游戏设置]" + project.archives_base_name
 }
 
 repositories {
@@ -36,10 +36,11 @@ loom {
 			sourceSet sourceSets.main
 		}
 	}
-}
-
-runClient{
-	args("--username", "Xy_Lose", "--session", "a.a.a.a", "--width", 854, "--height", 480)
+	runs {
+		client {
+			programArgs "--userProperties", "{}", "--username", "Xy_Luce", "--session", "a.a.a.a", "--width", "1920", "--height", "1080"
+		}
+	}
 }
 
 dependencies {
@@ -52,6 +53,7 @@ dependencies {
 	implementation files("D:\\Projects\\IDEA\\Minecraft\\MITE\\ModMenu-10.1.1.jar")
 	implementation files("D:\\Projects\\IDEA\\Minecraft\\MITE\\conditional-mixin-0.6.4.jar")
 	implementation files("D:\\Projects\\IDEA\\Minecraft\\MITE\\emi-1.1.23+1.6.4-MITE+fish.jar")
+	implementation files("libs\\Neodymium-1.1.1.jar")
 	implementation("it.unimi.dsi:fastutil:8.5.12")
 	implementation("com.google.code.gson:gson:2.11.0")
 	implementation files(loom.getFML().toPath())

@@ -40,6 +40,10 @@ public class Mth {
     public static double clamp(double d, double e, double f) {
         return d < e ? e : Math.min(d, f);
     }
+    
+    public static int clamp(int value, int min, int max, int defaultValue) {
+        return value < min || value > max ? defaultValue : value;
+    }
 
     public static float lerp(float f, float g, float h) {
         return g + f * (h - g);

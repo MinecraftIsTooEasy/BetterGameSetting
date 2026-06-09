@@ -49,10 +49,6 @@ public class GuiKeyBindingList extends GuiListExtended {
 //        this.getListEntry(par1).drawEntry(par1, par2, par3, super.width, super.slotHeight, Mouse.getX(), Mouse.getY(), ((IGuiSlot) this).getSlotIndexFromScreenCoords(Mouse.getY(), Mouse.getX()) == par1);
 //    }
 
-    @Override
-    protected void drawTooltip(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY) {
-    }
-
     public IGuiListEntry getListEntry(int index) {
         return this.listEntries[index];
     }
@@ -69,8 +65,8 @@ public class GuiKeyBindingList extends GuiListExtended {
         private final String labelText;
         private final int labelWidth;
 
-        public CategoryEntry(String p_i45028_2_) {
-            this.labelText = I18n.getString(p_i45028_2_);
+        public CategoryEntry(String label) {
+            this.labelText = I18n.getString(label);
             this.labelWidth = GuiKeyBindingList.this.mc.fontRenderer.getStringWidth(this.labelText);
         }
 

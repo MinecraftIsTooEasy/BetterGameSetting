@@ -16,6 +16,7 @@ public class BGSClient implements ClientModInitializer, ModInitializer {
     public static final Map<String, String> DEFAULT_GAMERULE_VALUE = new HashMap<>();
     public static final GameRules gameRules = new GameRules();
     public static Map<String, String> pendingRules = new HashMap<>();
+    public static int scrollAmount = 0;
 
     @Override
     public void onInitializeClient() {

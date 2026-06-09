@@ -1,5 +1,6 @@
 package moddedmite.xylose.bettergamesetting.client.gui.button;
 
+import moddedmite.xylose.bettergamesetting.util.DisplayModeHelper;
 import net.minecraft.EnumOptions;
 import net.minecraft.GuiButton;
 import net.minecraft.Minecraft;
@@ -12,38 +13,16 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiResolutionSlider extends GuiOptionSlider {
-    private static List<DisplayMode> resolutions = new ArrayList<>();
-    private static boolean resolutionsInitialized = false;
+import static moddedmite.xylose.bettergamesetting.util.DisplayModeHelper.resolutions;
 
-    public GuiResolutionSlider(int buttonId, int x, int y) throws LWJGLException {
+public class GuiResolutionSlider extends GuiOptionSlider {
+
+    public GuiResolutionSlider(int buttonId, int x, int y) {
         super(buttonId, x, y, EnumOptions.RENDER_DISTANCE);
-        initResolutions();
+//        initResolutions();
         updateDisplayString();
     }
 
-    private void initResolutions() throws LWJGLException {
-        if (!resolutionsInitialized) {
-            DisplayMode[] modes = Display.getAvailableDisplayModes();
-            for (DisplayMode mode : modes) {
-                if (!containsResolution(mode)) {
-                    resolutions.add(mode);
-                }
-            }
-            resolutions.sort((a, b) -> {
-                if (a.getWidth() != b.getWidth()) return a.getWidth() - b.getWidth();
-                return a.getHeight() - b.getHeight();
-            });
-            resolutionsInitialized = true;
-        }
-    }
-
-    private boolean containsResolution(DisplayMode mode) {
-        return resolutions.stream().anyMatch(m ->
-                m.getWidth() == mode.getWidth() &&
-                        m.getHeight() == mode.getHeight()
-        );
-    }
 
     private int getResolutionIndex(DisplayMode mode) {
         for (int i = 0; i < resolutions.size(); i++) {
@@ -58,19 +37,19 @@ public class GuiResolutionSlider extends GuiOptionSlider {
     private void updateDisplayString() {
         DisplayMode current = Display.getDisplayMode();
         this.sliderValue = getResolutionIndex(current) / (float) (resolutions.size() - 1);
-        this.displayString = current.getWidth() + "x" + current.getHeight();
+        this.displayString = current.toString();
     }
 
     @Override
-    protected void mouseDragged(Minecraft mc, int mouseX, int mouseY) {
-        if (this.enabled) {
+    protected void mouseDragged(Minecraft client, int mouseX, int mouseY) {
+        if (this.enabled && client.gameSettings.fullScreen) {
             if (this.dragging) {
                 this.sliderValue = (float) (mouseX - (this.xPosition + 4)) / (float) (this.width - 8);
                 this.sliderValue = Math.max(0.0F, Math.min(1.0F, this.sliderValue));
 
                 int index = (int) (this.sliderValue * (resolutions.size() - 1));
                 DisplayMode selected = resolutions.get(index);
-                this.displayString = selected.getWidth() + "x" + selected.getHeight();
+                this.displayString = selected.toString();
             }
 
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -103,7 +82,7 @@ public class GuiResolutionSlider extends GuiOptionSlider {
             if (Minecraft.getMinecraft().isFullScreen()) {
                 Display.setFullscreen(true);
             } else {
-//                Minecraft.getMinecraft().resizeWindow(mode.getWidth(), mode.getHeight());
+                Minecraft.getMinecraft().resize(mode.getWidth(), mode.getHeight());
             }
             updateDisplayString();
         } catch (Exception e) {

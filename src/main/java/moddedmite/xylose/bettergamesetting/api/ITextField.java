@@ -9,4 +9,8 @@ public interface ITextField {
 
     default void setHint(String hint) {
     }
+
+    default boolean isMouseOver() {
+        return false;
+    }
 }

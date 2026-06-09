@@ -25,10 +25,11 @@
     "gui.GuiTextFieldMixin",
     "gui.LoadingScreenRendererMixin",
     "invoker.GuiSlotLanguageInvoker",
-    "renderer.EntityRenderMixin",
+    "invoker.PlayerManagerInvoker",
+    "invoker.ServerConfigurationManagerInvoker",
+    "renderer.EntityRendererMixin",
     "renderer.RenderGlobalMixin",
     "renderer.RenderMixin",
-    "renderer.WorldRendererMixin",
     "resources.ResourceLocationMixin",
     "resources.ResourcePackRepositoryEntryMixin",
     "resources.ResourcePackRepositoryMixin",
@@ -37,5 +38,8 @@
   "injectors": {
     "defaultRequire": 1
   },
-  "plugin": "moddedmite.xylose.bettergamesetting.util.BGSMixinConfig"
+  "plugin": "moddedmite.xylose.bettergamesetting.util.BGSMixinConfigClient",
+  "mixins": [
+    "widecheat.GuiShareToLanMixin"
+  ]
 }

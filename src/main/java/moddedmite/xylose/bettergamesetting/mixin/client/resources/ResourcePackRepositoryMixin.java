@@ -1,6 +1,5 @@
 package moddedmite.xylose.bettergamesetting.mixin.client.resources;
 
-import moddedmite.xylose.bettergamesetting.api.IGameSetting;
 import moddedmite.xylose.bettergamesetting.api.IResourcePackRepository;
 import net.minecraft.*;
 import org.spongepowered.asm.mixin.Mixin;
@@ -20,9 +19,8 @@ public class ResourcePackRepositoryMixin implements IResourcePackRepository {
     @Inject(method = "<init>", at = @At("TAIL"))
     private void loadResourcePacks(File resourcePack, ResourcePack metadataSerializer, MetadataSerializer gameSettings, GameSettings par4, CallbackInfo ci) {
 
-        for (String s : ((IGameSetting) par4).getResourcePacks()) {
-            for (Object o : this.repositoryEntriesAll) {
-                ResourcePackRepositoryEntry entry = (ResourcePackRepositoryEntry) o;
+        for (String s : par4.getResourcePacks()) {
+            for (ResourcePackRepositoryEntry entry : (List<ResourcePackRepositoryEntry>) this.repositoryEntriesAll) {
                 if (entry.getResourcePackName().equals(s)) {
                     this.repositoryEntries.add(entry);
                     break;

@@ -14,12 +14,16 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import static moddedmite.xylose.bettergamesetting.util.Constants.*;
+import static moddedmite.xylose.bettergamesetting.util.Constants.FOV_MAX;
+
 @Mixin(EnumOptions.class)
 public abstract class EnumOptionsMixin implements IEnumOptions {
     @Final @Shadow public static EnumOptions RENDER_DISTANCE;
     @Final @Shadow public static EnumOptions FRAMERATE_LIMIT;
     @Final @Shadow public static EnumOptions GAMMA;
     @Final @Shadow public static EnumOptions GUI_SCALE;
+    @Final @Shadow public static EnumOptions FOV;
 
     @Unique public float valueStep;
     @Unique private float valueMin;
@@ -27,10 +31,11 @@ public abstract class EnumOptionsMixin implements IEnumOptions {
 
     @Inject(method = "<clinit>", at = @At("TAIL"))
     private static void setMinMaxStepValue(CallbackInfo ci) {
-        GAMMA.setValue(.0F, BGSConfig.LightOptionLimit.get(), .01F);
-        RENDER_DISTANCE.setValue(2.0F, 16.0F, 1.0F);
-        FRAMERATE_LIMIT.setValue(10.0F, 260.0F, 10.0F);
-        GUI_SCALE.setValue(.0F, 10.0F, 1.0F);
+        GAMMA.setValue(GAMMA_MIN, BGSConfig.LightOptionLimit.get(), GAMMA_STEP);
+        RENDER_DISTANCE.setValue(RENDER_DISTANCE_MIN, RENDER_DISTANCE_MAX, RENDER_DISTANCE_STEP);
+        FRAMERATE_LIMIT.setValue(FPS_LIMIT_MIN, FPS_LIMIT_MAX, FPS_LIMIT_STEP);
+        GUI_SCALE.setValue(GUI_SCALE_MIN, GUI_SCALE_MAX, GUI_SCALE_STEP);
+        FOV.setValue(FOV_MIN, FOV_MAX, FOV_STEP);
 //        EnumOptionsExtra.MIPMAP_LEVELS.setValueMin(0.0F);
 //        EnumOptionsExtra.MIPMAP_LEVELS.setValueMax(4.0F);
 //        EnumOptionsExtra.MIPMAP_LEVELS.setValueStep(1.0F);
@@ -93,7 +98,7 @@ public abstract class EnumOptionsMixin implements IEnumOptions {
 
     @Override
     public float getValueStep() {
-        return this.valueMin;
+        return this.valueStep;
     }
 
     @Override

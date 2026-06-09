@@ -12,7 +12,6 @@ public interface IKeyBinding extends Comparable<KeyBinding> {
     }
 
     default void setKeyCode(int keyCode) {
-        return;
     }
 
     default int getDefaultKeyCode(String keyDescription) {

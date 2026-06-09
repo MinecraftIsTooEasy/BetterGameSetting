@@ -6,9 +6,8 @@ import com.terraformersmc.modmenu.gui.widget.DescriptionListWidget;
 import com.terraformersmc.modmenu.gui.widget.entries.EntryListWidget;
 import me.fallenbreath.conditionalmixin.api.annotation.Condition;
 import me.fallenbreath.conditionalmixin.api.annotation.Restriction;
-import moddedmite.xylose.bettergamesetting.api.IGameSetting;
+import moddedmite.xylose.bettergamesetting.util.ScreenUtil;
 import net.minecraft.*;
-import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -32,9 +31,7 @@ public abstract class DescriptionListWidgetMixin extends EntryListWidget {
             Gui.drawRect(this.left, this.bottom, this.right, this.bottom + 1, 0xCC000000);
             Gui.drawRect(this.left, this.top - 1, this.right, this.top - 2, 0x66ADB1B1);
             Gui.drawRect(this.left, this.bottom + 1, this.right, this.bottom + 2, 0x66ADB1B1);
-            ScaledResolution sr = new ScaledResolution(minecraft.gameSettings, minecraft.displayWidth, minecraft.displayHeight);
-            GL11.glScissor((this.left * sr.getScaleFactor()), (minecraft.displayHeight - this.bottom * sr.getScaleFactor()), ((this.right - this.left) * sr.getScaleFactor()), ((this.bottom - this.top) * sr.getScaleFactor()));
-            GL11.glEnable(GL11.GL_SCISSOR_TEST);
+            ScreenUtil.scissorHead(this.left, this.top, this.right, this.bottom - this.top);
         }
         return !minecraft.gameSettings.isTransparentBackground();
     }
@@ -47,7 +44,7 @@ public abstract class DescriptionListWidgetMixin extends EntryListWidget {
     @WrapWithCondition(method = "drawScreen", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/BufferBuilder;end()I", ordinal = 0))
     private boolean transparentBackgroundEnd(BufferBuilder instance) {
         if (minecraft.gameSettings.isTransparentBackground())
-            GL11.glDisable(GL11.GL_SCISSOR_TEST);
+            ScreenUtil.scissorTail();
         return !minecraft.gameSettings.isTransparentBackground();
     }
 

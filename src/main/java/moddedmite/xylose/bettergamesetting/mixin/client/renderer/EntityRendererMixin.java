@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(value = EntityRenderer.class, priority = 9999)
-public abstract class EntityRenderMixin {
+public abstract class EntityRendererMixin {
     @Shadow private float farPlaneDistance;
     @Shadow private Minecraft mc;
     @Shadow protected abstract void setupFog(int par1, float par2);
@@ -80,7 +80,7 @@ public abstract class EntityRenderMixin {
 
     @WrapOperation(method = "addRainParticles", at = @At(value = "INVOKE", target = "Lnet/minecraft/WorldClient;playSound(DDDLjava/lang/String;FFZ)V"))
     private void modifyRainSound(WorldClient instance, double v, double par1, double par3, String par5, float par7Str, float par8, boolean par9, Operation<Void> original) {
-        this.mc.theWorld.playSound(v, par1, par3, par5, ((IGameSetting) Minecraft.getMinecraft().gameSettings).getWeatherVolume() * par7Str, par8, par9);
+        this.mc.theWorld.playSound(v, par1, par3, par5, Minecraft.getMinecraft().gameSettings.getWeatherVolume() * par7Str, par8, par9);
     }
 
 

@@ -1,9 +1,11 @@
 package moddedmite.xylose.bettergamesetting.client.gui.video;
 
 import com.google.common.collect.Lists;
+import moddedmite.xylose.bettergamesetting.client.EnumOptionsExtra;
 import moddedmite.xylose.bettergamesetting.client.gui.base.GuiListExtended;
 import moddedmite.xylose.bettergamesetting.client.gui.button.GuiOptionButton;
 import moddedmite.xylose.bettergamesetting.client.gui.button.GuiOptionSlider;
+import moddedmite.xylose.bettergamesetting.client.gui.button.GuiResolutionSlider;
 import moddedmite.xylose.bettergamesetting.client.gui.button.GuiScaleSlider;
 import moddedmite.xylose.bettergamesetting.util.ScreenUtil;
 import net.minecraft.EnumOptions;
@@ -107,9 +109,9 @@ public class GuiOptionsRowList extends GuiListExtended {
         private final GuiButton buttonLeft;
         private final GuiButton buttonRight;
 
-        public Row(GuiButton p_i45014_1_, GuiButton p_i45014_2_) {
-            this.buttonLeft = p_i45014_1_;
-            this.buttonRight = p_i45014_2_;
+        public Row(GuiButton left, GuiButton right) {
+            this.buttonLeft = left;
+            this.buttonRight = right;
         }
 
         public void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean isSelected) {

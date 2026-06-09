@@ -8,9 +8,14 @@ import moddedmite.xylose.bettergamesetting.api.IGameSetting;
 import moddedmite.xylose.bettergamesetting.api.IKeyBinding;
 import moddedmite.xylose.bettergamesetting.client.CustomKeys;
 import moddedmite.xylose.bettergamesetting.client.EnumOptionsExtra;
+import moddedmite.xylose.bettergamesetting.util.BGSConfig;
+import moddedmite.xylose.bettergamesetting.util.Constants;
+import moddedmite.xylose.bettergamesetting.util.DisplayModeHelper;
 import moddedmite.xylose.bettergamesetting.util.Mth;
 import net.minecraft.*;
 import net.minecraft.client.main.Main;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
@@ -66,7 +71,7 @@ public abstract class GameSettingsMixin implements IGameSetting {
     @Unique public boolean transparentBackground;
     @Unique public boolean highlightButtonText;
 
-//    public DisplayMode fullscreenResolution;
+//    @Unique public DisplayMode fullscreenResolution;
 
 
     @WrapOperation(
@@ -95,10 +100,10 @@ public abstract class GameSettingsMixin implements IGameSetting {
             at = @At("RETURN")
     )
     private void newDefaultValue_1(CallbackInfo ci) {
-        this.renderDistance = 8;
-        this.limitFramerate = 120;
-        this.gammaSetting = 0.5F;
-        this.fovSetting = 70.0F;
+        this.renderDistance = Constants.RENDER_DISTANCE_DEFAULT;
+        this.limitFramerate = Constants.FPS_LIMIT_DEFAULT;
+        this.gammaSetting = BGSConfig.LightOptionLimit.get() / 2;
+        this.fovSetting = Constants.FOV_DEFAULT;
         this.resourcePacks.add("MITE Resource Pack 1.6.4.zip");
         this.forceUnicodeFont = false;
         this.transparentBackground = true;
@@ -150,7 +155,7 @@ public abstract class GameSettingsMixin implements IGameSetting {
             this.limitFramerate = (int) value;
         }
         if (options == EnumOptions.FOV) {
-            this.fovSetting = (int) Mth.denormalizeValue(value, 30.0F, 110.0F, 1.0F);
+            this.fovSetting = (int) value;
         }
         if (options == EnumOptions.GAMMA) {
             this.gammaSetting = value;
@@ -190,7 +195,7 @@ public abstract class GameSettingsMixin implements IGameSetting {
             cir.setReturnValue((float) this.limitFramerate);
         }
         if (par1EnumOptions == EnumOptions.FOV) {
-            cir.setReturnValue(Mth.normalizeValue(this.fovSetting, 30.0F, 110.0F, 1.0F));
+            cir.setReturnValue(this.fovSetting);
         }
         if (par1EnumOptions == EnumOptions.GAMMA) {
             cir.setReturnValue(this.gammaSetting);
@@ -236,9 +241,9 @@ public abstract class GameSettingsMixin implements IGameSetting {
             }
         }
         if (options == EnumOptions.FOV) {
-            if (value == 0.5F) {
+            if (value == 70) {
                 cir.setReturnValue(string + I18n.getString("options.fov.min"));
-            } else if (value == 1.0F) {
+            } else if (value == 110) {
                 cir.setReturnValue(string + I18n.getString("options.fov.max"));
             } else {
                 cir.setReturnValue(string + (int) this.fovSetting);

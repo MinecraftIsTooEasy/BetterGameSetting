@@ -69,8 +69,8 @@ jobs:
 
           # Only include this section if you wish to publish
           # your assets on CurseForge.
-          curseforge-id: placeholder
-          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+#          curseforge-id: placeholder
+#          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
 
           files: |
             build/libs/!(*-@(dev|sources|javadoc)).jar

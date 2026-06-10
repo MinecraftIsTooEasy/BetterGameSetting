@@ -53,7 +53,8 @@
       "net/minecraft/EnumOptions": ["moddedmite/xylose/bettergamesetting/api/IEnumOptions"],
       "net/minecraft/KeyBinding": ["moddedmite/xylose/bettergamesetting/api/IKeyBinding", "java/lang/Comparable"],
       "net/minecraft/GuiButton": ["moddedmite/xylose/bettergamesetting/api/IButton"],
-      "net/minecraft/GuiTextField": ["moddedmite/xylose/bettergamesetting/api/ITextField"]
+      "net/minecraft/GuiTextField": ["moddedmite/xylose/bettergamesetting/api/ITextField"],
+      "net/minecraft/GuiCreateWorld": ["moddedmite/xylose/bettergamesetting/api/IGuiCreateWorld"]
     },
     "modmenu:clientsideOnly": true
   }

@@ -28,7 +28,8 @@ key.categories.misc=杂项
 key.categories.multiplayer=多人游戏
 key.categories.gameplay=游戏内容
 key.categories.ui=游戏界面
-key.categories.inventory=道具栏
+key.categories.inventory=物品栏
+key.categories.debug=调试
 key.categories.uncategorized=未分类
 controls.reset_keybinding_info=确定要重置所有按键吗?
 

@@ -25,13 +25,16 @@
   + 游戏模式按钮可在dev或`免dev允许作弊`的情况下切换至创造模式
   + 种子输入框加入提示框
   + tab按钮高度与间距优化
+* 支持mod按键绑定设置按键类别
+  + 示例
+```java
+// 无需依赖BetterGameSetting，但是需要写key.categories.example、key.example和key.categories.example:key.example三个翻译文本
+public static KeyBinding keyBindPrintScreen = new KeyBinding("key.categories.example:key.example", Keyboard.KEY_NONE);
+// 需要依赖BetterGameSetting
+KeyBindingExtra.setKeyKeyCategory(this.exampleKey.keyDescription, "key.categories.example");
+```
 * 游戏规则界面添加搜索框与类型
   + 新增世界内通过世界选项修改
-* 声乐系统修改（WIP）
-  + 完善不同类型声音调整
-  + 1.7.10+音乐播放机制
-  + 优化声乐设置界面
-* 重写统计界面，改为类似1.21+的界面（WIP）
 * 大幅优化切换语言性能，可实现秒切语言
 * 将全屏改为无边框全屏，优化切换全屏性能
 * 优化了亮度选项的文本显示
@@ -184,8 +187,6 @@
   * FPS上限最小值为10fps,最大值为无限制
 * 加入了1.7.2+的控制界面
   * 加入了经典控制界面按钮
-  * 由于mojang的答辩代码,目前无法拖动调整鼠标灵敏度,只能点击
-  * 由于mojang的答辩代码,目前无法输入除左键外所有鼠标按键
 * 加入了1.7.2+的音量设置界面
   * 主音量改为音效,此选项无法控制游戏背景音乐
 * 合并了亮度调节mod,现在可自由调节亮度

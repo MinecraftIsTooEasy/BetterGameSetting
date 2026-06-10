@@ -43,6 +43,7 @@ dependencies {
     localRuntime "com.github.MinecraftIsTooEasy:Gson:2.10.1"
     localRuntime "com.github.MinecraftIsTooEasy:FastUtil:8.5.12"
     implementation "com.github.MinecraftIsTooEasy:EMI:1.1.24"
+    implementation "com.github.MinecraftIsTooEasy:Neodymium:1.1.1"
 }
 
 def fmlResolvedFile = configurations.fml.files.iterator().next()

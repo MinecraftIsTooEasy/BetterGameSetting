@@ -29,6 +29,7 @@ key.categories.multiplayer=Multiplayer
 key.categories.gameplay=Gameplay
 key.categories.ui=Game Interface
 key.categories.inventory=Inventory
+key.categories.debug=Debug
 key.categories.uncategorized=Uncategorized
 controls.reset_keybinding_info=Are you sure reset all the keybindings?
 

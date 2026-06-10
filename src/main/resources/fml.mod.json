@@ -46,7 +46,7 @@
     "BetterGameSetting.sound.mixins.json",
     "BetterGameSetting.compat.mixins.json"
   ],
-  "accessWidener": "BetterGameSetting.accessWidener",
+  "accessWidener": "BetterGameSetting.accesswidener",
   "custom": {
     "loom:injected_interfaces": {
       "net/minecraft/GameSettings": ["moddedmite/xylose/bettergamesetting/api/IGameSetting"],

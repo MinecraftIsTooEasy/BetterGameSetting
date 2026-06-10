@@ -35,37 +35,4 @@ public abstract class RenderGlobalMixin {
         this.renderChunksTall = 16;
         this.renderChunksDeep = var1;
     }
-    
-//    @Inject(method = "loadRenderers", at = @At("TAIL"))
-//    private void onRenderDistanceChanged(CallbackInfo ci) {
-//        if (this.mc.theWorld == null || this.mc.thePlayer == null) return;
-//        int newChunkRadius = this.mc.gameSettings.getRenderDistance();
-//        int playerChunkX = (int)Math.floor(this.mc.thePlayer.posX) >> 4;
-//        int playerChunkZ = (int)Math.floor(this.mc.thePlayer.posZ) >> 4;
-//        unloadDistantChunks(this.mc.theWorld, playerChunkX, playerChunkZ, newChunkRadius);
-//    }
-//
-//    @Unique
-//    private void unloadDistantChunks(WorldClient world, int playerChunkX, int playerChunkZ, int chunkRadius) {
-//        ChunkProviderClient chunkProvider = world.clientChunkProvider;
-//        if (chunkProvider == null) return;
-//        int scanRadius = 32;
-//        for (int dx = -scanRadius; dx <= scanRadius; dx++) {
-//            for (int dz = -scanRadius; dz <= scanRadius; dz++) {
-//                int chunkX = playerChunkX + dx;
-//                int chunkZ = playerChunkZ + dz;
-//                int distance = Math.max(Math.abs(dx), Math.abs(dz));
-//                if (distance > chunkRadius) {
-//                    long key = ChunkCoordIntPair.chunkXZ2Int(chunkX, chunkZ);
-////                    if (chunkProvider.chunkMapping.containsItem(key)) {
-//                    world.doPreChunk(chunkX, chunkZ, false);
-//                        chunkProvider.unloadChunk(chunkX, chunkZ);
-//                    AxisAlignedBB.getAABBPool().clearPool();
-//                    world.getWorldVec3Pool().clearAndFreeCache();
-////                        System.gc();
-////                    }
-//                }
-//            }
-//        }
-//    }
 }

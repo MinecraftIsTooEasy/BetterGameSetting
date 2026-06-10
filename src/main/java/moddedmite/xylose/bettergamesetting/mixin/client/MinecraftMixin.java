@@ -1,6 +1,7 @@
 package moddedmite.xylose.bettergamesetting.mixin.client;
 
 import moddedmite.xylose.bettergamesetting.client.CustomKeys;
+import moddedmite.xylose.bettergamesetting.client.KeyBindingExtra;
 import moddedmite.xylose.bettergamesetting.client.gui.gamerule.GuiGameRules;
 import moddedmite.xylose.bettergamesetting.util.DisplayModeHelper;
 import moddedmite.xylose.bettergamesetting.util.Mth;
@@ -63,6 +64,31 @@ public abstract class MinecraftMixin {
     private GuiMainMenu unificationPanorama() {
         ScreenUtil.instance = new ScreenUtil();
         return GuiScreenPanoramaHelp.panoramaDummy;
+    }
+
+    @Inject(method = "startGame", at = @At("TAIL"))
+    private void initKeyCategory(CallbackInfo ci) {
+        KeyBindingExtra.setKeyKeyCategory(this.gameSettings.keyBindForward.keyDescription, "key.categories.movement");
+        KeyBindingExtra.setKeyKeyCategory(this.gameSettings.keyBindJump.keyDescription, "key.categories.movement");
+        KeyBindingExtra.setKeyKeyCategory(this.gameSettings.keyBindRight.keyDescription, "key.categories.movement");
+        KeyBindingExtra.setKeyKeyCategory(this.gameSettings.keyBindBack.keyDescription, "key.categories.movement");
+        KeyBindingExtra.setKeyKeyCategory(this.gameSettings.keyBindLeft.keyDescription, "key.categories.movement");
+        KeyBindingExtra.setKeyKeyCategory(this.gameSettings.keyBindSneak.keyDescription, "key.categories.movement");
+        KeyBindingExtra.setKeyKeyCategory(this.gameSettings.keyBindToggleRun.keyDescription, "key.categories.movement");
+        
+        KeyBindingExtra.setKeyKeyCategory(this.gameSettings.keyBindInventory.keyDescription, "key.categories.inventory");
+        
+        KeyBindingExtra.setKeyKeyCategory(this.gameSettings.keyBindDrop.keyDescription, "key.categories.gameplay");
+        KeyBindingExtra.setKeyKeyCategory(this.gameSettings.keyBindAttack.keyDescription, "key.categories.gameplay");
+        KeyBindingExtra.setKeyKeyCategory(this.gameSettings.keyBindUseItem.keyDescription, "key.categories.gameplay");
+        KeyBindingExtra.setKeyKeyCategory(this.gameSettings.keyBindPickBlock.keyDescription, "key.categories.gameplay");
+        KeyBindingExtra.setKeyKeyCategory(this.gameSettings.keyBindZoom.keyDescription, "key.categories.gameplay");
+        
+        KeyBindingExtra.setKeyKeyCategory(this.gameSettings.keyBindChat.keyDescription, "key.categories.multiplayer");
+        KeyBindingExtra.setKeyKeyCategory(this.gameSettings.keyBindCommand.keyDescription, "key.categories.multiplayer");
+        KeyBindingExtra.setKeyKeyCategory(this.gameSettings.keyBindPlayerList.keyDescription, "key.categories.multiplayer");
+        
+        KeyBindingExtra.setKeyKeyCategory(this.gameSettings.keyBindRedrawChunks.keyDescription, "key.categories.misc");
     }
 
     @ModifyArg(method = "screenshotListener", at = @At(value = "INVOKE", target = "Lorg/lwjgl/input/Keyboard;isKeyDown(I)Z"))

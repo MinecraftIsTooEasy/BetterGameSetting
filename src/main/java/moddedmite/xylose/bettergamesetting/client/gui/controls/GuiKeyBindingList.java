@@ -1,5 +1,6 @@
 package moddedmite.xylose.bettergamesetting.client.gui.controls;
 
+import moddedmite.xylose.bettergamesetting.client.KeyBindingExtra;
 import moddedmite.xylose.bettergamesetting.client.gui.base.GuiListExtended;
 import net.minecraft.*;
 import org.apache.commons.lang3.ArrayUtils;
@@ -17,13 +18,13 @@ public class GuiKeyBindingList extends GuiListExtended {
         this.guiControls = controls;
         this.mc = mcIn;
         KeyBinding[] akeybinding = ArrayUtils.clone(mcIn.gameSettings.keyBindings);
-        this.listEntries = new IGuiListEntry[(int) (akeybinding.length + 6)];//6 key Categories
+        this.listEntries = new IGuiListEntry[(int) (akeybinding.length + KeyBindingExtra.getKeyCategoryCount())];
         Arrays.sort(akeybinding);
         int i = 0;
         String s = null;
 
         for (KeyBinding keybinding : akeybinding) {
-            String s1 = keybinding.getKeyCategory(keybinding.keyDescription);
+            String s1 = KeyBindingExtra.getKeyCategory(keybinding.keyDescription);
 //            String s1 = keybinding.keyDescription;
 
             if (!s1.equals(s)) {

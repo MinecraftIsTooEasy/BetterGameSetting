@@ -37,27 +37,28 @@ dependencies {
     fml "com.github.MinecraftIsTooEasy:FishModLoader:3.4.2"
     implementation "com.github.MinecraftIsTooEasy:FishModLoader:3.4.2"
 
-    //	implementation 'org.apache.logging.log4j:log4j-core:2.17.1'
-
-//    implementation "com.github.MinecraftIsTooEasy:ManyLib:2.3.0"
     implementation "com.github.MinecraftIsTooEasy:ModMenu:10.1.1"
     implementation "com.github.MinecraftIsTooEasy:Conditional-Mixin:0.6.4"
     implementation "com.github.MinecraftIsTooEasy:RustedIronCore:1.5.0"
-
-    implementation "com.github.MinecraftIsTooEasy:Gson:2.10.1"
-    implementation "com.github.MinecraftIsTooEasy:FastUtil:8.5.12"
+    localRuntime "com.github.MinecraftIsTooEasy:Gson:2.10.1"
+    localRuntime "com.github.MinecraftIsTooEasy:FastUtil:8.5.12"
     implementation "com.github.MinecraftIsTooEasy:EMI:1.1.24"
 }
 
 def fmlResolvedFile = configurations.fml.files.iterator().next()
 
 loom {
-    accessWidenerPath = file("src/main/resources/BetterGameSetting.accessWidener")
+    accessWidenerPath = file("src/main/resources/BetterGameSetting.accesswidener")
     mergedMinecraftJar()
 
     mods {
         "Better Game Setting" {
             sourceSet sourceSets.main
+        }
+    }
+    runs {
+        client {
+            programArgs "--userProperties", "{}", "--username", "Dev", "--session", "a.a.a.a", "--width", "1920", "--height", "1080"
         }
     }
 }

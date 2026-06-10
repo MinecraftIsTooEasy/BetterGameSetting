@@ -1,14 +1,10 @@
 package moddedmite.xylose.bettergamesetting.client.gui;
 
-import moddedmite.xylose.bettergamesetting.api.ICreateWorld;
-import net.minecraft.FontRenderer;
-import net.minecraft.GameSettings;
+import moddedmite.xylose.bettergamesetting.api.IGuiCreateWorld;
 import net.minecraft.GuiButton;
 import net.minecraft.GuiCreateWorld;
 import net.minecraft.GuiScreen;
 import net.minecraft.I18n;
-
-import java.util.List;
 
 public class GuiExperimentOption extends GuiScreen {
 	private GuiScreen creteWorldGui;
@@ -33,8 +29,8 @@ public class GuiExperimentOption extends GuiScreen {
 				this.mc.displayGuiScreen(this.creteWorldGui);
 			}
 			if (button.id == 100) {
-				((ICreateWorld) this.creteWorldGui).switchSkillsEnable();
-				this.skillsButton.displayString = ((ICreateWorld) this.creteWorldGui).isSkillsEnable() ? I18n.getString("options.on") : I18n.getString("options.off");
+				((IGuiCreateWorld) this.creteWorldGui).switchSkillsEnable();
+				this.skillsButton.displayString = ((IGuiCreateWorld) this.creteWorldGui).isSkillsEnable() ? I18n.getString("options.on") : I18n.getString("options.off");
 			}
 		}
 	}

@@ -1,7 +1,6 @@
 package moddedmite.xylose.bettergamesetting.mixin.client.gui;
 
 import moddedmite.xylose.bettergamesetting.api.IGuiCreateWorld;
-import moddedmite.xylose.bettergamesetting.api.ICreateWorld;
 import moddedmite.xylose.bettergamesetting.client.gui.GuiExperimentOption;
 import moddedmite.xylose.bettergamesetting.client.gui.button.GuiTabButton;
 import moddedmite.xylose.bettergamesetting.client.gui.gamerule.GuiGameRules;
@@ -21,8 +20,6 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 @Mixin(GuiCreateWorld.class)
 public abstract class GuiCreateWorldMixin extends GuiScreen implements IGuiCreateWorld {
-
-public abstract class GuiCreateWorldMixin extends GuiScreen implements ICreateWorld {
     @Shadow private GuiScreen parentGuiScreen;
     @Shadow private boolean isHardcore;
     @Shadow private String localizedNewWorldText;
@@ -553,6 +550,8 @@ public abstract class GuiCreateWorldMixin extends GuiScreen implements ICreateWo
     @Override
     public List<GuiButton> bgs$getTabButtons() {
         return this.tabButtons;
+    }
+
     @Unique
     @Override
     public void switchSkillsEnable() {

@@ -625,10 +625,10 @@ public class FontFixer {
     }
 
     private void renderSplitString(String text, int x, int y, int width, boolean shadow) {
-        List textList = this.listFormattedStringToWidth(text, width);
+        List<String> textList = this.listFormattedStringToWidth(text, width);
 
-        for (Iterator var7 = textList.iterator(); var7.hasNext(); y += this.FONT_HEIGHT) {
-            String var8 = (String) var7.next();
+        for (Iterator<String> var7 = textList.iterator(); var7.hasNext(); y += this.FONT_HEIGHT) {
+            String var8 = var7.next();
             this.renderStringAligned(var8, x, y, width, this.textColor, shadow);
         }
 

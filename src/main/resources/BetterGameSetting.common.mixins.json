@@ -5,10 +5,30 @@
   "target": "DEFAULT",
   "minVersion": "0.8.3",
   "mixins": [
+    "DedicatedPlayerListMixin",
+    "GameRulesMixin",
+    "IntegratedPlayerListMixin",
+    "IntegratedServerMixin",
+    "PlayerManagerMixin",
+    "ServerConfigurationManagerMixin",
+    "ServerPlayerMixin",
     "WorldSettingsMixin",
-    "GameRulesMixin"
+    "widecheat.CommandGameModeMixin",
+    "widecheat.CommandHandlerMixin",
+    "widecheat.DedicatedServerMixin",
+    "widecheat.EntityPlayerMPMixin",
+    "widecheat.EnumGameTypeMixin",
+    "widecheat.EnumGameTypeMixin$OhMyCommandsCompatMixin",
+    "widecheat.IntegratedServerMixin",
+    "widecheat.ItemInWorldManagerMixin",
+    "widecheat.ItemInWorldManagerMixin$OhMyCommandsCompatMixin",
+    "widecheat.ItemMonsterPlacerMixin",
+    "widecheat.Packet70GameEventMixin",
+    "widecheat.ServerConfigurationManagerMixin",
+    "widecheat.WorldInfoMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "plugin": "moddedmite.xylose.bettergamesetting.util.BGSMixinConfigCommon"
 }

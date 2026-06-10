@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Overwrite;
 @Mixin(ResourceLocation.class)
 public class ResourceLocationMixin {
     /**
-     * @author Xy_Lose
+     * @author Xy_Luce
      * @reason disable MITE Resource Pack
      */
     @Overwrite

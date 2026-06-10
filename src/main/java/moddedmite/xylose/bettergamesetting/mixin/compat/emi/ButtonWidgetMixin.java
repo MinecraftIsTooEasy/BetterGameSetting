@@ -2,7 +2,6 @@ package moddedmite.xylose.bettergamesetting.mixin.compat.emi;
 
 import me.fallenbreath.conditionalmixin.api.annotation.Condition;
 import me.fallenbreath.conditionalmixin.api.annotation.Restriction;
-import moddedmite.xylose.bettergamesetting.api.IGameSetting;
 import net.minecraft.Minecraft;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
@@ -14,6 +13,6 @@ import shims.java.net.minecraft.client.gui.widget.ButtonWidget;
 public class ButtonWidgetMixin {
     @ModifyConstant(method = "renderWidget", constant = @Constant(intValue = 268435360))
     private int highLightButtonText(int constant) {
-        return ((IGameSetting) Minecraft.getMinecraft().gameSettings).isHighlightButtonText() ? constant : 0xFFFFFF;
+        return Minecraft.getMinecraft().gameSettings.isHighlightButtonText() ? constant : 0xFFFFFF;
     }
 }

@@ -8,46 +8,88 @@ import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class GuiGameRulesList extends GuiListExtended {
-    private final List<Entry> entries = new ArrayList<>();
+    private final List<IGuiListEntry> entries = new ArrayList<>();
     private final GameRules gameRules;
-    private Entry focusedEntry = null;
-
-    public GuiGameRulesList(GuiGameRules gui) {
+    private RuleEntry focusedEntry = null;
+    private final String searchText;
+    
+    public GuiGameRulesList(GuiGameRules gui, String searchText) {
         super(gui.mc, gui.width, gui.height, 32, gui.height - 32, 24);
         this.field_148163_i = false;
         this.gameRules = gui.gameRules;
-
+        this.searchText = searchText != null ? searchText.toLowerCase() : "";
+        this.buildEntriesList();
+    }
+    
+    private void buildEntriesList() {
+        this.entries.clear();
         String[] ruleNames = this.gameRules.getRules();
-        Arrays.sort(ruleNames);
-
-        for (String ruleName : ruleNames) {
+        List<String> sortedRules = new ArrayList<>();
+	    Collections.addAll(sortedRules, ruleNames);
+        
+        sortedRules.sort((a, b) -> {
+            RuleCategory cateA = getRuleCategory(a);
+            RuleCategory cateB = getRuleCategory(b);
+            if (cateA != cateB) {
+                return Integer.compare(cateA.ordinal(), cateB.ordinal());
+            }
+            return a.compareTo(b);
+        });
+        
+        RuleCategory currentCategory = null;
+        for (String ruleName : sortedRules) {
+            if (!this.searchText.isEmpty()) {
+                String lowerRuleName = ruleName.toLowerCase();
+                String translatedName = I18n.getString("gamerules." + ruleName + ".name").toLowerCase();
+                if (!lowerRuleName.contains(this.searchText) && !translatedName.contains(this.searchText)) {
+                    continue;
+                }
+            }
+            RuleCategory category = getRuleCategory(ruleName);
+            if (category != currentCategory) {
+                currentCategory = category;
+                this.entries.add(new CategoryEntry(category.getTranslationKey()));
+            }
             boolean isBoolean = this.isBooleanRule(ruleName);
-            this.entries.add(new Entry(ruleName, isBoolean));
+            this.entries.add(new RuleEntry(ruleName, isBoolean));
         }
+    }
+    
+    private RuleCategory getRuleCategory(String ruleName) {
+        return switch (ruleName) {
+            case "keepInventory", "naturalRegeneration" -> RuleCategory.PLAYER;
+            case "mobGriefing" -> RuleCategory.MOBS;
+            case "doMobSpawning" -> RuleCategory.SPAWNING;
+            case "doTileDrops", "doMobLoot" -> RuleCategory.DROPS;
+            case "doDaylightCycle", "doFireTick" -> RuleCategory.UPDATES;
+            case "commandBlockOutput" -> RuleCategory.CHAT;
+            default -> RuleCategory.MISC;
+        };
     }
 
     @Override
     protected void drawTooltip(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY) {
-        Entry entry = this.getListEntry(slotIndex);
-        if (entry != null) {
-            String ruleName = entry.ruleName;
-            String descriptionKey = "gamerules." + ruleName + ".description";
-            String description = I18n.getString(descriptionKey);
-            String defaultValue = I18n.getStringParams("gamerules.default", BGSClient.DEFAULT_GAMERULE_VALUE.get(ruleName));
-            List<String> tooltip = new ArrayList<>();
-            tooltip.add("§e" + ruleName);
-
-            if (!description.equals(descriptionKey)) {
-                tooltip.add(description);
-            }
-            tooltip.add(defaultValue);
-
-            if (!description.equals(descriptionKey) || !defaultValue.isEmpty()) {
-                ScreenUtil.getInstance().drawTooltip(tooltip, mouseX, mouseY);
-            }
+        if (!this.isMouseYWithinSlotBounds(mouseY)) return;
+        IGuiListEntry entry = this.getListEntry(slotIndex);
+        if (!(entry instanceof RuleEntry ruleEntry)) return;
+        String ruleName = ruleEntry.ruleName;
+        String descriptionKey = "gamerules." + ruleName + ".description";
+        String description = I18n.getString(descriptionKey);
+        String defaultValue = I18n.getStringParams("gamerules.default", BGSClient.DEFAULT_GAMERULE_VALUE.get(ruleName));
+        List<String> tooltip = new ArrayList<>();
+        tooltip.add("§e" + ruleName);
+        
+        if (!description.equals(descriptionKey)) {
+            tooltip.add(description);
+        }
+        tooltip.add(defaultValue);
+        
+        if (!description.equals(descriptionKey) || !defaultValue.isEmpty()) {
+            ScreenUtil.getInstance().drawTooltip(tooltip, mouseX, mouseY);
         }
     }
 
@@ -55,9 +97,9 @@ public class GuiGameRulesList extends GuiListExtended {
         String value = this.gameRules.getGameRuleStringValue(ruleName);
         return value.equalsIgnoreCase("true") || value.equalsIgnoreCase("false");
     }
-
+    
     @Override
-    public GuiGameRulesList.Entry getListEntry(int index) {
+    public IGuiListEntry getListEntry(int index) {
         return this.entries.get(index);
     }
 
@@ -77,8 +119,10 @@ public class GuiGameRulesList extends GuiListExtended {
     }
 
     public void resetAllRules() {
-        for (Entry entry : this.entries) {
-            entry.resetToDefault();
+        for (IGuiListEntry entry : this.entries) {
+            if (entry instanceof RuleEntry ruleEntry) {
+                ruleEntry.resetToDefault();
+            }
         }
     }
 
@@ -104,7 +148,7 @@ public class GuiGameRulesList extends GuiListExtended {
         }
     }
 
-    private void setFocusedEntry(Entry entry) {
+    private void setFocusedEntry(RuleEntry entry) {
         if (this.focusedEntry != null && this.focusedEntry != entry) {
             this.focusedEntry.setFocused(false);
         }
@@ -115,7 +159,7 @@ public class GuiGameRulesList extends GuiListExtended {
         }
     }
 
-    public class Entry implements GuiListExtended.IGuiListEntry {
+    public class RuleEntry implements GuiListExtended.IGuiListEntry {
         private final Minecraft mc = Minecraft.getMinecraft();
         private final String ruleName;
         private final boolean isBoolean;
@@ -123,7 +167,7 @@ public class GuiGameRulesList extends GuiListExtended {
         private GuiTextField valueField;
         private boolean isFocused = false;
 
-        public Entry(String ruleName, boolean isBoolean) {
+        public RuleEntry(String ruleName, boolean isBoolean) {
             this.ruleName = ruleName;
             this.isBoolean = isBoolean;
 
@@ -173,8 +217,7 @@ public class GuiGameRulesList extends GuiListExtended {
                     return true;
                 }
             } else {
-                boolean clickedTextField = x >= this.valueField.xPos && x < this.valueField.xPos + this.valueField.getWidth()
-                        && y >= this.valueField.yPos && relativeY < this.valueField.yPos + this.valueField.height;
+                boolean clickedTextField = valueField.isMouseOver();
                 if (clickedTextField) {
                     setFocusedEntry(this);
                     this.valueField.mouseClicked(x, y, mouseEvent);
@@ -236,7 +279,7 @@ public class GuiGameRulesList extends GuiListExtended {
         private void updateToggleButtonText() {
             if (this.toggleButton != null) {
                 boolean value = gameRules.getGameRuleBooleanValue(this.ruleName);
-                this.toggleButton.displayString = (value ? I18n.getString("gui.yes") : I18n.getString("gui.no"));
+                this.toggleButton.displayString = (value ? I18n.getString("options.on") : I18n.getString("options.off"));
             }
         }
 
@@ -258,6 +301,54 @@ public class GuiGameRulesList extends GuiListExtended {
 
         public boolean isFocused() {
             return this.isFocused;
+        }
+    }
+    
+    public class CategoryEntry implements IGuiListEntry {
+        private final String labelText;
+        private final int labelWidth;
+        
+        public CategoryEntry(String label) {
+            this.labelText = I18n.getString(label);
+            this.labelWidth = GuiGameRulesList.this.client.fontRenderer.getStringWidth(this.labelText);
+        }
+        
+        public void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean isSelected) {
+            GuiGameRulesList.this.client.fontRenderer.drawString(EnumChatFormatting.YELLOW.toString() + EnumChatFormatting.BOLD + this.labelText, GuiGameRulesList.this.client.currentScreen.width / 2 - this.labelWidth / 2, y + slotHeight - GuiGameRulesList.this.client.fontRenderer.FONT_HEIGHT - 1, 16777215);
+        }
+        
+        public boolean mousePressed(int slotIndex, int x, int y, int mouseEvent, int relativeX, int relativeY) {
+            return false;
+        }
+        
+        public void mouseReleased(int slotIndex, int x, int y, int mouseEvent, int relativeX, int relativeY) {
+        }
+        
+        @Override
+        public void keyTyped(int slotIndex, char typedChar, int keyCode) {
+        }
+        
+        public void setSelected(int slotIndex, int mouseX, int mouseY) {
+        }
+    }
+    
+    private enum RuleCategory {
+        PLAYER("player"),
+        MOBS("mobs"),
+        SPAWNING("spawning"),
+        DROPS("drops"),
+        UPDATES("updates"),
+        CHAT("chat"),
+        MISC("misc");
+        
+        private final String keyName;
+        
+        RuleCategory(String keyName) {
+            this.keyName = keyName;
+        }
+        
+        public String getTranslationKey() {
+            return "gamerules.category." + this.keyName;
         }
     }
 }

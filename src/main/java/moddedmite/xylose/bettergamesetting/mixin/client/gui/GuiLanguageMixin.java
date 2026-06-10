@@ -1,6 +1,7 @@
 package moddedmite.xylose.bettergamesetting.mixin.client.gui;
 
 import moddedmite.xylose.bettergamesetting.client.EnumOptionsExtra;
+import moddedmite.xylose.bettergamesetting.init.BGSClient;
 import moddedmite.xylose.bettergamesetting.mixin.client.invoker.GuiSlotLanguageInvoker;
 import net.minecraft.*;
 import org.spongepowered.asm.mixin.Final;
@@ -31,6 +32,11 @@ public class GuiLanguageMixin extends GuiScreen {
         this.searchField.setMaxStringLength(50);
         this.searchField.setHint(I18n.getString("options.search"));
         return true;
+    }
+
+    @Inject(method = "initGui", at = @At("TAIL"))
+    private void onInitTail(CallbackInfo ci) {
+        this.languageList.func_77208_b(BGSClient.scrollAmount);
     }
 
     @Inject(method = "actionPerformed", at = @At("HEAD"))

@@ -3,29 +3,37 @@ package moddedmite.xylose.bettergamesetting.client.gui.button;
 import net.minecraft.*;
 import org.lwjgl.opengl.GL11;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class GuiOptionSlider extends GuiButton {
     float sliderValue;
     public boolean dragging;
     public EnumOptions options;
     private final float minValue;
     private final float maxValue;
+    private Minecraft client;
+    private boolean realtimeUpdate;
 
     public GuiOptionSlider(int buttonId, int x, int y, EnumOptions optionIn) {
-        this(buttonId, x, y, optionIn, 0.0F, 1.0F);
+        this(buttonId, x, y, optionIn, 0.0F, 1.0F, false);
+    }
+
+    public GuiOptionSlider(int buttonId, int x, int y, EnumOptions optionIn, boolean realtimeUpdate) {
+        this(buttonId, x, y, optionIn, 0.0F, 1.0F, realtimeUpdate);
     }
 
     public GuiOptionSlider(int buttonId, int x, int y, EnumOptions optionIn, float minValueIn, float maxValueIn) {
+        this(buttonId, x, y, optionIn, minValueIn, maxValueIn, true);
+    }
+
+    public GuiOptionSlider(int buttonId, int x, int y, EnumOptions optionIn, float minValueIn, float maxValueIn, boolean realtimeUpdate) {
         super(buttonId, x, y, 150, 20, "");
         this.sliderValue = 1.0F;
         this.options = optionIn;
         this.minValue = minValueIn;
         this.maxValue = maxValueIn;
-        Minecraft minecraft = Minecraft.getMinecraft();
-        this.sliderValue = this.options.normalizeValue(minecraft.gameSettings.getOptionFloatValue(optionIn), options);
-        this.displayString = minecraft.gameSettings.getKeyBinding(optionIn);
+        this.realtimeUpdate = realtimeUpdate;
+        this.client = Minecraft.getMinecraft();
+        this.sliderValue = this.options.normalizeValue(client.gameSettings.getOptionFloatValue(optionIn), options);
+        this.displayString = client.gameSettings.getKeyBinding(optionIn);
     }
 
     /**
@@ -39,23 +47,30 @@ public class GuiOptionSlider extends GuiButton {
     /**
      * Fired when the mouse button is dragged. Equivalent of MouseListener.mouseDragged(MouseEvent e).
      */
-    protected void mouseDragged(Minecraft mc, int mouseX, int mouseY) {
+    protected void mouseDragged(Minecraft client, int mouseX, int mouseY) {
         if (this.enabled) {
             if (this.dragging) {
-                this.sliderValue = (float) (mouseX - (this.xPosition + 4)) / (float) (this.width - 8);
+                float newValue = (float) (mouseX - (this.xPosition + 4)) / (float) (this.width - 8);
 
-                if (this.sliderValue < 0.0F) {
-                    this.sliderValue = 0.0F;
+                if (newValue < 0.0F) {
+                    newValue = 0.0F;
+                }
+                if (newValue > 1.0F) {
+                    newValue = 1.0F;
                 }
 
-                if (this.sliderValue > 1.0F) {
-                    this.sliderValue = 1.0F;
+                this.sliderValue = newValue;
+                float displayValue = this.options.denormalizeValue(this.sliderValue, this.options);
+                
+                if (realtimeUpdate) {
+                    client.gameSettings.setOptionFloatValue(this.options, displayValue);
+                    this.displayString = client.gameSettings.getKeyBinding(this.options);
+                } else {
+                    float origin = client.gameSettings.getOptionFloatValue(this.options);
+                    client.gameSettings.setOptionFloatValue(this.options, displayValue);
+                    this.displayString = client.gameSettings.getKeyBinding(this.options);
+                    client.gameSettings.setOptionFloatValue(this.options, origin);
                 }
-
-                float f = this.options.denormalizeValue(this.sliderValue, this.options);
-                mc.gameSettings.setOptionFloatValue(this.options, f);
-                this.sliderValue = this.options.normalizeValue(f, this.options);
-                this.displayString = mc.gameSettings.getKeyBinding(this.options);
             }
 
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -80,19 +95,34 @@ public class GuiOptionSlider extends GuiButton {
                 this.sliderValue = 1.0F;
             }
 
-            mc.gameSettings.setOptionFloatValue(this.options, this.options.denormalizeValue(this.sliderValue, this.options));
-            this.displayString = mc.gameSettings.getKeyBinding(this.options);
+            if (realtimeUpdate) {
+                float displayValue = this.options.denormalizeValue(this.sliderValue, this.options);
+                mc.gameSettings.setOptionFloatValue(this.options, displayValue);
+                this.displayString = mc.gameSettings.getKeyBinding(this.options);
+            } else {
+                float displayValue = this.options.denormalizeValue(this.sliderValue, this.options);
+                float originalGameSettingValue = mc.gameSettings.getOptionFloatValue(this.options);
+                mc.gameSettings.setOptionFloatValue(this.options, displayValue);
+                this.displayString = mc.gameSettings.getKeyBinding(this.options);
+                mc.gameSettings.setOptionFloatValue(this.options, originalGameSettingValue);
+            }
+            
             this.dragging = true;
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
      * Fired when the mouse button is released. Equivalent of MouseListener.mouseReleased(MouseEvent e).
      */
     public void mouseReleased(int mouseX, int mouseY) {
+        if (this.dragging) {
+            float newValue = this.options.denormalizeValue(this.sliderValue, this.options);
+            this.client.gameSettings.setOptionFloatValue(this.options, newValue);
+
+            this.displayString = this.client.gameSettings.getKeyBinding(this.options);
+        }
         this.dragging = false;
     }
 

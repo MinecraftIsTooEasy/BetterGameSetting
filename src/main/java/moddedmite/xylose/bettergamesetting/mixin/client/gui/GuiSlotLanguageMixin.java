@@ -1,6 +1,12 @@
 package moddedmite.xylose.bettergamesetting.mixin.client.gui;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.terraformersmc.modmenu.gui.ModsScreen;
+import moddedmite.xylose.bettergamesetting.init.BGSClient;
+import moddedmite.xylose.bettergamesetting.util.ScreenUtil;
 import net.minecraft.*;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -31,9 +37,19 @@ public abstract class GuiSlotLanguageMixin extends GuiSlot {
         this.filteredLanguages.addAll(this.field_77251_g);
     }
 
+    @WrapOperation(method = "elementClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/Minecraft;refreshResources()V"))
+    private void noRefreshResource(Minecraft instance, Operation<Void> original) {
+        instance.getLanguageManager().onResourceManagerReload(instance.getResourceManager());
+    }
+
     @Inject(method = "elementClicked", at = @At("TAIL"))
     private void refreshGui(int bl, boolean par2, CallbackInfo ci) {
         this.languageGui.initGui();
+    }
+
+    @Inject(method = "elementClicked", at = @At("HEAD"))
+    private void saveScrollAmount(int bl, boolean par2, CallbackInfo ci) {
+        BGSClient.scrollAmount = (int) this.amountScrolled;
     }
 
     /**
@@ -58,22 +74,22 @@ public abstract class GuiSlotLanguageMixin extends GuiSlot {
         }
     }
 
-    @Redirect(method = "getSize", at = @At(value = "FIELD", target = "Lnet/minecraft/GuiSlotLanguage;field_77251_g:Ljava/util/List;"))
+    @Redirect(method = "getSize", at = @At(value = "FIELD", target = "Lnet/minecraft/GuiSlotLanguage;field_77251_g:Ljava/util/List;", opcode = Opcodes.GETFIELD))
     private List<String> redirectGetSize(GuiSlotLanguage instance) {
         return this.filteredLanguages;
     }
 
-    @Redirect(method = "elementClicked", at = @At(value = "FIELD", target = "Lnet/minecraft/GuiSlotLanguage;field_77251_g:Ljava/util/List;"))
+    @Redirect(method = "elementClicked", at = @At(value = "FIELD", target = "Lnet/minecraft/GuiSlotLanguage;field_77251_g:Ljava/util/List;", opcode = Opcodes.GETFIELD))
     private List<String> redirectElementClicked(GuiSlotLanguage instance) {
         return this.filteredLanguages;
     }
 
-    @Redirect(method = "isSelected", at = @At(value = "FIELD", target = "Lnet/minecraft/GuiSlotLanguage;field_77251_g:Ljava/util/List;"))
+    @Redirect(method = "isSelected", at = @At(value = "FIELD", target = "Lnet/minecraft/GuiSlotLanguage;field_77251_g:Ljava/util/List;", opcode = Opcodes.GETFIELD))
     private List<String> redirectIsSelected(GuiSlotLanguage instance, int index) {
         return this.filteredLanguages;
     }
 
-    @Redirect(method = "drawSlot", at = @At(value = "FIELD", target = "Lnet/minecraft/GuiSlotLanguage;field_77251_g:Ljava/util/List;"))
+    @Redirect(method = "drawSlot", at = @At(value = "FIELD", target = "Lnet/minecraft/GuiSlotLanguage;field_77251_g:Ljava/util/List;", opcode = Opcodes.GETFIELD))
     private List<String> redirectDrawSlot(GuiSlotLanguage instance, int index) {
         return this.filteredLanguages;
     }

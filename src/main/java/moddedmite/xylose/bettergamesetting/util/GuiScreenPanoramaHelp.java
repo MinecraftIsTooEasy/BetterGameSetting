@@ -1,6 +1,7 @@
 package moddedmite.xylose.bettergamesetting.util;
 
-import net.minecraft.*;
+import net.minecraft.GuiMainMenu;
+import net.minecraft.GuiScreen;
 
 public class GuiScreenPanoramaHelp extends GuiMainMenu {
 	public static GuiMainMenu panoramaDummy = new GuiMainMenu();

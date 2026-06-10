@@ -1,6 +1,7 @@
 package moddedmite.xylose.bettergamesetting.mixin.client.gui;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import moddedmite.xylose.bettergamesetting.util.ScreenUtil;
 import net.minecraft.*;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.*;
@@ -67,13 +68,11 @@ public abstract class GuiSlotMixin {
     @Inject(method = "drawScreen", at = @At(value = "INVOKE", target = "Lnet/minecraft/GuiSlot;drawDarkenedBackground(I)V", ordinal = 0))
     private void scissorSlotStart(int j, int f, float par3, CallbackInfo ci) {
         Gui.drawRect(this.left, this.top, this.right, this.bottom, 0x66000000);//draw slot dark background
-        ScaledResolution sr = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
-        GL11.glScissor((this.left * sr.getScaleFactor()), (mc.displayHeight - this.bottom * sr.getScaleFactor()), ((this.right - this.left) * sr.getScaleFactor()), ((this.bottom - this.top) * sr.getScaleFactor()));
-        GL11.glEnable(GL11.GL_SCISSOR_TEST);
+        ScreenUtil.scissorHead(this.left, this.top, this.right, this.bottom - this.top);
     }
 
     @Inject(method = "drawScreen", at = @At(value = "INVOKE", target = "Lnet/minecraft/GuiSlot;drawDarkenedBackground(I)V", ordinal = 1))
     private void scissorSlotEnd(int j, int f, float par3, CallbackInfo ci) {
-        GL11.glDisable(GL11.GL_SCISSOR_TEST);
+        ScreenUtil.scissorTail();
     }
 }

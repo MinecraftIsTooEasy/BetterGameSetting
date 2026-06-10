@@ -59,10 +59,6 @@ public abstract class GuiResourcePackList extends GuiListExtended {
     }
 
     @Override
-    protected void drawTooltip(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY) {
-    }
-
-    @Override
     protected boolean isSelected(int slotIndex) {
         return slotIndex == this.selectedSlotIndex;
     }
@@ -76,6 +72,6 @@ public abstract class GuiResourcePackList extends GuiListExtended {
             entry.setIsSelected(i == slotIndex);
         }
 
-        this.getListEntry(slotIndex).setSelected(slotIndex, mouseX, mouseY);
+        this.selectedEntry(slotIndex, mouseX, mouseY);
     }
 }

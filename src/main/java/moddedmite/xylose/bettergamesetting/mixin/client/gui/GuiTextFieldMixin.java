@@ -1,8 +1,12 @@
 package moddedmite.xylose.bettergamesetting.mixin.client.gui;
 
 import moddedmite.xylose.bettergamesetting.api.ITextField;
+import moddedmite.xylose.bettergamesetting.util.ScreenUtil;
 import net.minecraft.FontRenderer;
 import net.minecraft.GuiTextField;
+import net.minecraft.Minecraft;
+import net.minecraft.ScaledResolution;
+import org.lwjgl.input.Mouse;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -17,6 +21,7 @@ public abstract class GuiTextFieldMixin implements ITextField {
     @Final @Mutable @Shadow private int width;
     @Final @Mutable @Shadow public int height;
     @Shadow @Final private FontRenderer fontRenderer;
+    @Shadow private boolean visible;
     @Shadow public abstract boolean isFocused();
     @Shadow public abstract String getText();
 
@@ -34,6 +39,15 @@ public abstract class GuiTextFieldMixin implements ITextField {
 
     public void setHint(String hint) {
         this.hint = hint;
+    }
+    
+    public boolean isMouseOver() {
+        if (!this.visible) return false;
+        Minecraft client = Minecraft.getMinecraft();
+        ScaledResolution scaledresolution = new ScaledResolution(client.gameSettings, client.displayWidth, client.displayHeight);
+        int mouseX = ScreenUtil.getMouseX(scaledresolution);
+        int mouseY = ScreenUtil.getMouseY(scaledresolution);
+        return mouseX >= this.xPos && mouseY >= this.yPos && mouseX < this.xPos + this.width && mouseY < this.yPos + this.height;
     }
 
     @Inject(method = "drawTextBox", at = @At("TAIL"))

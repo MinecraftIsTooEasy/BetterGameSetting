@@ -21,7 +21,7 @@ public class SimpleReloadableResourceManagerMixin {
     @Shadow private void notifyReloadListeners() {}
 
     /**
-     * @author Xy_Lose
+     * @author Xy_Luce
      * @reason disable MITE Resource Pack
      */
     @Overwrite
@@ -29,8 +29,7 @@ public class SimpleReloadableResourceManagerMixin {
         this.clearResources();
         Minecraft.getMinecraft().getLogAgent().logInfo("Reloading ResourceManager: " + joinerResourcePacks.join(Iterables.transform(par1List, new SimpleReloadableResourceManagerINNER1(ReflectHelper.dyCast(this)))));
 
-        for (Object o : par1List) {
-            ResourcePack resourcePack = (ResourcePack) o;
+        for (ResourcePack resourcePack : (List<ResourcePack>) par1List) {
             this.reloadResourcePack(resourcePack);
         }
 

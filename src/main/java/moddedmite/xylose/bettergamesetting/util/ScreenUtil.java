@@ -1,20 +1,17 @@
 package moddedmite.xylose.bettergamesetting.util;
 
 import net.minecraft.*;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 
 public class ScreenUtil extends Gui {
     public static ScreenUtil instance;
-    private final Minecraft client;
+    private static final Minecraft client = Minecraft.getMinecraft();
 
     public ScreenUtil() {
-        this.client = Minecraft.getMinecraft();
     }
 
     public static ScreenUtil getInstance() {
@@ -46,19 +43,19 @@ public class ScreenUtil extends Gui {
     }
 
     public void drawTooltipTranslated(String text, int x, int y, Object... objects) {
-        this.drawTooltip(List.of(I18n.getStringParams(text, objects)), x, y, this.client.fontRenderer, this.client.currentScreen.width, this.client.currentScreen.height);
+        this.drawTooltip(List.of(I18n.getStringParams(text, objects)), x, y, client.fontRenderer, client.currentScreen.width, client.currentScreen.height);
     }
 
     public void drawTooltipTranslated(String text, int x, int y) {
-        this.drawTooltip(List.of(I18n.getString(text)), x, y, this.client.fontRenderer, this.client.currentScreen.width, this.client.currentScreen.height);
+        this.drawTooltip(List.of(I18n.getString(text)), x, y, client.fontRenderer, client.currentScreen.width, client.currentScreen.height);
     }
 
     public void drawTooltip(String text, int x, int y) {
-        this.drawTooltip(List.of(text), x, y, this.client.fontRenderer, this.client.currentScreen.width, this.client.currentScreen.height);
+        this.drawTooltip(List.of(text), x, y, client.fontRenderer, client.currentScreen.width, client.currentScreen.height);
     }
 
     public void drawTooltip(List<String> textLines, int x, int y) {
-        this.drawTooltip(textLines, x, y, this.client.fontRenderer, this.client.currentScreen.width, this.client.currentScreen.height);
+        this.drawTooltip(textLines, x, y, client.fontRenderer, client.currentScreen.width, client.currentScreen.height);
     }
 
     public void drawTooltip(List<String> textLines, int x, int y, FontRenderer font, int width, int height) {
@@ -96,7 +93,7 @@ public class ScreenUtil extends Gui {
             int tooltipHeight = 8;
 
             if (textLines.size() > 1) {
-                tooltipHeight += 2 + (textLines.size() - 1) * 10;
+                tooltipHeight += (textLines.size() - 1) * 10;
             }
 
             if (tooltipX + maxWidth > width) {
@@ -128,17 +125,11 @@ public class ScreenUtil extends Gui {
             this.drawGradientRect(tooltipX + maxWidth + 2, tooltipY - 3 + 1, tooltipX + maxWidth + 3, tooltipY + tooltipHeight + 3 - 1, borderColorStart, borderColorEnd);
             this.drawGradientRect(tooltipX - 3, tooltipY - 3, tooltipX + maxWidth + 3, tooltipY - 3 + 1, borderColorStart, borderColorStart);
             this.drawGradientRect(tooltipX - 3, tooltipY + tooltipHeight + 2, tooltipX + maxWidth + 3, tooltipY + tooltipHeight + 3, borderColorEnd, borderColorEnd);
-
-            for (int i = 0; i < textLines.size(); ++i) {
-                String line = textLines.get(i);
-                font.drawStringWithShadow(line, tooltipX, tooltipY, -1);
-
-                if (i == 0) {
-                    tooltipY += 2;
-                }
-
-                tooltipY += 10;
-            }
+	        
+	        for (String line : textLines) {
+		        font.drawStringWithShadow(line, tooltipX, tooltipY, -1);
+		        tooltipY += 10;
+	        }
 
             this.zLevel = 0.0F;
             GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -146,19 +137,19 @@ public class ScreenUtil extends Gui {
     }
 
     public void drawButtonTooltipTranslated(String text, int x, int y, Object... objects) {
-        this.drawButtonTooltip(List.of(I18n.getStringParams(text, objects)), x, y, this.client.fontRenderer, this.client.currentScreen.width, this.client.currentScreen.height);
+        this.drawButtonTooltip(List.of(I18n.getStringParams(text, objects)), x, y, client.fontRenderer, client.currentScreen.width, client.currentScreen.height);
     }
 
     public void drawButtonTooltipTranslated(String text, int x, int y) {
-        this.drawButtonTooltip(List.of(I18n.getString(text)), x, y, this.client.fontRenderer, this.client.currentScreen.width, this.client.currentScreen.height);
+        this.drawButtonTooltip(List.of(I18n.getString(text)), x, y, client.fontRenderer, client.currentScreen.width, client.currentScreen.height);
     }
 
     public void drawButtonTooltip(String text, int x, int y) {
-        this.drawButtonTooltip(List.of(text), x, y, this.client.fontRenderer, this.client.currentScreen.width, this.client.currentScreen.height);
+        this.drawButtonTooltip(List.of(text), x, y, client.fontRenderer, client.currentScreen.width, client.currentScreen.height);
     }
 
     public void drawButtonTooltip(List<String> textLines, int x, int y) {
-        this.drawButtonTooltip(textLines, x, y, this.client.fontRenderer, this.client.currentScreen.width, this.client.currentScreen.height);
+        this.drawButtonTooltip(textLines, x, y, client.fontRenderer, client.currentScreen.width, client.currentScreen.height);
     }
 
     public void drawButtonTooltip(List<String> textLines, int x, int y, FontRenderer font, int width, int height) {
@@ -193,7 +184,7 @@ public class ScreenUtil extends Gui {
 
             int tooltipHeight = 8;
             if (textLines.size() > 1) {
-                tooltipHeight += 2 + (textLines.size() - 1) * 10;
+                tooltipHeight += (textLines.size() - 1) * 10;
             } else {
                 tooltipHeight += 2;
             }
@@ -237,16 +228,10 @@ public class ScreenUtil extends Gui {
             this.drawGradientRect(tooltipX - 3, tooltipY + tooltipHeight + 2, tooltipX + maxWidth + 3, tooltipY + tooltipHeight + 3, borderColorEnd, borderColorEnd);
 
             int currentY = tooltipY;
-            for (int i = 0; i < textLines.size(); ++i) {
-                String line = textLines.get(i);
-                font.drawStringWithShadow(line, tooltipX, currentY, -1);
-
-                if (i == 0) {
-                    currentY += 2;
-                }
-
-                currentY += 10;
-            }
+	        for (String line : textLines) {
+		        font.drawStringWithShadow(line, tooltipX, currentY, -1);
+		        currentY += 10;
+	        }
 
             this.zLevel = 0.0F;
             GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -338,18 +323,46 @@ public class ScreenUtil extends Gui {
             double cycleDuration = Math.max((double) overflow * 0.5, 3.0);
             double interpolationFactor = Math.sin((Math.PI / 2) * Math.cos((Math.PI * 2) * timeSeconds / cycleDuration)) / 2.0 + 0.5;
             double scrollOffset = Mth.lerp(interpolationFactor, 0.0F, overflow);
-
-            GL11.glPushMatrix();
-            GL11.glEnable(GL11.GL_SCISSOR_TEST);
-            Minecraft mc = Minecraft.getMinecraft();
-            int scale = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight).getScaleFactor();
-            GL11.glScissor(left * scale, mc.displayHeight - bottom * scale, (right - left) * scale, (bottom - top) * scale);
-            font.drawStringWithShadow(text, left - (int) scrollOffset, centerY, color);
-            GL11.glDisable(GL11.GL_SCISSOR_TEST);
-            GL11.glPopMatrix();
+            scissorExecute(left, top, right, bottom, () -> {
+                font.drawStringWithShadow(text, left - (int) scrollOffset, centerY, color);
+            });
         } else {
             int clampedX = Mth.clamp(centerX, left + textWidth / 2, right - textWidth / 2);
             font.drawStringWithShadow(text, clampedX - textWidth / 2, centerY, color);
         }
+    }
+    
+    public static int getScaleFactor() {
+	    return new ScaledResolution(client.gameSettings, client.displayWidth, client.displayHeight).getScaleFactor();
+    }
+
+    public static void scissorHead(int x, int y, int width, int height) {
+        GL11.glPushMatrix();
+        GL11.glEnable(GL11.GL_SCISSOR_TEST);
+        int scale = getScaleFactor();
+        GL11.glScissor(x * scale, client.displayHeight - (y + height) * scale, width * scale, height * scale);
+    }
+
+    public static void scissorTail() {
+        GL11.glDisable(GL11.GL_SCISSOR_TEST);
+        GL11.glPopMatrix();
+    }
+
+    public static void scissorExecute(int x, int y, int width, int height, Runnable execute) {
+        scissorHead(x, y, width, height);
+        if (execute != null) {
+            execute.run();
+        }
+        scissorTail();
+    }
+    
+    public static int getMouseX(ScaledResolution scale) {
+        int width = scale.getScaledWidth();
+        return Mouse.getX() * width / client.displayWidth;
+    }
+    
+    public static int getMouseY(ScaledResolution scale) {
+        int height = scale.getScaledHeight();
+        return height - Mouse.getY() * height / client.displayHeight - 1;
     }
 }

@@ -155,7 +155,7 @@ public abstract class FontRendererMixin {
 
     @Inject(method = "renderStringAtPos", at = @At("HEAD"), cancellable = true)
     private void newRender(String string, boolean shadow, CallbackInfo ci) {
-        if (((IGameSetting) Minecraft.getMinecraft().gameSettings).isForceUnicodeFont()) return;
+        if (Minecraft.getMinecraft().gameSettings.isForceUnicodeFont()) return;
         ci.cancel();
 
         for (int var3 = 0; var3 < string.length(); ++var3) {

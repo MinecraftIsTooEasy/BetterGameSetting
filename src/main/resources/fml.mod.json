@@ -15,9 +15,9 @@
   "environment": "client",
   "name": "BetterGameSetting",
   "icon": "assets/bgs/bgs_icon.png",
-  "description": "1.7.2+ Game Setting Gui & Fixes the FontRenderer",
+  "description": "Ports the game settings screen from 1.7.2+ to 1.6.4-MITE",
   "authors": [
-    "Xy_Lose"
+    "Xy_Luce"
   ],
   "contributors": [
     "jaredlll08",

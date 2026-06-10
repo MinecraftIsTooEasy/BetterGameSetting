@@ -1,5 +1,6 @@
 package moddedmite.xylose.bettergamesetting.client.gui.base;
 
+import moddedmite.xylose.bettergamesetting.util.ScreenUtil;
 import net.minecraft.*;
 
 public abstract class GuiListExtended extends GuiSlotModern {
@@ -20,14 +21,17 @@ public abstract class GuiListExtended extends GuiSlotModern {
 
     protected void drawSlot(int slotIndex, int x, int y, int slotHeight, Tessellator tessellator, int mouseX, int mouseY) {
         if (this.getListEntry(slotIndex) != null)
-            this.getListEntry(slotIndex).drawEntry(slotIndex, x, y, this.getListWidth(), slotHeight, mouseX, mouseY, this.getSlotIndexFromScreenCoords(mouseX, mouseY) == slotIndex);
+            ScreenUtil.scissorExecute(this.left, this.top, this.width, this.bottom - this.top, () -> {
+                this.getListEntry(slotIndex).drawEntry(slotIndex, x, y, this.getListWidth(), slotHeight, mouseX, mouseY, this.getSlotIndexFromScreenCoords(mouseX, mouseY) == slotIndex);
+            });
     }
 
-    protected void func_178040_a(int p_178040_1_, int p_178040_2_, int p_178040_3_) {
-        this.getListEntry(p_178040_1_).setSelected(p_178040_1_, p_178040_2_, p_178040_3_);
+    protected void selectedEntry(int slotIndex, int mouseX, int mouseY) {
+        this.getListEntry(slotIndex).setSelected(slotIndex, mouseX, mouseY);
     }
 
-    protected abstract void drawTooltip(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY);
+    protected void drawTooltip(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY) {
+    }
 
     public boolean mouseClicked(int mouseXIn, int mouseYIn, int mouseEvent) {
         if (this.isMouseYWithinSlotBounds(mouseYIn)) {
@@ -42,7 +46,7 @@ public abstract class GuiListExtended extends GuiSlotModern {
                 try {
                     if (this.getListEntry(i).mousePressed(i, mouseXIn, mouseYIn, mouseEvent, l, i1)) {
                         this.setEnabled(false);
-                        Minecraft.getMinecraft().sndManager.playSoundFX("random.click", 1.0F, 1.0F);
+                        this.client.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
                         return true;
                     }
                 } catch (Exception ignore) {}

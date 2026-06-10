@@ -1,12 +1,20 @@
 package moddedmite.xylose.bettergamesetting.mixin.client;
 
 import moddedmite.xylose.bettergamesetting.client.CustomKeys;
+import moddedmite.xylose.bettergamesetting.client.gui.gamerule.GuiGameRules;
+import moddedmite.xylose.bettergamesetting.util.DisplayModeHelper;
+import moddedmite.xylose.bettergamesetting.util.Mth;
 import moddedmite.xylose.bettergamesetting.util.ScreenUtil;
 import moddedmite.xylose.bettergamesetting.init.BGSClient;
 import moddedmite.xylose.bettergamesetting.util.GuiScreenPanoramaHelp;
 import net.minecraft.*;
+import net.minecraft.client.main.Main;
 import net.xiaoyu233.fml.FishModLoader;
+import net.xiaoyu233.fml.util.ReflectHelper;
+import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
@@ -14,22 +22,26 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Map;
 
+import static moddedmite.xylose.bettergamesetting.util.Constants.*;
+
 @Mixin(value = Minecraft.class, priority = 9999)
 public abstract class MinecraftMixin {
     @Shadow public GameSettings gameSettings;
     @Shadow public GuiScreen currentScreen;
     @Shadow public EntityClientPlayerMP thePlayer;
-
-    @Shadow public abstract IntegratedServer getIntegratedServer();
+    @Shadow private boolean fullscreen;
+    @Shadow public int displayWidth;
+    @Shadow public int displayHeight;
+    @Shadow private int tempDisplayWidth;
+    @Shadow private int tempDisplayHeight;
+    @Shadow public abstract void resize(int par1, int par2);
 
     @Redirect(method = "runGameLoop", at = @At(value = "FIELD", target = "Lnet/minecraft/GameSettings;gammaSetting:F", opcode = Opcodes.PUTFIELD))
     private void keepGammaAndOptionsBounds(GameSettings instance, float value) {
-        if (this.gameSettings.limitFramerate < 10 || this.gameSettings.limitFramerate > 260)
-            this.gameSettings.limitFramerate = 120;
-        if (this.gameSettings.fovSetting < 30 || this.gameSettings.fovSetting > 110)
-            this.gameSettings.fovSetting = 70;
-        if (this.gameSettings.renderDistance < 2 || this.gameSettings.renderDistance > 24)
-            this.gameSettings.renderDistance = 12;
+        GameSettings options = this.gameSettings;
+        options.limitFramerate = Mth.clamp(options.limitFramerate, FPS_LIMIT_MIN, FPS_LIMIT_MAX, FPS_LIMIT_DEFAULT);
+        options.fovSetting = Mth.clamp((int) options.fovSetting, FOV_MIN, FOV_MAX, FOV_DEFAULT);
+        options.renderDistance = Mth.clamp(options.renderDistance, RENDER_DISTANCE_MIN, RENDER_DISTANCE_MAX, RENDER_DISTANCE_DEFAULT);
     }
 
     /**
@@ -41,7 +53,7 @@ public abstract class MinecraftMixin {
         if (this.currentScreen != null && (this.currentScreen instanceof GuiMainMenu)) {
             return 60;
         }
-        if (!(this.gameSettings.limitFramerate >= 260)) {
+        if (!(this.gameSettings.limitFramerate >= FPS_LIMIT_MAX)) {
             return this.gameSettings.limitFramerate;
         }
         return 9999;
@@ -83,13 +95,60 @@ public abstract class MinecraftMixin {
 
     @Inject(method = "launchIntegratedServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/Minecraft;displayGuiScreen(Lnet/minecraft/GuiScreen;)V"))
     private void launchIntegratedServer(CallbackInfo ci) {
-        WorldServer overworld = this.getIntegratedServer().worldServers[0];
-        if (overworld != null && !BGSClient.pendingRules.isEmpty()) {
-            for (Map.Entry<String, String> entry : BGSClient.pendingRules.entrySet()) {
-                overworld.getGameRules().setOrCreateGameRule(entry.getKey(), entry.getValue());
-                FishModLoader.LOGGER.info("Applied game rule: {} = {}", entry.getKey(), entry.getValue());
+        GuiGameRules.applyPendingRules(ReflectHelper.dyCast(this));
+    }
+
+    /**
+     * @author Arminias & Xy_Luce
+     * @reason Optimized the performance of full-screen and change to windowed full-screen
+     */
+    @Overwrite
+    public void toggleFullscreen() {
+        if (Main.is_MITE_DS) {
+            this.fullscreen = false;
+            return;
+        }
+        try {
+            this.fullscreen = !this.fullscreen;
+            if (this.fullscreen) {
+                System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
+                Display.setResizable(false);
+                Display.setDisplayMode(Display.getDesktopDisplayMode());
+                
+                this.displayWidth = Display.getDisplayMode().getWidth();
+                this.displayHeight = Display.getDisplayMode().getHeight();
+                
+                if (this.displayWidth <= 0) {
+                    this.displayWidth = 1;
+                }
+                
+                if (this.displayHeight <= 0) {
+                    this.displayHeight = 1;
+                }
+            } else {
+                System.setProperty("org.lwjgl.opengl.Window.undecorated", "false");
+                Display.setDisplayMode(new DisplayMode(this.tempDisplayWidth, this.tempDisplayHeight));
+                Display.setResizable(true);
+                this.displayWidth = this.tempDisplayWidth;
+                this.displayHeight = this.tempDisplayHeight;
+                
+                if (this.displayWidth <= 0) {
+                    this.displayWidth = 1;
+                }
+                
+                if (this.displayHeight <= 0) {
+                    this.displayHeight = 1;
+                }
             }
-            BGSClient.pendingRules.clear();
+            
+            if (this.currentScreen != null) {
+                this.resize(this.displayWidth, this.displayHeight);
+            }
+            
+            Display.setVSyncEnabled(this.gameSettings.isVsyncEnabled());
+            Display.update();
+        } catch (Exception var2) {
+            var2.printStackTrace();
         }
     }
 }

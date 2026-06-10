@@ -1,6 +1,6 @@
 package moddedmite.xylose.bettergamesetting.util;
 
-import moddedmite.rustedironcore.internal.config.RICConfig;
+import net.xiaoyu233.fml.FishModLoader;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 import java.util.List;
 import java.util.Set;
 
-public class BGSMixinConfig implements IMixinConfigPlugin {
+public class BGSMixinConfigClient implements IMixinConfigPlugin {
     @Override
     public void onLoad(String s) {
 
@@ -22,6 +22,7 @@ public class BGSMixinConfig implements IMixinConfigPlugin {
     @Override
     public boolean shouldApplyMixin(String s, String s1) {
         if (s1.contains("GuiCreateWorldMixin")) return BGSConfig.useModernCreateWorldGui.get();
+        if (s1.contains("EnumGameTypeMixin$OhMyCommandsCompatMixin")) return FishModLoader.hasMod("ohmycommands");
         return true;
     }
 

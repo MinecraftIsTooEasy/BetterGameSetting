@@ -4,13 +4,11 @@ import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import dev.emi.emi.screen.widget.config.ListWidget;
 import me.fallenbreath.conditionalmixin.api.annotation.Condition;
 import me.fallenbreath.conditionalmixin.api.annotation.Restriction;
-import moddedmite.xylose.bettergamesetting.api.IGameSetting;
+import moddedmite.xylose.bettergamesetting.util.ScreenUtil;
 import net.minecraft.*;
-import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -81,11 +79,9 @@ public abstract class ListWidgetMixin {
         if (client.gameSettings.isTransparentBackground()) {
             int k = this.getRowLeft();
             int l = this.top + 4 - (int)this.getScrollAmount();
-            ScaledResolution sr = new ScaledResolution(client.gameSettings, client.displayWidth, client.displayHeight);
-            GL11.glScissor((this.left * sr.getScaleFactor()), (client.displayHeight - this.bottom * sr.getScaleFactor()), ((this.right - this.left) * sr.getScaleFactor()), ((this.bottom - this.top) * sr.getScaleFactor()));
-            GL11.glEnable(GL11.GL_SCISSOR_TEST);
-            this.renderList(draw, k, l, mouseX, mouseY, delta);
-            GL11.glDisable(GL11.GL_SCISSOR_TEST);
+            ScreenUtil.scissorExecute(this.left, this.top, this.right, this.bottom - this.top, () -> {
+                this.renderList(draw, k, l, mouseX, mouseY, delta);
+            });
         }
     }
 }

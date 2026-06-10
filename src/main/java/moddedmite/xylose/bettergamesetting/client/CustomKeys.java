@@ -6,16 +6,16 @@ import org.lwjgl.input.Keyboard;
 public class CustomKeys {
 
     public static KeyBinding keyBindInventory_1 = new KeyBinding("key.categories.inventory:key.inventory_1", Keyboard.KEY_1);
-    public static KeyBinding keyBindInventory_2 = new KeyBinding("key.categories.inventory:key.inventory_2", 3);
-    public static KeyBinding keyBindInventory_3 = new KeyBinding("key.categories.inventory:key.inventory_3", 4);
-    public static KeyBinding keyBindInventory_4 = new KeyBinding("key.categories.inventory:key.inventory_4", 5);
-    public static KeyBinding keyBindInventory_5 = new KeyBinding("key.categories.inventory:key.inventory_5", 6);
-    public static KeyBinding keyBindInventory_6 = new KeyBinding("key.categories.inventory:key.inventory_6", 7);
-    public static KeyBinding keyBindInventory_7 = new KeyBinding("key.categories.inventory:key.inventory_7", 8);
-    public static KeyBinding keyBindInventory_8 = new KeyBinding("key.categories.inventory:key.inventory_8", 9);
-    public static KeyBinding keyBindInventory_9 = new KeyBinding("key.categories.inventory:key.inventory_9", 10);
-    public static KeyBinding keyBindPrintScreen = new KeyBinding("key.categories.misc:key.printScreen", 60);
-    public static KeyBinding keyBindPersonView = new KeyBinding("key.categories.misc:key.personView", 63);
+    public static KeyBinding keyBindInventory_2 = new KeyBinding("key.categories.inventory:key.inventory_2", Keyboard.KEY_2);
+    public static KeyBinding keyBindInventory_3 = new KeyBinding("key.categories.inventory:key.inventory_3", Keyboard.KEY_3);
+    public static KeyBinding keyBindInventory_4 = new KeyBinding("key.categories.inventory:key.inventory_4", Keyboard.KEY_4);
+    public static KeyBinding keyBindInventory_5 = new KeyBinding("key.categories.inventory:key.inventory_5", Keyboard.KEY_5);
+    public static KeyBinding keyBindInventory_6 = new KeyBinding("key.categories.inventory:key.inventory_6", Keyboard.KEY_6);
+    public static KeyBinding keyBindInventory_7 = new KeyBinding("key.categories.inventory:key.inventory_7", Keyboard.KEY_7);
+    public static KeyBinding keyBindInventory_8 = new KeyBinding("key.categories.inventory:key.inventory_8", Keyboard.KEY_8);
+    public static KeyBinding keyBindInventory_9 = new KeyBinding("key.categories.inventory:key.inventory_9", Keyboard.KEY_9);
+    public static KeyBinding keyBindPrintScreen = new KeyBinding("key.categories.misc:key.printScreen", Keyboard.KEY_F2);
+    public static KeyBinding keyBindPersonView = new KeyBinding("key.categories.misc:key.personView", Keyboard.KEY_F5);
 
     public static int inventoryKeyProvider(int inventory_slot) {
         if (inventory_slot == 0) return keyBindInventory_1.keyCode;

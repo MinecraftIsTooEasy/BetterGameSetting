@@ -106,9 +106,14 @@ publishing {
     }
 
     repositories {
-        // Add repositories to publish to here.
-        // Notice: This block does NOT have the same function as the block in the top level.
-        // The repositories here will be used for publishing your artifact, not for
-        // retrieving dependencies.
+        maven {
+            name = "ModdedMITE"
+            url = uri("https://maven.limingzxc.top/repository/maven-releases/")
+            credentials {
+                // Read only from gradle.properties (user level, your gradle_home)
+                username = project.findProperty("nexusUsername")
+                password = project.findProperty("nexusPassword")
+            }
+        }
     }
 }

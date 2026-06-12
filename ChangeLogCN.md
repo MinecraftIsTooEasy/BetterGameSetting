@@ -29,9 +29,9 @@
   + 示例
 ```java
 // 无需依赖BetterGameSetting，但是需要写key.categories.example、key.example和key.categories.example:key.example三个翻译文本
-public static KeyBinding keyBindPrintScreen = new KeyBinding("key.categories.example:key.example", Keyboard.KEY_NONE);
+public static KeyBinding keyExample = new KeyBinding("key.categories.example:key.example", Keyboard.KEY_NONE);
 // 需要依赖BetterGameSetting
-KeyBindingExtra.setKeyKeyCategory(this.exampleKey.keyDescription, "key.categories.example");
+KeyBindingExtra.setKeyKeyCategory(this.keyExample.keyDescription, "key.categories.example");
 ```
 * 游戏规则界面添加搜索框与类型
   + 新增世界内通过世界选项修改

@@ -28,7 +28,8 @@ public class GuiVideoSettings extends GuiScreen {
             EnumOptions.ENABLE_VSYNC,
             EnumOptions.USE_SERVER_TEXTURES,
             EnumOptionsExtra.TRANSPARENT_BACKGROUND,
-            EnumOptionsExtra.HIGHLIGHT_BUTTON_TEXT
+            EnumOptionsExtra.HIGHLIGHT_BUTTON_TEXT,
+            EnumOptionsExtra.DEFER_CHUNK_UPDATES
 //            ,EnumOptions.MIPMAP_LEVELS, EnumOptions.ANISOTROPIC_FILTERING
     };
 

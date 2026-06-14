@@ -21,7 +21,7 @@ import java.util.List;
 
 @Mixin(GuiOptions.class)
 public class GuiOptionsMixin extends GuiScreen {
-    @Mutable @Final @Shadow private static EnumOptions[] relevantOptions;
+    @Shadow @Mutable @Final private static EnumOptions[] relevantOptions;
     @Shadow @Final private GameSettings options;
 
     @Inject(method = "initGui", at = @At("TAIL"))

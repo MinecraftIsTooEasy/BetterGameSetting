@@ -16,7 +16,7 @@ static def buildTime() {
 
 base {
 //	archivesName = project.archives_base_name + "-dev-build." + buildTime()
-    archivesName = "[更好的游戏设置]" + project.archives_base_name
+    archivesName = project.archives_base_name
 }
 
 repositories {
@@ -97,7 +97,6 @@ tasks.named('runClient', JavaExec).configure { exec ->
     exec.setArgs(['--username', user, '--session', '0', '--width', '854', '--height', '480'])
 }
 
-// configure the maven publication
 publishing {
     publications {
         mavenJava(MavenPublication) {
@@ -110,7 +109,6 @@ publishing {
             name = "ModdedMITE"
             url = uri("https://maven.limingzxc.top/repository/maven-releases/")
             credentials {
-                // Read only from gradle.properties (user level, your gradle_home)
                 username = project.findProperty("nexusUsername")
                 password = project.findProperty("nexusPassword")
             }

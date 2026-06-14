@@ -18,12 +18,12 @@ public class ServerConfigurationManagerMixin {
 	
 	@Redirect(method = "setGameType", at = @At(value = "INVOKE", target = "Lnet/minecraft/Minecraft;inDevMode()Z"))
 	private boolean wide_0() {
-		return !Minecraft.inDevMode() || !BGSConfig.freeDevAllowCheat.get();
+		return Minecraft.inDevMode() || BGSConfig.freeDevAllowCheat.get();
 	}
 	
 	@Redirect(method = "setCommandsAllowedForAll", at = @At(value = "INVOKE", target = "Lnet/minecraft/Minecraft;inDevMode()Z"))
 	private boolean wide_1() {
-		return !Minecraft.inDevMode() || !BGSConfig.freeDevAllowCheat.get();
+		return Minecraft.inDevMode() || BGSConfig.freeDevAllowCheat.get();
 	}
 	
 	@Inject(method = "isPlayerOpped", at = @At("TAIL"), cancellable = true)

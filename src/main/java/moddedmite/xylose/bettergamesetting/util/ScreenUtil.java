@@ -323,7 +323,7 @@ public class ScreenUtil extends Gui {
             double cycleDuration = Math.max((double) overflow * 0.5, 3.0);
             double interpolationFactor = Math.sin((Math.PI / 2) * Math.cos((Math.PI * 2) * timeSeconds / cycleDuration)) / 2.0 + 0.5;
             double scrollOffset = Mth.lerp(interpolationFactor, 0.0F, overflow);
-            scissorExecute(left, top, right, bottom, () -> {
+            scissorExecute(left, top, availableWidth, bottom, () -> {
                 font.drawStringWithShadow(text, left - (int) scrollOffset, centerY, color);
             });
         } else {

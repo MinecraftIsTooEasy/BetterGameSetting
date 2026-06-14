@@ -70,6 +70,7 @@ public abstract class GameSettingsMixin implements IGameSetting {
     };
     @Unique public boolean transparentBackground;
     @Unique public boolean highlightButtonText;
+    @Unique public boolean deferChunkUpdates = false;
 
 //    @Unique public DisplayMode fullscreenResolution;
 
@@ -143,6 +144,9 @@ public abstract class GameSettingsMixin implements IGameSetting {
         }
         if (par1EnumOptions == EnumOptionsExtra.HIGHLIGHT_BUTTON_TEXT) {
             this.highlightButtonText = !this.highlightButtonText;
+        }
+        if (par1EnumOptions == EnumOptionsExtra.DEFER_CHUNK_UPDATES) {
+            this.deferChunkUpdates = !this.deferChunkUpdates;
         }
     }
 
@@ -258,6 +262,9 @@ public abstract class GameSettingsMixin implements IGameSetting {
         if (options == EnumOptionsExtra.HIGHLIGHT_BUTTON_TEXT) {
             cir.setReturnValue(string + getTranslationBoolean(this.highlightButtonText));
         }
+        if (options == EnumOptionsExtra.DEFER_CHUNK_UPDATES) {
+            cir.setReturnValue(string + getTranslationBoolean(this.deferChunkUpdates));
+        }
     }
 
     @Inject(method = "loadOptions", at = @At("TAIL"))
@@ -315,6 +322,9 @@ public abstract class GameSettingsMixin implements IGameSetting {
                 }
                 if (astring[0].equals("highlightButtonText")) {
                     this.highlightButtonText = astring[1].equals("true");
+                }
+                if (astring[0].equals("deferChunkUpdates")) {
+                    this.deferChunkUpdates = astring[1].equals("true");
                 }
 //                if (astring[0].equals("fullscreenResolution")) {
 //                    this.fullscreenResolution = DisplayModeHelper.getDisplayModeFromString(astring[1]);
@@ -387,6 +397,7 @@ public abstract class GameSettingsMixin implements IGameSetting {
         printwriter.println("forceUnicodeFont:" + this.forceUnicodeFont);
         printwriter.println("transparentBackground:" + this.transparentBackground);
         printwriter.println("highlightButtonText:" + this.highlightButtonText);
+        printwriter.println("deferChunkUpdates:" + this.deferChunkUpdates);
 //        printwriter.println("fullscreenResolution:" + this.fullscreenResolution);
     }
 
@@ -473,5 +484,10 @@ public abstract class GameSettingsMixin implements IGameSetting {
     @Override
     public boolean isHighlightButtonText() {
         return this.highlightButtonText;
+    }
+
+    @Override
+    public boolean isDeferChunkUpdates() {
+        return this.deferChunkUpdates;
     }
 }

@@ -21,11 +21,11 @@ public class WorldInfoMixin {
 	
 	@Redirect(method = "getGameType()Lnet/minecraft/EnumGameType;", at = @At(value = "INVOKE", target = "Lnet/minecraft/Minecraft;inDevMode()Z"))
 	private boolean wide_1() {
-		return !Minecraft.inDevMode() || !BGSConfig.freeDevAllowCheat.get();
+		return Minecraft.inDevMode() || BGSConfig.freeDevAllowCheat.get();
 	}
 
 	@Redirect(method = "setGameType", at = @At(value = "INVOKE", target = "Lnet/minecraft/Minecraft;inDevMode()Z"))
 	private boolean wide_2() {
-		return !Minecraft.inDevMode() || !BGSConfig.freeDevAllowCheat.get();
+		return Minecraft.inDevMode() || BGSConfig.freeDevAllowCheat.get();
 	}
 }

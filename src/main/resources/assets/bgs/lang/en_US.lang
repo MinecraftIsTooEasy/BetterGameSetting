@@ -15,6 +15,7 @@ options.ambient=Ambient/Environment
 options.ui=UI
 options.transparentBackground=Transparent Background
 options.highlightButtonText=Highlight Button Text
+options.deferChunkUpdates=Defer Chunk Updates
 
 options.chunks=chunks
 options.gamma.default=Default

@@ -52,6 +52,28 @@ public abstract class EntityRendererMixin {
         }
     }
 
+    @ModifyVariable(
+            method = "renderWorld",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/RenderGlobal;updateRenderers(Lnet/minecraft/EntityLivingBase;Z)Z",
+                    shift = At.Shift.BY,
+                    by = 2
+            ),
+            ordinal = 0)
+    private long modifyTimeoutCheck(long remainingTime, float partialTicks, long renderTime) {
+        if (this.mc.gameSettings.isDeferChunkUpdates()) {
+            if (remainingTime < 1000000L || remainingTime > 1000000000L) {
+                return -1L;
+            }
+        } else {
+            if (remainingTime < 0L || remainingTime > 1000000000L) {
+                return -1L;
+            }
+        }
+        return remainingTime;
+    }
+
     @Inject(method = "updateFogColor", at = @At(value = "INVOKE", target = "Lnet/minecraft/WorldClient;getRainStrength(F)F"), locals = LocalCapture.CAPTURE_FAILEXCEPTION)
     private void updateFogColor(float par1, CallbackInfo ci, WorldClient var2, EntityLivingBase var3, float var4, Vec3 var5, float var6, float var7, float var8) {
         float var4_1 = 1.0f - ((float) Math.pow(0.25f + ((0.75f * this.mc.gameSettings.getRenderDistance()) / 32.0f), 0.25d));

@@ -1,6 +1,7 @@
 package moddedmite.xylose.bettergamesetting.mixin.common;
 
 import moddedmite.xylose.bettergamesetting.util.BGSConfig;
+import net.minecraft.Minecraft;
 import net.minecraft.WorldSettings;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -25,6 +26,6 @@ public class WorldSettingsMixin {
 
     @Inject(method = "areCommandsAllowed", at = @At("TAIL"), cancellable = true)
     public void wide(CallbackInfoReturnable<Boolean> cir) {
-        cir.setReturnValue(BGSConfig.freeDevAllowCheat.get() && commandsAllowed);
+        cir.setReturnValue((BGSConfig.freeDevAllowCheat.get() && commandsAllowed));
     }
 }

@@ -11,6 +11,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public class IntegratedServerMixin {
 	@Redirect(method = "shareToLAN", at = @At(value = "INVOKE", target = "Lnet/minecraft/Minecraft;inDevMode()Z"))
 	private boolean wide_0() {
-		return !Minecraft.inDevMode() || !BGSConfig.freeDevAllowCheat.get();
+		return Minecraft.inDevMode() || BGSConfig.freeDevAllowCheat.get();
 	}
 }

@@ -19,5 +19,6 @@ public class BGSEarlyRiser implements PreLaunchEntrypoint {
         EnumExtends.OPTIONS.addEnum("FULLSCREEN_RESOLUTION", "options.fullscreenResolution", true, false);
         EnumExtends.OPTIONS.addEnum("TRANSPARENT_BACKGROUND", "options.transparentBackground", false, true);
         EnumExtends.OPTIONS.addEnum("HIGHLIGHT_BUTTON_TEXT", "options.highlightButtonText", false, true);
+        EnumExtends.OPTIONS.addEnum("DEFER_CHUNK_UPDATES", "options.deferChunkUpdates", false, true);
     }
 }

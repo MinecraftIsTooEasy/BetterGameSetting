@@ -59,4 +59,8 @@ public interface IGameSetting {
     default boolean isHighlightButtonText() {
         return false;
     }
+    
+    default boolean isDeferChunkUpdates() {
+        return false;
+    }
 }

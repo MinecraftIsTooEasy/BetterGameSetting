@@ -14,7 +14,7 @@ public class EnumGameTypeMixin {
 
 	@Redirect(method = "getByName", at = @At(value = "INVOKE", target = "Lnet/minecraft/Minecraft;inDevMode()Z"))
 	private static boolean wide_1() {
-		return !Minecraft.inDevMode() || !BGSConfig.freeDevAllowCheat.get();
+		return Minecraft.inDevMode() || BGSConfig.freeDevAllowCheat.get();
 	}
 
 	@Redirect(method = "isCreative", at = @At(value = "INVOKE", target = "Lnet/minecraft/Minecraft;inDevMode()Z"))
@@ -24,7 +24,7 @@ public class EnumGameTypeMixin {
 
 	@Redirect(method = "isSurvivalOrAdventure", at = @At(value = "INVOKE", target = "Lnet/minecraft/Minecraft;inDevMode()Z"))
 	private boolean wide_3() {
-		return !Minecraft.inDevMode() || !BGSConfig.freeDevAllowCheat.get();
+		return Minecraft.inDevMode() || BGSConfig.freeDevAllowCheat.get();
 	}
 	
 //	@Restriction(conflict = @Condition("ohmycommands"))
@@ -32,7 +32,7 @@ public class EnumGameTypeMixin {
 	public static class OhMyCommandsCompatMixin {
 		@Redirect(method = "getByID", at = @At(value = "INVOKE", target = "Lnet/minecraft/Minecraft;inDevMode()Z"))
 		private static boolean wide_0() {
-			return !Minecraft.inDevMode() || !BGSConfig.freeDevAllowCheat.get();
+			return Minecraft.inDevMode() || BGSConfig.freeDevAllowCheat.get();
 		}
 	}
 }

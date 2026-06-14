@@ -15,6 +15,7 @@ options.ambient=环境
 options.ui=用户界面
 options.transparentBackground=透明背景
 options.highlightButtonText=高亮按钮文字
+options.deferChunkUpdates=缓慢区块加载
 
 options.chunks=个区块
 options.gamma.default=默认

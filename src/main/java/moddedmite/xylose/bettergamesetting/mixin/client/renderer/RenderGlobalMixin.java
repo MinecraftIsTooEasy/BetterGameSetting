@@ -20,9 +20,6 @@ public abstract class RenderGlobalMixin {
     @Shadow private int renderChunksTall;
     @Shadow private int renderChunksDeep;
     
-    @Shadow
-    private Minecraft mc;
-    
     @ModifyConstant(method = "<init>", constant = @Constant(intValue = 32))
     private int modify(int constant) {
         return 64;

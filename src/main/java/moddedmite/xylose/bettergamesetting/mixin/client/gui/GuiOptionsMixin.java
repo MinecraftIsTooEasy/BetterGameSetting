@@ -27,7 +27,9 @@ public class GuiOptionsMixin extends GuiScreen {
     @Inject(method = "initGui", at = @At("TAIL"))
     private void addButton(CallbackInfo ci) {
         this.buttonList.add(new GuiButton(300, this.width / 2 - 152, this.height / 6 + 96 - 30, 150, 20, I18n.getString("options.sounds")));
-        this.buttonList.add(new GuiButton(301, this.width / 2 + 2, this.height / 6 - 12, 150, 20, I18n.getString("options.worldOptions.button")));
+        GuiButton worldOptionsButton;
+        this.buttonList.add(worldOptionsButton = new GuiButton(301, this.width / 2 + 2, this.height / 6 - 12, 150, 20, I18n.getString("options.worldOptions.button")));
+        worldOptionsButton.enabled = !(this.mc.getIntegratedServer() == null);
     }
     
     @WrapOperation(method = "initGui", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 0))

@@ -32,6 +32,17 @@ key.category.minecraft.ui=游戏界面
 key.category.minecraft.inventory=物品栏
 key.category.minecraft.debug=调试
 key.category.minecraft.uncategorized=未分类
+key.hotbar.1=快捷栏1
+key.hotbar.2=快捷栏2
+key.hotbar.3=快捷栏3
+key.hotbar.4=快捷栏4
+key.hotbar.5=快捷栏5
+key.hotbar.6=快捷栏6
+key.hotbar.7=快捷栏7
+key.hotbar.8=快捷栏8
+key.hotbar.9=快捷栏9
+key.screenshot=截屏
+key.togglePerspective=切换视角
 controls.reset_keybinding_info=确定要重置所有按键吗?
 
 resourcePack.available.title=可用的资源包

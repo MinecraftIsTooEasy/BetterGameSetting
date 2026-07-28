@@ -32,6 +32,17 @@ key.category.minecraft.ui=Game Interface
 key.category.minecraft.inventory=Inventory
 key.category.minecraft.debug=Debug
 key.category.minecraft.uncategorized=Uncategorized
+key.hotbar.1=Hotbar Slot 1
+key.hotbar.2=Hotbar Slot 2
+key.hotbar.3=Hotbar Slot 3
+key.hotbar.4=Hotbar Slot 4
+key.hotbar.5=Hotbar Slot 5
+key.hotbar.6=Hotbar Slot 6
+key.hotbar.7=Hotbar Slot 7
+key.hotbar.8=Hotbar Slot 8
+key.hotbar.9=Hotbar Slot 9
+key.screenshot=Take Screenshot
+key.togglePerspective=Toggle Perspective
 controls.reset_keybinding_info=Are you sure reset all the keybindings?
 
 resourcePack.available.title=Available Resource Packs

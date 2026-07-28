@@ -21,17 +21,16 @@ public class GuiKeyBindingList extends GuiListExtended {
         this.guiControls = controls;
         this.mc = mcIn;
 
-        Map<KeybindingV1.Category, List<KeybindingV1>> map = Handlers.Keybinding.streamKeybindings().collect(
-                Collectors.groupingBy(KeybindingV1::getCategory)
-        );
+        Map<KeybindingV1.Category, List<KeybindingV1>> map = Handlers.Keybinding.streamKeybindings()
+                .sorted()// not needed on ric 1.5.7+
+                .collect(Collectors.groupingBy(KeybindingV1::getCategory));
 
         this.listEntries = new ArrayList<>(map.size() + Handlers.Keybinding.streamKeybindings().toList().size());
 
         for (KeybindingV1.Category category : KeybindingV1.Category.SORT_ORDER) {
             if (map.containsKey(category)) {
                 this.listEntries.add(new CategoryEntry(category));
-                List<KeybindingV1> keys = map.get(category);
-                for (KeybindingV1 key : keys) {
+                for (KeybindingV1 key : map.get(category)) {
                     this.listEntries.add(new KeyEntry(key));
                 }
             }

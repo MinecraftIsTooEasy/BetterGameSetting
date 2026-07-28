@@ -20,7 +20,7 @@ public abstract class GuiContainerMixin extends GuiScreen {
     protected void checkHotbarKeys(int par1, CallbackInfoReturnable<Boolean> cir) {
         if (Minecraft.getMinecraft().thePlayer.inventory.getItemStack() == null && this.theSlot != null) {
             for (int hotBar = 0; hotBar < 9; ++hotBar) {
-                if (par1 == CustomKeys.inventoryKeyProvider(hotBar)) {
+                if (par1 == CustomKeys.getInventoryKeyCode(hotBar)) {
                     this.handleMouseClick(this.theSlot, this.theSlot.slotNumber, hotBar, 2);
                     cir.setReturnValue(true);
                 }

@@ -1,5 +1,7 @@
 package moddedmite.xylose.bettergamesetting.init;
 
+import moddedmite.rustedironcore.api.event.Handlers;
+import moddedmite.xylose.bettergamesetting.client.CustomKeys;
 import moddedmite.xylose.bettergamesetting.util.BGSConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.ModInitializer;
@@ -21,6 +23,7 @@ public class BGSClient implements ClientModInitializer, ModInitializer {
     @Override
     public void onInitializeClient() {
         ModResourceManager.addResourcePackDomain(resourceId);
+        Handlers.Keybinding.register(CustomKeys::registerKeybindings);
     }
 
     @Override

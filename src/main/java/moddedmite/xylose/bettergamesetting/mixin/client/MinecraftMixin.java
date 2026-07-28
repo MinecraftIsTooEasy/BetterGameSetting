@@ -63,17 +63,17 @@ public abstract class MinecraftMixin {
 
     @ModifyArg(method = "screenshotListener", at = @At(value = "INVOKE", target = "Lorg/lwjgl/input/Keyboard;isKeyDown(I)Z"))
     private int modifyPrintScreenKey(int key) {
-        return CustomKeys.printScreenKeyProvider();
+        return CustomKeys.getPrintScreenKeyCode();
     }
 
     @ModifyArg(method = "screenshotListenerForForcedRendering", at = @At(value = "INVOKE", target = "Lorg/lwjgl/input/Keyboard;isKeyDown(I)Z"))
     private int modifyPrintScreenKey_1(int key) {
-        return CustomKeys.printScreenKeyProvider();
+        return CustomKeys.getPrintScreenKeyCode();
     }
 
     @ModifyConstant(method = "runTick", constant = @Constant(intValue = 63))
     private int modifyPersonViewKey(int key) {
-        return CustomKeys.personViewKeyProvider();
+        return CustomKeys.getPersonViewKeyCode();
     }
 
     @Redirect(method = "runTick", at = @At(value = "FIELD", target = "Lnet/minecraft/InventoryPlayer;currentItem:I", opcode = Opcodes.PUTFIELD))
@@ -82,7 +82,7 @@ public abstract class MinecraftMixin {
     @Inject(method = "runTick", at = @At(value = "FIELD", target = "Lnet/minecraft/GameSettings;showDebugInfo:Z", opcode = Opcodes.GETFIELD, ordinal = 2))
     private void customItemSwitch(CallbackInfo ci) {
         for (int key = 0; key < 9; ++key) {
-            if (Keyboard.getEventKey() == CustomKeys.inventoryKeyProvider(key)) {
+            if (Keyboard.getEventKey() == CustomKeys.getInventoryKeyCode(key)) {
                 this.thePlayer.inventory.currentItem = key;
                 break;
             }

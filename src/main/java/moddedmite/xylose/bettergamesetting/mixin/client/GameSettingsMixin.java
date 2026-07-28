@@ -5,16 +5,11 @@ import com.google.gson.Gson;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import moddedmite.xylose.bettergamesetting.api.IGameSetting;
-import moddedmite.xylose.bettergamesetting.client.CustomKeys;
 import moddedmite.xylose.bettergamesetting.client.EnumOptionsExtra;
 import moddedmite.xylose.bettergamesetting.util.BGSConfig;
 import moddedmite.xylose.bettergamesetting.util.Constants;
-import moddedmite.xylose.bettergamesetting.util.DisplayModeHelper;
-import moddedmite.xylose.bettergamesetting.util.Mth;
 import net.minecraft.*;
 import net.minecraft.client.main.Main;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
@@ -25,7 +20,6 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import java.io.*;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 @Mixin(GameSettings.class)
@@ -120,16 +114,6 @@ public abstract class GameSettingsMixin implements IGameSetting {
             )
     )
     private void keepGammaSetting(GameSettings instance, float value) {
-    }
-
-    @Inject(method = "initKeybindings", at = @At("RETURN"))
-    private void addKeybindings(CallbackInfo ci) {
-        KeyBinding[] vanillaKeyBindings = this.keyBindings;
-        KeyBinding[] myKeybindings = CustomKeys.getNewKeybindings();
-        KeyBinding[] newKeyBindings = new KeyBinding[vanillaKeyBindings.length + myKeybindings.length];
-        System.arraycopy(vanillaKeyBindings, 0, newKeyBindings, 0, vanillaKeyBindings.length);
-        System.arraycopy(myKeybindings, 0, newKeyBindings, vanillaKeyBindings.length, myKeybindings.length);
-        this.keyBindings = newKeyBindings;
     }
 
     @Inject(method = "setOptionValue", at = @At("HEAD"))

@@ -1,27 +1,22 @@
 package moddedmite.xylose.bettergamesetting.mixin.client;
 
 import moddedmite.xylose.bettergamesetting.client.CustomKeys;
-import moddedmite.xylose.bettergamesetting.client.KeyBindingExtra;
 import moddedmite.xylose.bettergamesetting.client.gui.gamerule.GuiGameRules;
-import moddedmite.xylose.bettergamesetting.util.DisplayModeHelper;
+import moddedmite.xylose.bettergamesetting.util.GuiScreenPanoramaHelp;
 import moddedmite.xylose.bettergamesetting.util.Mth;
 import moddedmite.xylose.bettergamesetting.util.ScreenUtil;
-import moddedmite.xylose.bettergamesetting.init.BGSClient;
-import moddedmite.xylose.bettergamesetting.util.GuiScreenPanoramaHelp;
 import net.minecraft.*;
 import net.minecraft.client.main.Main;
-import net.xiaoyu233.fml.FishModLoader;
 import net.xiaoyu233.fml.util.ReflectHelper;
-import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.objectweb.asm.Opcodes;
-import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.util.Map;
 
 import static moddedmite.xylose.bettergamesetting.util.Constants.*;
 
@@ -64,31 +59,6 @@ public abstract class MinecraftMixin {
     private GuiMainMenu unificationPanorama() {
         ScreenUtil.instance = new ScreenUtil();
         return GuiScreenPanoramaHelp.panoramaDummy;
-    }
-
-    @Inject(method = "startGame", at = @At("TAIL"))
-    private void initKeyCategory(CallbackInfo ci) {
-        KeyBindingExtra.setKeyKeyCategory(this.gameSettings.keyBindForward.keyDescription, "key.categories.movement");
-        KeyBindingExtra.setKeyKeyCategory(this.gameSettings.keyBindJump.keyDescription, "key.categories.movement");
-        KeyBindingExtra.setKeyKeyCategory(this.gameSettings.keyBindRight.keyDescription, "key.categories.movement");
-        KeyBindingExtra.setKeyKeyCategory(this.gameSettings.keyBindBack.keyDescription, "key.categories.movement");
-        KeyBindingExtra.setKeyKeyCategory(this.gameSettings.keyBindLeft.keyDescription, "key.categories.movement");
-        KeyBindingExtra.setKeyKeyCategory(this.gameSettings.keyBindSneak.keyDescription, "key.categories.movement");
-        KeyBindingExtra.setKeyKeyCategory(this.gameSettings.keyBindToggleRun.keyDescription, "key.categories.movement");
-        
-        KeyBindingExtra.setKeyKeyCategory(this.gameSettings.keyBindInventory.keyDescription, "key.categories.inventory");
-        
-        KeyBindingExtra.setKeyKeyCategory(this.gameSettings.keyBindDrop.keyDescription, "key.categories.gameplay");
-        KeyBindingExtra.setKeyKeyCategory(this.gameSettings.keyBindAttack.keyDescription, "key.categories.gameplay");
-        KeyBindingExtra.setKeyKeyCategory(this.gameSettings.keyBindUseItem.keyDescription, "key.categories.gameplay");
-        KeyBindingExtra.setKeyKeyCategory(this.gameSettings.keyBindPickBlock.keyDescription, "key.categories.gameplay");
-        KeyBindingExtra.setKeyKeyCategory(this.gameSettings.keyBindZoom.keyDescription, "key.categories.gameplay");
-        
-        KeyBindingExtra.setKeyKeyCategory(this.gameSettings.keyBindChat.keyDescription, "key.categories.multiplayer");
-        KeyBindingExtra.setKeyKeyCategory(this.gameSettings.keyBindCommand.keyDescription, "key.categories.multiplayer");
-        KeyBindingExtra.setKeyKeyCategory(this.gameSettings.keyBindPlayerList.keyDescription, "key.categories.multiplayer");
-        
-        KeyBindingExtra.setKeyKeyCategory(this.gameSettings.keyBindRedrawChunks.keyDescription, "key.categories.misc");
     }
 
     @ModifyArg(method = "screenshotListener", at = @At(value = "INVOKE", target = "Lorg/lwjgl/input/Keyboard;isKeyDown(I)Z"))

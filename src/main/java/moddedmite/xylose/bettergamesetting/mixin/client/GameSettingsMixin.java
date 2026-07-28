@@ -5,7 +5,6 @@ import com.google.gson.Gson;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import moddedmite.xylose.bettergamesetting.api.IGameSetting;
-import moddedmite.xylose.bettergamesetting.api.IKeyBinding;
 import moddedmite.xylose.bettergamesetting.client.CustomKeys;
 import moddedmite.xylose.bettergamesetting.client.EnumOptionsExtra;
 import moddedmite.xylose.bettergamesetting.util.BGSConfig;
@@ -417,7 +416,7 @@ public abstract class GameSettingsMixin implements IGameSetting {
 
     @Override
     public void setOptionKeyBinding(KeyBinding key, int keyCode) {
-        key.setKeyCode(keyCode);
+        key.keyCode = keyCode;
         this.saveOptions();
     }
 

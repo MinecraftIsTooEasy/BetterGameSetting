@@ -1,49 +1,49 @@
 package moddedmite.xylose.bettergamesetting.client.gui.controls;
 
-import moddedmite.xylose.bettergamesetting.client.KeyBindingExtra;
+import moddedmite.rustedironcore.api.event.Handlers;
+import moddedmite.rustedironcore.api.keybinding.KeybindingV1;
 import moddedmite.xylose.bettergamesetting.client.gui.base.GuiListExtended;
 import net.minecraft.*;
-import org.apache.commons.lang3.ArrayUtils;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class GuiKeyBindingList extends GuiListExtended {
     private final GuiNewControls guiControls;
     private final Minecraft mc;
-    public final IGuiListEntry[] listEntries;
+    public final List<IGuiListEntry> listEntries;
     private int maxListLabelWidth = 0;
 
     public GuiKeyBindingList(GuiNewControls controls, Minecraft mcIn) {
         super(mcIn, controls.width, controls.height, 63, controls.height - 32, 20);
         this.guiControls = controls;
         this.mc = mcIn;
-        KeyBinding[] akeybinding = ArrayUtils.clone(mcIn.gameSettings.keyBindings);
-        this.listEntries = new IGuiListEntry[(int) (akeybinding.length + KeyBindingExtra.getKeyCategoryCount())];
-        Arrays.sort(akeybinding);
-        int i = 0;
-        String s = null;
 
-        for (KeyBinding keybinding : akeybinding) {
-            String s1 = KeyBindingExtra.getKeyCategory(keybinding.keyDescription);
-//            String s1 = keybinding.keyDescription;
+        Map<KeybindingV1.Category, List<KeybindingV1>> map = Handlers.Keybinding.streamKeybindings().collect(
+                Collectors.groupingBy(KeybindingV1::getCategory)
+        );
 
-            if (!s1.equals(s)) {
-                s = s1;
-                this.listEntries[i++] = new CategoryEntry(s1);
+        this.listEntries = new ArrayList<>(map.size() + Handlers.Keybinding.streamKeybindings().toList().size());
+
+        for (KeybindingV1.Category category : KeybindingV1.Category.SORT_ORDER) {
+            if (map.containsKey(category)) {
+                this.listEntries.add(new CategoryEntry(category));
+                List<KeybindingV1> keys = map.get(category);
+                for (KeybindingV1 key : keys) {
+                    this.listEntries.add(new KeyEntry(key));
+                }
             }
-
-            int j = mcIn.fontRenderer.getStringWidth(I18n.getString(keybinding.keyDescription));
-
-            if (j > this.maxListLabelWidth) {
-                this.maxListLabelWidth = j;
-            }
-
-            this.listEntries[i++] = new KeyEntry(keybinding);
         }
+
+        this.maxListLabelWidth = Handlers.Keybinding.streamKeybindings()
+                .mapToInt(x -> mcIn.fontRenderer.getStringWidth(I18n.getString(x.getName())))
+                .max().orElse(0);
     }
 
     public int getSize() {
-        return this.listEntries.length;
+        return this.listEntries.size();
     }
 
 //    protected void drawSlot(int par1, int par2, int par3, int par4, Tessellator par5Tessellator) {
@@ -51,7 +51,7 @@ public class GuiKeyBindingList extends GuiListExtended {
 //    }
 
     public IGuiListEntry getListEntry(int index) {
-        return this.listEntries[index];
+        return this.listEntries.get(index);
     }
 
     protected int getScrollBarX() {
@@ -66,8 +66,9 @@ public class GuiKeyBindingList extends GuiListExtended {
         private final String labelText;
         private final int labelWidth;
 
-        public CategoryEntry(String label) {
-            this.labelText = I18n.getString(label);
+        public CategoryEntry(KeybindingV1.Category category) {
+            ResourceLocation id = category.id();
+            this.labelText = I18n.getString(String.format("key.category.%s.%s", id.getResourceDomain(), id.getResourcePath()));
             this.labelWidth = GuiKeyBindingList.this.mc.fontRenderer.getStringWidth(this.labelText);
         }
 
@@ -91,12 +92,12 @@ public class GuiKeyBindingList extends GuiListExtended {
     }
 
     public class KeyEntry implements IGuiListEntry {
-        private final KeyBinding keybinding;
+        private final KeybindingV1 keybinding;
         private final String keyDesc;
         private final GuiButton btnChangeKeyBinding;
         private final GuiButton btnReset;
 
-        private KeyEntry(KeyBinding key) {
+        private KeyEntry(KeybindingV1 key) {
             this.keybinding = key;
             this.keyDesc = I18n.getString(key.keyDescription);
             this.btnChangeKeyBinding = new GuiButton(0, 0, 0, 75, 20, I18n.getString(key.keyDescription));
@@ -108,7 +109,7 @@ public class GuiKeyBindingList extends GuiListExtended {
             GuiKeyBindingList.this.mc.fontRenderer.drawString(this.keyDesc, x + 90 - GuiKeyBindingList.this.maxListLabelWidth, y + slotHeight / 2 - GuiKeyBindingList.this.mc.fontRenderer.FONT_HEIGHT / 2, 16777215);
             this.btnReset.xPosition = x + 190;
             this.btnReset.yPosition = y;
-            this.btnReset.enabled = this.keybinding.keyCode != keybinding.getDefaultKeyCode(keybinding.keyDescription);
+            this.btnReset.enabled = this.keybinding.keyCode != keybinding.getDefaultKey();
             this.btnReset.drawButton(GuiKeyBindingList.this.mc, mouseX, mouseY);
             this.btnChangeKeyBinding.xPosition = x + 105;
             this.btnChangeKeyBinding.yPosition = y;
@@ -138,7 +139,7 @@ public class GuiKeyBindingList extends GuiListExtended {
                 GuiKeyBindingList.this.guiControls.binding = this.keybinding;
                 return true;
             } else if (this.btnReset.mousePressed(GuiKeyBindingList.this.mc, x, y)) {
-                GuiKeyBindingList.this.mc.gameSettings.setOptionKeyBinding(this.keybinding, keybinding.getDefaultKeyCode(keybinding.keyDescription));
+                GuiKeyBindingList.this.mc.gameSettings.setOptionKeyBinding(this.keybinding, keybinding.getDefaultKey());
                 KeyBinding.resetKeyBindingArrayAndHash();
                 return true;
             } else {

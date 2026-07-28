@@ -5,7 +5,8 @@
   "depends": {
     "minecraft": "1.6.4-mite",
     "fishmodloader": ">=3.4.0",
-    "conditional-mixin": "*"
+    "conditional-mixin": "*",
+    "rusted_iron_core": ">=1.5.6"
   },
   "breaks": {
     "gamma_free": "*",
@@ -52,7 +53,6 @@
     "loom:injected_interfaces": {
       "net/minecraft/GameSettings": ["moddedmite/xylose/bettergamesetting/api/IGameSetting"],
       "net/minecraft/EnumOptions": ["moddedmite/xylose/bettergamesetting/api/IEnumOptions"],
-      "net/minecraft/KeyBinding": ["moddedmite/xylose/bettergamesetting/api/IKeyBinding", "java/lang/Comparable"],
       "net/minecraft/GuiButton": ["moddedmite/xylose/bettergamesetting/api/IButton"],
       "net/minecraft/GuiTextField": ["moddedmite/xylose/bettergamesetting/api/ITextField"],
       "net/minecraft/GuiCreateWorld": ["moddedmite/xylose/bettergamesetting/api/IGuiCreateWorld"]

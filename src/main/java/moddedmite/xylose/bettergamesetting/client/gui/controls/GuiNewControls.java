@@ -1,5 +1,6 @@
 package moddedmite.xylose.bettergamesetting.client.gui.controls;
 
+import moddedmite.rustedironcore.api.event.Handlers;
 import moddedmite.xylose.bettergamesetting.client.gui.base.GuiYesNoModern;
 import net.minecraft.*;
 import org.lwjgl.input.Mouse;
@@ -47,12 +48,13 @@ public class GuiNewControls extends GuiScreen {
             this.mc.displayGuiScreen(new GuiYesNoModern((result, id) -> {
                 this.mc.displayGuiScreen(this);
                 if (result) {
-                    for (KeyBinding keybinding : this.mc.gameSettings.keyBindings) {
-                        this.mc.gameSettings.setOptionKeyBinding(keybinding, keybinding.getDefaultKeyCode(keybinding.keyDescription));
-                    }
+                    Handlers.Keybinding.streamKeybindings().forEach(
+                            keybinding -> this.mc.gameSettings.setOptionKeyBinding(keybinding, keybinding.getDefaultKey())
+                    );
                     KeyBinding.resetKeyBindingArrayAndHash();
                 }
-            }, I18n.getString("controls.reset_keybinding_info"), 0));        } else if (button.id == 202) {
+            }, I18n.getString("controls.reset_keybinding_info"), 0));
+        } else if (button.id == 202) {
             this.mc.displayGuiScreen(new GuiControls(this, this.options));
             this.options.saveOptions();
         } else if (button.id < 100 && button instanceof GuiSmallButton) {
@@ -100,16 +102,8 @@ public class GuiNewControls extends GuiScreen {
         this.drawDefaultBackground();
         this.keyBindingList.drawScreen(mouseX, mouseY, partialTicks);
         this.drawCenteredString(this.fontRenderer, this.screenTitle, this.width / 2, 8, 16777215);
-        boolean flag = true;
 
-        for (KeyBinding keybinding : this.options.keyBindings) {
-            if (keybinding.keyCode != keybinding.getDefaultKeyCode(keybinding.keyDescription)) {
-                flag = false;
-                break;
-            }
-        }
-
-        this.buttonReset.enabled = !flag;
+        this.buttonReset.enabled = Handlers.Keybinding.streamKeybindings().anyMatch(x -> !x.isDefault());
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 

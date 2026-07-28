@@ -37,13 +37,23 @@ dependencies {
     fml "com.github.MinecraftIsTooEasy:FishModLoader:3.4.2"
     implementation "com.github.MinecraftIsTooEasy:FishModLoader:3.4.2"
 
-    implementation "com.github.MinecraftIsTooEasy:ModMenu:10.1.1"
+    def mod_menu = "com.github.MinecraftIsTooEasy:ModMenu:10.1.1"
+    def emi = "com.github.MinecraftIsTooEasy:EMI:1.1.24"
+    def neodymium = "com.github.MinecraftIsTooEasy:Neodymium:1.1.1"
+
+    compileOnly mod_menu
+    compileOnly emi
+    compileOnly neodymium
+
     implementation "com.github.MinecraftIsTooEasy:Conditional-Mixin:0.6.4"
-    implementation "com.github.MinecraftIsTooEasy:RustedIronCore:1.5.0"
+    implementation "com.github.MinecraftIsTooEasy:RustedIronCore:1.5.6"
+
+    localRuntime "com.github.MinecraftIsTooEasy:ManyLib:2.3.1"
     localRuntime "com.github.MinecraftIsTooEasy:Gson:2.10.1"
     localRuntime "com.github.MinecraftIsTooEasy:FastUtil:8.5.12"
-    implementation "com.github.MinecraftIsTooEasy:EMI:1.1.24"
-    implementation "com.github.MinecraftIsTooEasy:Neodymium:1.1.1"
+    localRuntime mod_menu
+    localRuntime emi
+    localRuntime neodymium
 }
 
 def fmlResolvedFile = configurations.fml.files.iterator().next()

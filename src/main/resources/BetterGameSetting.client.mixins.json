@@ -8,6 +8,7 @@
     "EnumOptionsMixin",
     "FontRendererMixin",
     "GameSettingsMixin",
+    "KeyBindingMixin",
     "MinecraftMixin",
     "OpenGlHelperMixin",
     "audio.SoundsMITEMixin",

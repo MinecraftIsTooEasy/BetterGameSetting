@@ -1,9 +1,11 @@
 package moddedmite.xylose.bettergamesetting.client.gui.controls;
 
-import moddedmite.rustedironcore.api.event.Handlers;
 import moddedmite.xylose.bettergamesetting.client.gui.base.GuiYesNoModern;
+import moddedmite.xylose.bettergamesetting.util.KeyBindingHelper;
 import net.minecraft.*;
 import org.lwjgl.input.Mouse;
+
+import java.util.Arrays;
 
 public class GuiNewControls extends GuiScreen {
     private static final EnumOptions[] optionsArr = new EnumOptions[]{EnumOptions.INVERT_MOUSE, EnumOptions.SENSITIVITY, EnumOptions.TOUCHSCREEN};
@@ -48,8 +50,8 @@ public class GuiNewControls extends GuiScreen {
             this.mc.displayGuiScreen(new GuiYesNoModern((result, id) -> {
                 this.mc.displayGuiScreen(this);
                 if (result) {
-                    Handlers.Keybinding.streamKeybindings().forEach(
-                            keybinding -> this.mc.gameSettings.setOptionKeyBinding(keybinding, keybinding.getDefaultKey())
+                    Arrays.stream(KeyBindingHelper.allKeyBindings(this.mc)).forEach(
+                            keybinding -> this.mc.gameSettings.setOptionKeyBinding(keybinding, KeyBindingHelper.getDefaultKey(keybinding))
                     );
                     KeyBinding.resetKeyBindingArrayAndHash();
                 }
@@ -103,7 +105,8 @@ public class GuiNewControls extends GuiScreen {
         this.keyBindingList.drawScreen(mouseX, mouseY, partialTicks);
         this.drawCenteredString(this.fontRenderer, this.screenTitle, this.width / 2, 8, 16777215);
 
-        this.buttonReset.enabled = Handlers.Keybinding.streamKeybindings().anyMatch(x -> !x.isDefault());
+        this.buttonReset.enabled = Arrays.stream(KeyBindingHelper.allKeyBindings(this.mc))
+                .anyMatch(x -> x.keyCode != KeyBindingHelper.getDefaultKey(x));
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 

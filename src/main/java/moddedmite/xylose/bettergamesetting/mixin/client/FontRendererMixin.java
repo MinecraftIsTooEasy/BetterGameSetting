@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-@Mixin(FontRenderer.class)
+@Mixin(value = FontRenderer.class, priority = 1200)
 public abstract class FontRendererMixin {
     @Shadow private float red;
     @Shadow private float blue;

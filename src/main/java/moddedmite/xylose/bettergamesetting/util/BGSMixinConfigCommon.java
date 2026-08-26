@@ -21,8 +21,11 @@ public class BGSMixinConfigCommon implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String s, String s1) {
-        if (s1.contains("EnumGameTypeMixin$OhMyCommandsCompatMixin")) return !FishModLoader.hasMod("ohmycommands");
-        if (s1.contains("ItemInWorldManagerMixin$OhMyCommandsCompatMixin")) return !FishModLoader.hasMod("ohmycommands");
+        if (BGSConfig.freeDevAllowCheat.get()) {
+            if (s1.contains("EnumGameTypeMixin$OhMyCommandsCompatMixin")) return !FishModLoader.hasMod("ohmycommands");
+            if (s1.contains("ItemInWorldManagerMixin$OhMyCommandsCompatMixin")) return !FishModLoader.hasMod("ohmycommands");
+        }
+        if (s1.contains("widecheat")) return BGSConfig.freeDevAllowCheat.get();
         return true;
     }
 

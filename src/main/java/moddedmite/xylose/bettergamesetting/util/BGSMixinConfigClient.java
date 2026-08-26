@@ -22,7 +22,7 @@ public class BGSMixinConfigClient implements IMixinConfigPlugin {
     @Override
     public boolean shouldApplyMixin(String s, String s1) {
         if (s1.contains("GuiCreateWorldMixin")) return BGSConfig.useModernCreateWorldGui.get();
-        if (s1.contains("EnumGameTypeMixin$OhMyCommandsCompatMixin")) return FishModLoader.hasMod("ohmycommands");
+        if (s1.contains("FontRendererMixin")) return BGSConfig.useFontFix.get();
         return true;
     }
 

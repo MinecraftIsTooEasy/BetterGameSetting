@@ -23,7 +23,7 @@ public class GameRulesMixin {
     @Overwrite
     public boolean getGameRuleBooleanValue(String p_82766_1_) {
         GameRuleValue value = (GameRuleValue) this.theGameRules.get(p_82766_1_);
-        return value != null ? value.getGameRuleBooleanValue() : false;
+        return value != null && value.getGameRuleBooleanValue();
     }
 
     @Inject(method = "addGameRule", at = @At("TAIL"))

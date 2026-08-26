@@ -14,24 +14,24 @@ public class ItemInWorldManagerMixin {
 
 	@WrapOperation(method = "initializeGameType", at = @At(value = "INVOKE", target = "Lnet/minecraft/Minecraft;inDevMode()Z"))
 	private boolean wide_1(Operation<Boolean> original) {
-		return Minecraft.inDevMode() || BGSConfig.freeDevAllowCheat.get();
+		return original.call() || BGSConfig.freeDevAllowCheat.get();
 	}
 
 	@Mixin(ItemInWorldManager.class)
 	public static class OhMyCommandsCompatMixin {
 		@WrapOperation(method = "getGameType", at = @At(value = "INVOKE", target = "Lnet/minecraft/Minecraft;inDevMode()Z"))
 		private boolean wide_0(Operation<Boolean> original) {
-			return Minecraft.inDevMode() || BGSConfig.freeDevAllowCheat.get();
+			return original.call() || BGSConfig.freeDevAllowCheat.get();
 		}
 
 		@WrapOperation(method = "isCreative", at = @At(value = "INVOKE", target = "Lnet/minecraft/Minecraft;inDevMode()Z"))
 		private boolean wide_2(Operation<Boolean> original) {
-			return Minecraft.inDevMode() || BGSConfig.freeDevAllowCheat.get();
+			return original.call() || BGSConfig.freeDevAllowCheat.get();
 		}
 		
 		@WrapOperation(method = "setGameType", at = @At(value = "INVOKE", target = "Lnet/minecraft/Minecraft;inDevMode()Z"))
 		private boolean wide_3(Operation<Boolean> original) {
-			return Minecraft.inDevMode() || BGSConfig.freeDevAllowCheat.get();
+			return original.call() || BGSConfig.freeDevAllowCheat.get();
 		}
 	}
 }

@@ -25,7 +25,8 @@
     "widecheat.ItemMonsterPlacerMixin",
     "widecheat.Packet70GameEventMixin",
     "widecheat.ServerConfigurationManagerMixin",
-    "widecheat.WorldInfoMixin"
+    "widecheat.WorldInfoMixin",
+    "widecheat.WorldSettingsMixin"
   ],
   "injectors": {
     "defaultRequire": 1

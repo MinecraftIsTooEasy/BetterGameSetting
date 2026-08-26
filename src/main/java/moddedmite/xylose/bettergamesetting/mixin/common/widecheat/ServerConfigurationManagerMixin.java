@@ -1,5 +1,7 @@
 package moddedmite.xylose.bettergamesetting.mixin.common.widecheat;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import moddedmite.xylose.bettergamesetting.util.BGSConfig;
 import net.minecraft.Minecraft;
 import net.minecraft.ServerConfigurationManager;
@@ -16,14 +18,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class ServerConfigurationManagerMixin {
 	@Shadow @Final private MinecraftServer mcServer;
 	
-	@Redirect(method = "setGameType", at = @At(value = "INVOKE", target = "Lnet/minecraft/Minecraft;inDevMode()Z"))
-	private boolean wide_0() {
-		return Minecraft.inDevMode() || BGSConfig.freeDevAllowCheat.get();
+	@WrapOperation(method = "setGameType", at = @At(value = "INVOKE", target = "Lnet/minecraft/Minecraft;inDevMode()Z"))
+	private boolean wide_0(Operation<Boolean> original) {
+		return original.call() || BGSConfig.freeDevAllowCheat.get();
 	}
 	
-	@Redirect(method = "setCommandsAllowedForAll", at = @At(value = "INVOKE", target = "Lnet/minecraft/Minecraft;inDevMode()Z"))
-	private boolean wide_1() {
-		return Minecraft.inDevMode() || BGSConfig.freeDevAllowCheat.get();
+	@WrapOperation(method = "setCommandsAllowedForAll", at = @At(value = "INVOKE", target = "Lnet/minecraft/Minecraft;inDevMode()Z"))
+	private boolean wide_1(Operation<Boolean> original) {
+		return original.call() || BGSConfig.freeDevAllowCheat.get();
 	}
 	
 	@Inject(method = "isPlayerOpped", at = @At("TAIL"), cancellable = true)

@@ -102,7 +102,8 @@ public abstract class EntityRendererMixin {
 
     @WrapOperation(method = "addRainParticles", at = @At(value = "INVOKE", target = "Lnet/minecraft/WorldClient;playSound(DDDLjava/lang/String;FFZ)V"))
     private void modifyRainSound(WorldClient instance, double v, double par1, double par3, String par5, float par7Str, float par8, boolean par9, Operation<Void> original) {
-        this.mc.theWorld.playSound(v, par1, par3, par5, Minecraft.getMinecraft().gameSettings.getWeatherVolume() * par7Str, par8, par9);
+//        this.mc.theWorld.playSound(v, par1, par3, par5, Minecraft.getMinecraft().gameSettings.getWeatherVolume() * par7Str, par8, par9);
+        original.call(instance, v, par1, par3, par5, par7Str, par8, par9);
     }
 
 

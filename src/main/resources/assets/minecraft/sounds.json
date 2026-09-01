@@ -1,0 +1,23 @@
+{
+   "music.game.underworld": {
+     "category": "music",
+     "sounds": [
+       {
+         "name": "music/game/underworld/cd",
+         "stream": true
+       },
+       {
+         "name": "music/game/underworld/cis",
+         "stream": true
+       },
+       {
+         "name": "music/game/underworld/cwl",
+         "stream": true
+       },
+       {
+         "name": "music/game/underworld/nf",
+         "stream": true
+       }
+     ]
+   }
+ }

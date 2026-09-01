@@ -5,12 +5,10 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import moddedmite.xylose.bettergamesetting.client.gui.GuiWorldOption;
 import moddedmite.xylose.bettergamesetting.client.gui.button.GuiOptionSlider;
-import moddedmite.xylose.bettergamesetting.client.gui.gamerule.GuiGameRules;
 import moddedmite.xylose.bettergamesetting.client.gui.video.GuiVideoSettings;
-import moddedmite.xylose.bettergamesetting.client.gui.GuiSoundSetting;
+import moddedmite.xylose.bettergamesetting.client.gui.GuiScreenOptionsSounds;
 import moddedmite.xylose.bettergamesetting.client.gui.controls.GuiNewControls;
 import moddedmite.xylose.bettergamesetting.client.gui.resourcepack.GuiScreenResourcePacks;
-import moddedmite.xylose.bettergamesetting.init.BGSClient;
 import net.minecraft.*;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
@@ -49,7 +47,7 @@ public class GuiOptionsMixin extends GuiScreen {
         if (par1GuiButton.enabled) {
             if (par1GuiButton.id == 300) {
                 this.mc.gameSettings.saveOptions();
-                this.mc.displayGuiScreen(new GuiSoundSetting(this, this.options));
+                this.mc.displayGuiScreen(new GuiScreenOptionsSounds(this, this.options));
             }
             if (par1GuiButton.id == 301) {
                 this.mc.gameSettings.saveOptions();

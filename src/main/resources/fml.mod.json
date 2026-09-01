@@ -45,7 +45,6 @@
   "mixins": [
     "BetterGameSetting.client.mixins.json",
     "BetterGameSetting.common.mixins.json",
-    "BetterGameSetting.sound.mixins.json",
     "BetterGameSetting.compat.mixins.json"
   ],
   "accessWidener": "BetterGameSetting.accesswidener",
@@ -55,7 +54,10 @@
       "net/minecraft/EnumOptions": ["moddedmite/xylose/bettergamesetting/api/IEnumOptions"],
       "net/minecraft/GuiButton": ["moddedmite/xylose/bettergamesetting/api/IButton"],
       "net/minecraft/GuiTextField": ["moddedmite/xylose/bettergamesetting/api/ITextField"],
-      "net/minecraft/GuiCreateWorld": ["moddedmite/xylose/bettergamesetting/api/IGuiCreateWorld"]
+      "net/minecraft/GuiCreateWorld": ["moddedmite/xylose/bettergamesetting/api/IGuiCreateWorld"],
+      "net/minecraft/Minecraft": ["moddedmite/xylose/bettergamesetting/api/IClient"],
+      "net/minecraft/SoundPoolEntry": ["moddedmite/xylose/bettergamesetting/api/ISoundPoolEntry"],
+      "net/minecraft/SoundManager": ["moddedmite/xylose/bettergamesetting/api/ISoundManager"]
     },
     "modmenu:clientsideOnly": true
   }

@@ -40,6 +40,8 @@
   },
   "plugin": "moddedmite.xylose.bettergamesetting.util.BGSMixinConfigClient",
   "mixins": [
+    "audio.SoundManagerMixin",
+    "audio.SoundPoolEntryMixin",
     "widecheat.GuiShareToLanMixin"
   ]
 }

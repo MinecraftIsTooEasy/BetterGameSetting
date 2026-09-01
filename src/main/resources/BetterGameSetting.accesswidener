@@ -4,6 +4,7 @@ accessible field net/minecraft/Minecraft mcResourcePackRepository Lnet/minecraft
 accessible field net/minecraft/Minecraft timer Lnet/minecraft/Timer;
 accessible field net/minecraft/Minecraft running Z
 accessible method net/minecraft/Minecraft resize (II)V
+accessible field net/minecraft/Minecraft fileAssets Ljava/io/File;
 accessible field net/minecraft/GuiSlot left I
 accessible field net/minecraft/GuiSlot width I
 accessible field net/minecraft/GuiSlot right I

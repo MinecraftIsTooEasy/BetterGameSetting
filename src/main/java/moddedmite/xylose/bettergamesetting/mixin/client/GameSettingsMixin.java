@@ -1,11 +1,14 @@
 package moddedmite.xylose.bettergamesetting.mixin.client;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import moddedmite.xylose.bettergamesetting.api.IGameSetting;
+import moddedmite.xylose.bettergamesetting.api.ISoundManager;
 import moddedmite.xylose.bettergamesetting.client.EnumOptionsExtra;
+import moddedmite.xylose.bettergamesetting.client.audio.SoundCategory;
 import moddedmite.xylose.bettergamesetting.util.BGSConfig;
 import moddedmite.xylose.bettergamesetting.util.Constants;
 import net.minecraft.*;
@@ -21,6 +24,7 @@ import java.io.*;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Map;
 
 @Mixin(GameSettings.class)
 public abstract class GameSettingsMixin implements IGameSetting {
@@ -37,14 +41,13 @@ public abstract class GameSettingsMixin implements IGameSetting {
     @Shadow public abstract float getOptionFloatValue(EnumOptions par1EnumOptions);
 
     @Unique public boolean forceUnicodeFont;
-    @Unique public float recordVolume = 1.0F;
-    @Unique public float weatherVolume = 1.0F;
-    @Unique public float blockVolume = 1.0F;
-    @Unique public float hostileVolume = 1.0F;
-    @Unique public float neutralVolume = 1.0F;
-    @Unique public float playerVolume = 1.0F;
-    @Unique public float ambientVolume = 1.0F;
-    @Unique public float uiVolume = 1.0F;
+//    @Unique public float recordVolume = 1.0F;
+//    @Unique public float weatherVolume = 1.0F;
+//    @Unique public float blockVolume = 1.0F;
+//    @Unique public float hostileVolume = 1.0F;
+//    @Unique public float neutralVolume = 1.0F;
+//    @Unique public float playerVolume = 1.0F;
+//    @Unique public float ambientVolume = 1.0F;
     @Unique private static final Gson gson = new Gson();
     @Unique public List<String> resourcePacks = Lists.<String>newArrayList();
     @Unique public List<String> incompatibleResourcePacks = Lists.<String>newArrayList();
@@ -64,6 +67,7 @@ public abstract class GameSettingsMixin implements IGameSetting {
     @Unique public boolean transparentBackground;
     @Unique public boolean highlightButtonText;
     @Unique public boolean deferChunkUpdates = false;
+    @Unique private Map<SoundCategory, Float> soundLevels = Maps.newEnumMap(SoundCategory.class);
 
 //    @Unique public DisplayMode fullscreenResolution;
 
@@ -147,29 +151,32 @@ public abstract class GameSettingsMixin implements IGameSetting {
         if (options == EnumOptions.GAMMA) {
             this.gammaSetting = value;
         }
+        if (options == EnumOptions.MUSIC) {
+            this.setSoundLevel(SoundCategory.MUSIC, value);
+        }
         if (options == EnumOptionsExtra.RECORDS) {
-            this.recordVolume = value;
+            this.setSoundLevel(SoundCategory.RECORDS, value);
         }
         if (options == EnumOptionsExtra.WEATHER) {
-            this.weatherVolume = value;
+            this.setSoundLevel(SoundCategory.WEATHER, value);
         }
         if (options == EnumOptionsExtra.BLOCKS) {
-            this.blockVolume = value;
+            this.setSoundLevel(SoundCategory.BLOCKS, value);
         }
         if (options == EnumOptionsExtra.MOBS) {
-            this.hostileVolume = value;
+            this.setSoundLevel(SoundCategory.MOBS, value);
         }
         if (options == EnumOptionsExtra.ANIMALS) {
-            this.neutralVolume = value;
+            this.setSoundLevel(SoundCategory.ANIMALS, value);
         }
         if (options == EnumOptionsExtra.PLAYERS) {
-            this.playerVolume = value;
+            this.setSoundLevel(SoundCategory.PLAYERS, value);
         }
         if (options == EnumOptionsExtra.AMBIENT) {
-            this.ambientVolume = value;
+            this.setSoundLevel(SoundCategory.AMBIENT, value);
         }
         if (options == EnumOptionsExtra.UI) {
-            this.uiVolume = value;
+            this.setSoundLevel(SoundCategory.UI, value);
         }
     }
 
@@ -187,29 +194,32 @@ public abstract class GameSettingsMixin implements IGameSetting {
         if (par1EnumOptions == EnumOptions.GAMMA) {
             cir.setReturnValue(this.gammaSetting);
         }
+        if (par1EnumOptions == EnumOptions.MUSIC) {
+            cir.setReturnValue(this.getSoundLevel(SoundCategory.MUSIC));
+        }
         if (par1EnumOptions == EnumOptionsExtra.RECORDS) {
-            cir.setReturnValue(this.recordVolume);
+            cir.setReturnValue(this.getSoundLevel(SoundCategory.RECORDS));
         }
         if (par1EnumOptions == EnumOptionsExtra.WEATHER) {
-            cir.setReturnValue(this.weatherVolume);
+            cir.setReturnValue(this.getSoundLevel(SoundCategory.WEATHER));
         }
         if (par1EnumOptions == EnumOptionsExtra.BLOCKS) {
-            cir.setReturnValue(this.blockVolume);
+            cir.setReturnValue(this.getSoundLevel(SoundCategory.BLOCKS));
         }
         if (par1EnumOptions == EnumOptionsExtra.MOBS) {
-            cir.setReturnValue(this.hostileVolume);
+            cir.setReturnValue(this.getSoundLevel(SoundCategory.MOBS));
         }
         if (par1EnumOptions == EnumOptionsExtra.ANIMALS) {
-            cir.setReturnValue(this.neutralVolume);
+            cir.setReturnValue(this.getSoundLevel(SoundCategory.ANIMALS));
         }
         if (par1EnumOptions == EnumOptionsExtra.PLAYERS) {
-            cir.setReturnValue(this.playerVolume);
+            cir.setReturnValue(this.getSoundLevel(SoundCategory.PLAYERS));
         }
         if (par1EnumOptions == EnumOptionsExtra.AMBIENT) {
-            cir.setReturnValue(this.ambientVolume);
+            cir.setReturnValue(this.getSoundLevel(SoundCategory.AMBIENT));
         }
         if (par1EnumOptions == EnumOptionsExtra.UI) {
-            cir.setReturnValue(this.uiVolume);
+            cir.setReturnValue(this.getSoundLevel(SoundCategory.UI));
         }
     }
 
@@ -312,29 +322,10 @@ public abstract class GameSettingsMixin implements IGameSetting {
 //                if (astring[0].equals("fullscreenResolution")) {
 //                    this.fullscreenResolution = DisplayModeHelper.getDisplayModeFromString(astring[1]);
 //                }
-                if (astring[0].equals("record")) {
-                    this.recordVolume = this.parseFloat(astring[1]);
-                }
-                if (astring[0].equals("weather")) {
-                    this.weatherVolume = this.parseFloat(astring[1]);
-                }
-                if (astring[0].equals("block")) {
-                    this.blockVolume = this.parseFloat(astring[1]);
-                }
-                if (astring[0].equals("hostile")) {
-                    this.hostileVolume = this.parseFloat(astring[1]);
-                }
-                if (astring[0].equals("neutral")) {
-                    this.neutralVolume = this.parseFloat(astring[1]);
-                }
-                if (astring[0].equals("player")) {
-                    this.playerVolume = this.parseFloat(astring[1]);
-                }
-                if (astring[0].equals("ambient")) {
-                    this.ambientVolume = this.parseFloat(astring[1]);
-                }
-                if (astring[0].equals("ui")) {
-                    this.uiVolume = this.parseFloat(astring[1]);
+                for (SoundCategory soundcategory : SoundCategory.values()) {
+                    if (astring[0].equals("soundCategory_" + soundcategory.getName())) {
+                        this.soundLevels.put(soundcategory, this.parseFloat(astring[1]));
+                    }
                 }
             }
         } catch (IOException e) {
@@ -369,14 +360,9 @@ public abstract class GameSettingsMixin implements IGameSetting {
         printwriter.println("fovSetting:" + this.fovSetting);
         printwriter.println("renderDistance:" + this.renderDistance);
         printwriter.println("maxFps:" + this.limitFramerate);
-        printwriter.println("record:" + this.recordVolume);
-        printwriter.println("weather:" + this.weatherVolume);
-        printwriter.println("block:" + this.blockVolume);
-        printwriter.println("hostile:" + this.hostileVolume);
-        printwriter.println("neutral:" + this.neutralVolume);
-        printwriter.println("player:" + this.playerVolume);
-        printwriter.println("ambient:" + this.ambientVolume);
-        printwriter.println("ui:" + this.uiVolume);
+        for (SoundCategory soundcategory : SoundCategory.values()){
+            printwriter.println("soundCategory_" + soundcategory.getName() + ":" + this.getSoundLevel(soundcategory));
+        }
         printwriter.println("forceUnicodeFont:" + this.forceUnicodeFont);
         printwriter.println("transparentBackground:" + this.transparentBackground);
         printwriter.println("highlightButtonText:" + this.highlightButtonText);
@@ -403,45 +389,16 @@ public abstract class GameSettingsMixin implements IGameSetting {
         key.keyCode = keyCode;
         this.saveOptions();
     }
-
-    @Override
-    public float getRecordVolume() {
-        return this.recordVolume;
+    
+    public float getSoundLevel(SoundCategory category) {
+        return this.soundLevels.containsKey(category) ? this.soundLevels.get(category) : 1.0F;
     }
 
-    @Override
-    public float getWeatherVolume() {
-        return this.weatherVolume;
-    }
-
-    @Override
-    public float getBlockVolume() {
-        return this.blockVolume;
-    }
-
-    @Override
-    public float getHostileVolume() {
-        return this.hostileVolume;
-    }
-
-    @Override
-    public float getNeutralVolume() {
-        return this.neutralVolume;
-    }
-
-    @Override
-    public float getPlayerVolume() {
-        return this.playerVolume;
-    }
-
-    @Override
-    public float getAmbientVolume() {
-        return this.ambientVolume;
-    }
-
-    @Override
-    public float getUIVolume() {
-        return this.uiVolume;
+    public void setSoundLevel(SoundCategory category, float volume) {
+        this.soundLevels.put(category, volume);
+        if (this.mc != null && this.mc.sndManager != null) {
+            ((ISoundManager) this.mc.sndManager).setSoundCategoryVolume(category, volume);
+        }
     }
 
     @Override

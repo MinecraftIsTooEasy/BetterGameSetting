@@ -1,6 +1,12 @@
 package moddedmite.xylose.bettergamesetting.mixin.client;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import moddedmite.xylose.bettergamesetting.api.IClient;
 import moddedmite.xylose.bettergamesetting.client.CustomKeys;
+import moddedmite.xylose.bettergamesetting.client.audio.MusicTicker;
+import moddedmite.xylose.bettergamesetting.client.audio.SoundEvent;
+import moddedmite.xylose.bettergamesetting.client.audio.SoundHandler;
 import moddedmite.xylose.bettergamesetting.client.gui.gamerule.GuiGameRules;
 import moddedmite.xylose.bettergamesetting.util.GuiScreenPanoramaHelp;
 import moddedmite.xylose.bettergamesetting.util.Mth;
@@ -15,13 +21,14 @@ import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static moddedmite.xylose.bettergamesetting.util.Constants.*;
 
 @Mixin(value = Minecraft.class, priority = 9999)
-public abstract class MinecraftMixin {
+public abstract class MinecraftMixin implements IClient {
     @Shadow public GameSettings gameSettings;
     @Shadow public GuiScreen currentScreen;
     @Shadow public EntityClientPlayerMP thePlayer;
@@ -31,6 +38,25 @@ public abstract class MinecraftMixin {
     @Shadow private int tempDisplayWidth;
     @Shadow private int tempDisplayHeight;
     @Shadow public abstract void resize(int par1, int par2);
+    
+    @Shadow private ReloadableResourceManager mcResourceManager;
+
+    @Shadow
+    public boolean isGamePaused;
+    @Unique private SoundHandler sndHandler;
+    @Unique private MusicTicker musicTicker;
+    
+    @Inject(method = "startGame", at = @At(value = "FIELD", target = "Lnet/minecraft/Minecraft;sndManager:Lnet/minecraft/SoundManager;", opcode = Opcodes.PUTFIELD, shift = At.Shift.AFTER))
+    private void createSoundHandler(CallbackInfo ci) {
+        this.mcResourceManager.registerReloadListener(this.getSoundHandler());
+        this.musicTicker = new MusicTicker(ReflectHelper.dyCast(this));
+        SoundEvent.registerSounds();
+    }
+//
+//    @Inject(method = "runGameLoop", at = @At(value = "INVOKE", target = "Lnet/minecraft/SoundManager;func_92071_g()V", shift = At.Shift.AFTER))
+//    private void updateSoundHandler(CallbackInfo ci) {
+//        this.getSoundHandler().update();
+//    }
 
     @Redirect(method = "runGameLoop", at = @At(value = "FIELD", target = "Lnet/minecraft/GameSettings;gammaSetting:F", opcode = Opcodes.PUTFIELD))
     private void keepGammaAndOptionsBounds(GameSettings instance, float value) {
@@ -87,6 +113,18 @@ public abstract class MinecraftMixin {
                 break;
             }
         }
+    }
+    
+    @Inject(method = "runTick", at = @At("TAIL"))
+    private void updateSoundTicker(CallbackInfo ci) {
+//        if (!this.isGamePaused) {
+            this.musicTicker.update();
+            this.sndHandler.update();
+//        }
+    }
+
+    @WrapOperation(method = "runGameLoop", at = @At(value = "INVOKE", target = "Lnet/minecraft/SoundManager;func_92071_g()V"))
+    private void removeVanillaSoundsUpdate(SoundManager instance, Operation<Void> original) {
     }
 
     @Inject(method = "launchIntegratedServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/Minecraft;displayGuiScreen(Lnet/minecraft/GuiScreen;)V"))
@@ -146,5 +184,12 @@ public abstract class MinecraftMixin {
         } catch (Exception var2) {
             var2.printStackTrace();
         }
+    }
+    
+    public SoundHandler getSoundHandler() {
+        if (this.sndHandler == null) {
+            this.sndHandler = SoundHandler.formClient(ReflectHelper.dyCast(this));
+        }
+        return this.sndHandler;
     }
 }

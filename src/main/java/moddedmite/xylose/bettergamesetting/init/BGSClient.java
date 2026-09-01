@@ -8,6 +8,8 @@ import net.fabricmc.api.ModInitializer;
 import net.minecraft.GameRules;
 import net.xiaoyu233.fml.ModResourceManager;
 import net.xiaoyu233.fml.config.ConfigRegistry;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +17,7 @@ import java.util.Optional;
 
 public class BGSClient implements ClientModInitializer, ModInitializer {
     public static String resourceId = "bgs";
+    public static final Logger logger = LogManager.getLogger("BGS");
     public static final Map<String, String> DEFAULT_GAMERULE_VALUE = new HashMap<>();
     public static final GameRules gameRules = new GameRules();
     public static Map<String, String> pendingRules = new HashMap<>();

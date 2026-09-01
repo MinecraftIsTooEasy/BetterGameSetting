@@ -202,8 +202,8 @@ public abstract class GuiSlotModern {
                     boolean flag1 = true;
 
                     if (mouseYR >= this.top && mouseYR <= this.bottom) {
-                        int k1 = this.width / 2 - this.getListWidth() / 2;
-                        l1 = this.width / 2 + this.getListWidth() / 2;
+                        int k1 = this.left + this.width / 2 - this.getListWidth() / 2;
+                        l1 = this.left + this.width / 2 + this.getListWidth() / 2;
                         i2 = mouseYR - this.top - this.headerPadding + (int) this.amountScrolled - 4;
                         int j2 = i2 / this.slotHeight;
 

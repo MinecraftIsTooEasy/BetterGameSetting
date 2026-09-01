@@ -46,7 +46,7 @@ dependencies {
     compileOnly neodymium
 
     implementation "com.github.MinecraftIsTooEasy:Conditional-Mixin:0.6.4"
-    implementation "com.github.MinecraftIsTooEasy:RustedIronCore:1.5.6"
+    implementation "com.github.MinecraftIsTooEasy:RustedIronCore:1.5.7"
 
     localRuntime "com.github.MinecraftIsTooEasy:ManyLib:2.3.1"
     localRuntime "com.github.MinecraftIsTooEasy:Gson:2.10.1"

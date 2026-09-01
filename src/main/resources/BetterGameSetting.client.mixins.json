@@ -11,6 +11,9 @@
     "KeyBindingMixin",
     "MinecraftMixin",
     "OpenGlHelperMixin",
+    "audio.EntityLivingBaseMixin",
+    "audio.SoundManagerMixin",
+    "audio.SoundPoolEntryMixin",
     "audio.SoundsMITEMixin",
     "gui.GuiButtonMixin",
     "gui.GuiContainerMixin",
@@ -33,15 +36,14 @@
     "resources.ResourceLocationMixin",
     "resources.ResourcePackRepositoryEntryMixin",
     "resources.ResourcePackRepositoryMixin",
-    "resources.SimpleReloadableResourceManagerMixin"
+    "resources.SimpleReloadableResourceManagerMixin",
+    "widecheat.GuiShareToLanMixin"
   ],
   "injectors": {
     "defaultRequire": 1
   },
   "plugin": "moddedmite.xylose.bettergamesetting.util.BGSMixinConfigClient",
   "mixins": [
-    "audio.SoundManagerMixin",
-    "audio.SoundPoolEntryMixin",
-    "widecheat.GuiShareToLanMixin"
+
   ]
 }

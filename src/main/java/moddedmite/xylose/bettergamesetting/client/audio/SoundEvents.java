@@ -283,7 +283,46 @@ public class SoundEvents {
     public static final SoundEvent ENTITY_ZOMBIE_VILLAGER_AMBIENT;
     public static final SoundEvent ENTITY_ZOMBIE_VILLAGER_DEATH;
     public static final SoundEvent ENTITY_ZOMBIE_VILLAGER_HURT;
-    
+
+    public static final SoundEvent LIQUID_BLOCK_SPLASH;
+    public static final SoundEvent RANDOM_SIZZLE;
+    public static final SoundEvent RANDOM_BOIL;
+    public static final SoundEvent RANDOM_LEVEL_DRAIN;
+    public static final SoundEvent RANDOM_CAMERA;
+    public static final SoundEvent BLOCK_CHEST_LOCKED;
+    public static final SoundEvent BLOCK_BOOK_OPEN;
+    public static final SoundEvent BLOCK_BOOK_PAGE;
+    public static final SoundEvent BLOCK_BOOK_CLOSE;
+    public static final SoundEvent RANDOM_COW_ALARM;
+    public static final SoundEvent RANDOM_GUNSHOT;
+    public static final SoundEvent ENTITY_DEMONSPIDER_AMBIENT;
+    public static final SoundEvent ENTITY_DEMONSPIDER_HURT;
+    public static final SoundEvent ENTITY_DEMONSPIDER_DEATH;
+    public static final SoundEvent ENTITY_GHOUL_AMBIENT;
+    public static final SoundEvent ENTITY_GHOUL_HURT;
+    public static final SoundEvent ENTITY_GHOUL_DEATH;
+    public static final SoundEvent ENTITY_HELLHOUND_AMBIENT;
+    public static final SoundEvent ENTITY_HELLHOUND_HURT;
+    public static final SoundEvent ENTITY_HELLHOUND_DEATH;
+    public static final SoundEvent ENTITY_HELLHOUND_BREATHE;
+    public static final SoundEvent ENTITY_INVISIBLESTALKER_AMBIENT;
+    public static final SoundEvent ENTITY_INVISIBLESTALKER_HURT;
+    public static final SoundEvent ENTITY_INVISIBLESTALKER_DEATH;
+    public static final SoundEvent ENTITY_WIGHT_AMBIENT;
+    public static final SoundEvent ENTITY_WIGHT_HURT;
+    public static final SoundEvent ENTITY_WIGHT_DEATH;
+    public static final SoundEvent ENTITY_SHADOW_AMBIENT;
+    public static final SoundEvent ENTITY_SHADOW_HURT;
+    public static final SoundEvent ENTITY_SHADOW_DEATH;
+    public static final SoundEvent ENTITY_WITCH_AMBIENT;
+    public static final SoundEvent ENTITY_WITCH_HURT;
+    public static final SoundEvent ENTITY_WITCH_DEATH;
+    public static final SoundEvent PORTAL_RUNEGATE;
+    public static final SoundEvent RECORD_UNDERWORLD;
+    public static final SoundEvent RECORD_DESCENT;
+    public static final SoundEvent RECORD_WANDERER;
+    public static final SoundEvent RECORD_LEGENDS;
+
     private static final List<String> unregisteredSounds = new ArrayList<>();
 
     private static SoundEvent getRegisteredSoundEvent(String id) {
@@ -544,7 +583,7 @@ public class SoundEvents {
         ENTITY_WOLF_AMBIENT = getRegisteredSoundEvent("mob.wolf.bark");
         ENTITY_WOLF_DEATH = getRegisteredSoundEvent("mob.wolf.death");
         ENTITY_WOLF_GROWL = getRegisteredSoundEvent("mob.wolf.growl");
-        ENTITY_WOLF_HOWL = getRegisteredSoundEvent("mob.wolf.howl");
+        ENTITY_WOLF_HOWL = getRegisteredSoundEvent("imported.mob.wolf.howl");
         ENTITY_WOLF_HURT = getRegisteredSoundEvent("mob.wolf.hurt");
         ENTITY_WOLF_PANT = getRegisteredSoundEvent("mob.wolf.panting");
         ENTITY_WOLF_SHAKE = getRegisteredSoundEvent("mob.wolf.shake");
@@ -571,6 +610,45 @@ public class SoundEvents {
         ENTITY_ZOMBIE_VILLAGER_AMBIENT = getRegisteredSoundEvent("mob.zombie.say");
         ENTITY_ZOMBIE_VILLAGER_DEATH = getRegisteredSoundEvent("mob.zombie.death");
         ENTITY_ZOMBIE_VILLAGER_HURT = getRegisteredSoundEvent("mob.zombie.hurt");
+
+        LIQUID_BLOCK_SPLASH = getRegisteredSoundEvent("imported.liquid.block_splash");
+        RANDOM_SIZZLE = getRegisteredSoundEvent("imported.random.sizzle");
+        RANDOM_BOIL = getRegisteredSoundEvent("imported.random.boil");
+        RANDOM_LEVEL_DRAIN = getRegisteredSoundEvent("imported.random.level_drain");
+        RANDOM_CAMERA = getRegisteredSoundEvent("imported.random.camera");
+        BLOCK_CHEST_LOCKED = getRegisteredSoundEvent("imported.random.chest_locked");
+        BLOCK_BOOK_OPEN = getRegisteredSoundEvent("imported.random.book_open");
+        BLOCK_BOOK_PAGE = getRegisteredSoundEvent("imported.random.book_page");
+        BLOCK_BOOK_CLOSE = getRegisteredSoundEvent("imported.random.book_close");
+        RANDOM_COW_ALARM = getRegisteredSoundEvent("imported.random.cow_alarm");
+        RANDOM_GUNSHOT = getRegisteredSoundEvent("imported.random.gunshot");
+        ENTITY_DEMONSPIDER_AMBIENT = getRegisteredSoundEvent("imported.mob.demonspider.say");
+        ENTITY_DEMONSPIDER_HURT = getRegisteredSoundEvent("imported.mob.demonspider.hurt");
+        ENTITY_DEMONSPIDER_DEATH = getRegisteredSoundEvent("imported.mob.demonspider.death");
+        ENTITY_GHOUL_AMBIENT = getRegisteredSoundEvent("imported.mob.ghoul.say");
+        ENTITY_GHOUL_HURT = getRegisteredSoundEvent("imported.mob.ghoul.hurt");
+        ENTITY_GHOUL_DEATH = getRegisteredSoundEvent("imported.mob.ghoul.death");
+        ENTITY_HELLHOUND_AMBIENT = getRegisteredSoundEvent("imported.mob.hellhound.say");
+        ENTITY_HELLHOUND_HURT = getRegisteredSoundEvent("imported.mob.hellhound.hurt");
+        ENTITY_HELLHOUND_DEATH = getRegisteredSoundEvent("imported.mob.hellhound.death");
+        ENTITY_HELLHOUND_BREATHE = getRegisteredSoundEvent("imported.mob.hellhound.breath");
+        ENTITY_INVISIBLESTALKER_AMBIENT = getRegisteredSoundEvent("imported.mob.invisiblestalker.say");
+        ENTITY_INVISIBLESTALKER_HURT = getRegisteredSoundEvent("imported.mob.invisiblestalker.hurt");
+        ENTITY_INVISIBLESTALKER_DEATH = getRegisteredSoundEvent("imported.mob.invisiblestalker.death");
+        ENTITY_WIGHT_AMBIENT = getRegisteredSoundEvent("imported.mob.wight.say");
+        ENTITY_WIGHT_HURT = getRegisteredSoundEvent("imported.mob.wight.hurt");
+        ENTITY_WIGHT_DEATH = getRegisteredSoundEvent("imported.mob.wight.death");
+        ENTITY_SHADOW_AMBIENT = getRegisteredSoundEvent("imported.mob.shadow.say");
+        ENTITY_SHADOW_HURT = getRegisteredSoundEvent("imported.mob.shadow.hurt");
+        ENTITY_SHADOW_DEATH = getRegisteredSoundEvent("imported.mob.shadow.death");
+        ENTITY_WITCH_AMBIENT = getRegisteredSoundEvent("imported.mob.witch.cackle");
+        ENTITY_WITCH_HURT = getRegisteredSoundEvent("imported.mob.witch.hurt");
+        ENTITY_WITCH_DEATH = getRegisteredSoundEvent("imported.mob.witch.death");
+        PORTAL_RUNEGATE = getRegisteredSoundEvent("imported.portal.runegate");
+        RECORD_UNDERWORLD = getRegisteredSoundEvent("imported.underworld");
+        RECORD_DESCENT = getRegisteredSoundEvent("imported.descent");
+        RECORD_WANDERER = getRegisteredSoundEvent("imported.wanderer");
+        RECORD_LEGENDS = getRegisteredSoundEvent("imported.legends");
 
         if (!unregisteredSounds.isEmpty()) {
             BGSClient.logger.warn("SoundEvents: found {} unregistered sound(s), the corresponding field(s) are set to null:", new Object[]{unregisteredSounds.size()});

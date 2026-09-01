@@ -241,6 +241,46 @@ public record SoundEvent(ResourceLocation soundName, SoundCategory category) {
         registerSound(SoundCategory.MASTER, "gui.button.press");
 
         registerSound(SoundCategory.MUSIC, new ResourceLocation("bgs", "music.game.underworld"));
+
+        registerSound(SoundCategory.BLOCKS, "imported.liquid.block_splash");
+        registerSound(SoundCategory.BLOCKS, "imported.random.sizzle");
+        registerSound(SoundCategory.BLOCKS, "imported.random.boil");
+        registerSound(SoundCategory.PLAYERS, "imported.random.level_drain");
+        registerSound(SoundCategory.UI, "imported.random.camera");
+        registerSound(SoundCategory.BLOCKS, "imported.random.chest_locked");
+        registerSound(SoundCategory.UI, "imported.random.book_open");
+        registerSound(SoundCategory.UI, "imported.random.book_page");
+        registerSound(SoundCategory.UI, "imported.random.book_close");
+        registerSound(SoundCategory.ANIMALS, "imported.random.cow_alarm");
+        registerSound(SoundCategory.UI, "imported.random.gunshot");
+        registerSound(SoundCategory.ANIMALS, "imported.mob.wolf.howl");
+        registerSound(SoundCategory.MOBS, "imported.mob.demonspider.say");
+        registerSound(SoundCategory.MOBS, "imported.mob.demonspider.hurt");
+        registerSound(SoundCategory.MOBS, "imported.mob.demonspider.death");
+        registerSound(SoundCategory.MOBS, "imported.mob.ghoul.say");
+        registerSound(SoundCategory.MOBS, "imported.mob.ghoul.hurt");
+        registerSound(SoundCategory.MOBS, "imported.mob.ghoul.death");
+        registerSound(SoundCategory.MOBS, "imported.mob.hellhound.say");
+        registerSound(SoundCategory.MOBS, "imported.mob.hellhound.hurt");
+        registerSound(SoundCategory.MOBS, "imported.mob.hellhound.death");
+        registerSound(SoundCategory.MOBS, "imported.mob.hellhound.breath");
+        registerSound(SoundCategory.MOBS, "imported.mob.invisiblestalker.say");
+        registerSound(SoundCategory.MOBS, "imported.mob.invisiblestalker.hurt");
+        registerSound(SoundCategory.MOBS, "imported.mob.invisiblestalker.death");
+        registerSound(SoundCategory.MOBS, "imported.mob.wight.say");
+        registerSound(SoundCategory.MOBS, "imported.mob.wight.hurt");
+        registerSound(SoundCategory.MOBS, "imported.mob.wight.death");
+        registerSound(SoundCategory.MOBS, "imported.mob.shadow.say");
+        registerSound(SoundCategory.MOBS, "imported.mob.shadow.hurt");
+        registerSound(SoundCategory.MOBS, "imported.mob.shadow.death");
+        registerSound(SoundCategory.MOBS, "imported.mob.witch.cackle");
+        registerSound(SoundCategory.MOBS, "imported.mob.witch.hurt");
+        registerSound(SoundCategory.MOBS, "imported.mob.witch.death");
+        registerSound(SoundCategory.BLOCKS, "imported.portal.runegate");
+        registerSound(SoundCategory.RECORDS, "imported.underworld");
+        registerSound(SoundCategory.RECORDS, "imported.descent");
+        registerSound(SoundCategory.RECORDS, "imported.wanderer");
+        registerSound(SoundCategory.RECORDS, "imported.legends");
     }
 
     private static void registerSound(SoundCategory category, String soundNameIn) {

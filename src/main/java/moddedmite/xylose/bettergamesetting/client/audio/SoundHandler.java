@@ -104,18 +104,19 @@ public class SoundHandler implements ResourceManagerReloadListener, IUpdatePlaye
 			
 			switch (SwitchType.field_148765_a[soundentry.getSoundEntryType().ordinal()]) {
 				case 1:
-					ResourceLocation resourcelocation2 = new ResourceLocation(s1, "sounds/" + resourcelocation1.getResourcePath() + ".ogg");
-					
-//					try {
+					ResourceLocation resourcelocation2 = this.resolveSoundFile(s1, resourcelocation1.getResourcePath());
+
+					try {
 						this.mcResourceManager.getResource(resourcelocation2);
-//					} catch (FileNotFoundException filenotfoundexception) {
-//						logger.warn("File {} does not exist, cannot add it to event {}", new Object[]{resourcelocation2, p_147693_1_});
-//						continue;
-//					} catch (IOException ioexception) {
-//						logger.warn("Could not load sound file " + resourcelocation2 + ", cannot add it to event " + p_147693_1_, ioexception);
-//						continue;
-//					}
-					
+					} catch (Exception exception) {
+						if (exception instanceof FileNotFoundException) {
+							BGSClient.logger.warn("File {} does not exist, cannot add it to event {}", new Object[]{resourcelocation2, p_147693_1_});
+						} else {
+							BGSClient.logger.warn("Could not load sound file {}, cannot add it to event {}", new Object[]{resourcelocation2, p_147693_1_}, exception);
+						}
+						continue;
+					}
+
 					SoundPoolEntry soundpoolentry = new SoundPoolEntry(resourcelocation2.toString(), this.getSoundURL(resourcelocation2));
 					soundpoolentry.setPitch(soundentry.getSoundEntryPitch());
 					soundpoolentry.setVolume(soundentry.getSoundEntryVolume());
@@ -155,6 +156,13 @@ public class SoundHandler implements ResourceManagerReloadListener, IUpdatePlaye
 		} catch (MalformedURLException malformedurlexception) {
 			return null;
 		}
+	}
+
+	private ResourceLocation resolveSoundFile(String domain, String path) {
+		if (path.startsWith("sound/") || path.startsWith("sounds/") || path.startsWith("records/")) {
+			return new ResourceLocation(domain, path + ".ogg");
+		}
+		return new ResourceLocation(domain, "sounds/" + path + ".ogg");
 	}
 
 	private static class SoundURLStreamHandler extends URLStreamHandler {

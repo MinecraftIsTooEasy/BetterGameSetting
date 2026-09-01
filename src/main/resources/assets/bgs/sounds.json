@@ -1,23 +1,23 @@
 {
-   "music.game.underworld": {
-     "category": "music",
-     "sounds": [
-       {
-         "name": "music/game/underworld/diskdance",
-         "stream": true
-       },
-       {
-         "name": "music/game/underworld/impostor_syndrome",
-         "stream": true
-       },
-       {
-         "name": "music/game/underworld/wooden_love",
-         "stream": true
-       },
-       {
-         "name": "music/game/underworld/fifflas",
-         "stream": true
-       }
-     ]
-   }
- }
+  "music.game.underworld": {
+    "category": "music",
+    "sounds": [
+      {
+        "name": "music/game/underworld/diskdance",
+        "stream": true
+      },
+      {
+        "name": "music/game/underworld/impostor_syndrome",
+        "stream": true
+      },
+      {
+        "name": "music/game/underworld/wooden_love",
+        "stream": true
+      },
+      {
+        "name": "music/game/underworld/fifflas",
+        "stream": true
+      }
+    ]
+  }
+}

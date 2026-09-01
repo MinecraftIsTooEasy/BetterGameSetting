@@ -11,7 +11,6 @@
     "KeyBindingMixin",
     "MinecraftMixin",
     "OpenGlHelperMixin",
-    "audio.EntityLivingBaseMixin",
     "audio.SoundManagerMixin",
     "audio.SoundPoolEntryMixin",
     "audio.SoundsMITEMixin",
@@ -42,8 +41,5 @@
   "injectors": {
     "defaultRequire": 1
   },
-  "plugin": "moddedmite.xylose.bettergamesetting.util.BGSMixinConfigClient",
-  "mixins": [
-
-  ]
+  "plugin": "moddedmite.xylose.bettergamesetting.util.BGSMixinConfigClient"
 }

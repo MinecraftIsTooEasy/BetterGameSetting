@@ -1,13 +1,11 @@
 package moddedmite.xylose.bettergamesetting.client.audio;
 
-import moddedmite.xylose.bettergamesetting.api.ISoundPoolEntry;
 import net.minecraft.ResourceLocation;
-import net.minecraft.SoundPoolEntry;
 
 import javax.annotation.Nullable;
 
 public abstract class PositionedSound implements ISound {
-    protected SoundPoolEntry sound;
+    protected Sound sound;
     @Nullable
     private SoundEventAccessor soundEvent;
     protected SoundCategory category;
@@ -46,13 +44,13 @@ public abstract class PositionedSound implements ISound {
         if (this.soundEvent == null) {
             this.sound = SoundHandler.MISSING_SOUND;
         } else {
-            this.sound = ((ISoundPoolEntry) this.soundEvent).cloneEntry();
+            this.sound = this.soundEvent.cloneEntry();
         }
         
         return this.soundEvent;
     }
     
-    public SoundPoolEntry getSound() {
+    public Sound getSound() {
         return this.sound;
     }
     

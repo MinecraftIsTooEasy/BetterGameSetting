@@ -1,6 +1,9 @@
 package moddedmite.xylose.bettergamesetting.client.audio;
 
+import com.google.common.collect.Lists;
 import net.minecraft.ResourceLocation;
+
+import java.util.List;
 
 public record SoundEvent(ResourceLocation soundName, SoundCategory category) {
     public static final SoundRegistry REGISTRY = new SoundRegistry();
@@ -240,8 +243,6 @@ public record SoundEvent(ResourceLocation soundName, SoundCategory category) {
         registerSound(SoundCategory.MUSIC, "music.menu");
         registerSound(SoundCategory.MASTER, "gui.button.press");
 
-        registerSound(SoundCategory.MUSIC, new ResourceLocation("bgs", "music.game.underworld"));
-
         registerSound(SoundCategory.BLOCKS, "imported.liquid.block_splash");
         registerSound(SoundCategory.BLOCKS, "imported.random.sizzle");
         registerSound(SoundCategory.BLOCKS, "imported.random.boil");
@@ -281,14 +282,27 @@ public record SoundEvent(ResourceLocation soundName, SoundCategory category) {
         registerSound(SoundCategory.RECORDS, "imported.descent");
         registerSound(SoundCategory.RECORDS, "imported.wanderer");
         registerSound(SoundCategory.RECORDS, "imported.legends");
+        
+        registerSound(SoundCategory.MUSIC, new ResourceLocation("bgs", "music.game.underworld"));
     }
 
     private static void registerSound(SoundCategory category, String soundNameIn) {
-        ResourceLocation resourcelocation = new ResourceLocation(soundNameIn);
-        REGISTRY.putObject(resourcelocation, new SoundEvent(resourcelocation, category));
+        ResourceLocation id = new ResourceLocation(soundNameIn);
+        REGISTRY.putObject(id, new SoundEvent(id, category));
     }
 
     private static void registerSound(SoundCategory category, ResourceLocation soundName) {
         REGISTRY.putObject(soundName, new SoundEvent(soundName, category));
+    }
+
+    public static List<SoundEvent> getRegisteredSounds() {
+        List<SoundEvent> list = Lists.newArrayList();
+        for (ResourceLocation location : REGISTRY.getKeys()) {
+            SoundEvent soundevent = (SoundEvent) REGISTRY.getObject(location);
+            if (soundevent != null) {
+                list.add(soundevent);
+            }
+        }
+        return list;
     }
 }

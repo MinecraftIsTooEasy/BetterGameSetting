@@ -1,5 +1,8 @@
 package moddedmite.xylose.bettergamesetting.util;
 
+import java.util.Random;
+import java.util.UUID;
+
 /**
  * MathHelper Extra
  */
@@ -61,4 +64,9 @@ public class Mth {
         return lerp(f, lerp2(d, e, g, h, i, j), lerp2(d, e, k, l, m, n));
     }
 
+    public static UUID getRandomUUID(Random rand) {
+        long i = rand.nextLong() & -61441L | 16384L;
+        long j = rand.nextLong() & 4611686018427387903L | Long.MIN_VALUE;
+        return new UUID(i, j);
+    }
 }

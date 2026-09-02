@@ -1,27 +1,60 @@
 package moddedmite.xylose.bettergamesetting.client.audio;
 
-import moddedmite.xylose.bettergamesetting.api.ISoundPoolEntry;
-import net.minecraft.SoundPoolEntry;
+import com.google.common.collect.Lists;
+import java.util.List;
+import java.util.Random;
+import javax.annotation.Nullable;
 
-public class SoundEventAccessor implements ISoundEventAccessor {
-    private final SoundPoolEntry field_148739_a;
-    private final int field_148738_b;
-    private static final String __OBFID = "CL_00001153";
+import net.minecraft.ChatMessageComponent;
+import net.minecraft.ResourceLocation;
 
-    SoundEventAccessor(SoundPoolEntry p_i45123_1_, int p_i45123_2_) {
-        this.field_148739_a = p_i45123_1_;
-        this.field_148738_b = p_i45123_2_;
+public class SoundEventAccessor implements ISoundEventAccessor<Sound> {
+    private final List<ISoundEventAccessor<Sound>> accessorList = Lists.<ISoundEventAccessor<Sound>>newArrayList();
+    private final Random rnd = new Random();
+    private final ResourceLocation location;
+    private final ChatMessageComponent subtitle;
+    
+    public SoundEventAccessor(ResourceLocation locationIn, @Nullable String subtitleIn) {
+        this.location = locationIn;
+        this.subtitle = subtitleIn == null ? null : ChatMessageComponent.createFromTranslationKey(subtitleIn);
     }
-
-    public int func_148721_a() {
-        return this.field_148738_b;
+    
+    public int getWeight() {
+        int i = 0;
+        
+        for (ISoundEventAccessor<Sound> isoundeventaccessor : this.accessorList) {
+            i += isoundeventaccessor.getWeight();
+        }
+        
+        return i;
     }
-
-    public SoundPoolEntry func_148720_g() {
-        SoundPoolEntry soundpoolentry = new SoundPoolEntry(this.field_148739_a.getSoundName(), this.field_148739_a.getSoundUrl());
-        ((ISoundPoolEntry) soundpoolentry).setPitch(((ISoundPoolEntry) this.field_148739_a).getPitch());
-        ((ISoundPoolEntry) soundpoolentry).setVolume(((ISoundPoolEntry) this.field_148739_a).getVolume());
-        ((ISoundPoolEntry) soundpoolentry).setStreaming(((ISoundPoolEntry) this.field_148739_a).isStreaming());
-        return soundpoolentry;
+    
+    public Sound cloneEntry() {
+        int i = this.getWeight();
+        if (!this.accessorList.isEmpty() && i != 0) {
+            int j = this.rnd.nextInt(i);
+            for (ISoundEventAccessor<Sound> isoundeventaccessor : this.accessorList) {
+                j -= isoundeventaccessor.getWeight();
+                if (j < 0) {
+                    return isoundeventaccessor.cloneEntry();
+                }
+            }
+            return SoundHandler.MISSING_SOUND;
+        } else {
+            return SoundHandler.MISSING_SOUND;
+        }
+    }
+    
+    public void addSound(ISoundEventAccessor<Sound> accessor) {
+        this.accessorList.add(accessor);
+    }
+    
+    public ResourceLocation getLocation() {
+        return this.location;
+    }
+    
+    @Nullable
+    public ChatMessageComponent getSubtitle() {
+        return this.subtitle;
     }
 }

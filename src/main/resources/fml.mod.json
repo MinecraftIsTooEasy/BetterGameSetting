@@ -56,7 +56,6 @@
       "net/minecraft/GuiTextField": ["moddedmite/xylose/bettergamesetting/api/ITextField"],
       "net/minecraft/GuiCreateWorld": ["moddedmite/xylose/bettergamesetting/api/IGuiCreateWorld"],
       "net/minecraft/Minecraft": ["moddedmite/xylose/bettergamesetting/api/IClient"],
-      "net/minecraft/SoundPoolEntry": ["moddedmite/xylose/bettergamesetting/api/ISoundPoolEntry"],
       "net/minecraft/SoundManager": ["moddedmite/xylose/bettergamesetting/api/ISoundManager"]
     },
     "modmenu:clientsideOnly": true

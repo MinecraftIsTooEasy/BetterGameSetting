@@ -1,11 +1,11 @@
 package moddedmite.xylose.bettergamesetting.client.audio;
 
+import moddedmite.xylose.bettergamesetting.api.IWorldProvider;
 import net.minecraft.BossStatus;
 import net.minecraft.GuiWinGame;
 import net.minecraft.Minecraft;
 import net.minecraft.IUpdatePlayerListBox;
 import net.minecraft.MathHelper;
-import net.minecraft.ResourceLocation;
 import net.minecraft.WorldProviderEnd;
 import net.minecraft.WorldProviderHell;
 import net.minecraft.WorldProviderUnderworld;
@@ -13,106 +13,96 @@ import net.minecraft.WorldProviderUnderworld;
 import java.util.Random;
 
 public class MusicTicker implements IUpdatePlayerListBox {
-    private final Random rand = new Random();
-    private final Minecraft client;
-    private ISound sound;
-    private int delay = 100;
-
-    public MusicTicker(Minecraft client) {
-        this.client = client;
-    }
-
-    /**
-     * Updates the JList with a new model.
-     */
-    public void update() {
-        MusicType musictype = this.getCurrentMusicType(this.client);
-
-        if (this.sound != null) {
-            if (!musictype.getMusicTickerLocation().equals(this.sound.getSoundLocation())) {
-                this.client.getSoundHandler().stopSound(this.sound);
-                this.delay = MathHelper.getRandomIntegerInRange(this.rand, 0, musictype.getMinDelay() / 2);
-            }
-
-            if (!this.client.getSoundHandler().isSoundPlaying(this.sound)) {
-                this.sound = null;
-                this.delay = Math.min(MathHelper.getRandomIntegerInRange(this.rand, musictype.getMinDelay(), musictype.getMaxDelay()), this.delay);
-            }
-        }
-
-        if (musictype == MusicType.CREDITS && this.sound == null) {
-            this.delay = 0;
-        }
-
-        if (this.sound == null && this.delay-- <= 0) {
-            this.sound = PositionedSoundRecord.of(musictype.getMusicTickerLocation());
-            this.client.getSoundHandler().playSound(this.sound);
-            this.delay = Integer.MAX_VALUE;
-        }
-    }
-
-	public MusicType getCurrentMusicType(Minecraft client) {
-		if (client.currentScreen instanceof GuiWinGame) {
-			return MusicType.CREDITS;
+	private final Random rand = new Random();
+	private final Minecraft client;
+	private ISound currentMusic;
+	private int timeUntilNextMusic = 100;
+	
+	public MusicTicker(Minecraft client) {
+		this.client = client;
+	}
+	
+	/**
+	 * Like the old updateEntity(), except more generic.
+	 */
+	public void update() {
+		MusicType musictype = this.getAmbientMusicType();
+		
+		if (this.currentMusic != null) {
+			if (!musictype.getMusicLocation().soundName().equals(this.currentMusic.getSoundLocation())) {
+				this.client.getSoundHandler().stopSound(this.currentMusic);
+				this.timeUntilNextMusic = MathHelper.getRandomIntegerInRange(this.rand, 0, musictype.getMinDelay() / 2);
+			}
+			
+			if (!this.client.getSoundHandler().isSoundPlaying(this.currentMusic)) {
+				this.currentMusic = null;
+				this.timeUntilNextMusic = Math.min(MathHelper.getRandomIntegerInRange(this.rand, musictype.getMinDelay(), musictype.getMaxDelay()), this.timeUntilNextMusic);
+			}
 		}
-
-		if (client.thePlayer == null) {
+		
+		this.timeUntilNextMusic = Math.min(this.timeUntilNextMusic, musictype.getMaxDelay());
+		
+		if (this.currentMusic == null && this.timeUntilNextMusic-- <= 0) {
+			this.playMusic(musictype);
+		}
+	}
+	
+	public MusicType getAmbientMusicType() {
+		if (this.client.currentScreen instanceof GuiWinGame) {
+			return MusicType.CREDITS;
+		} else if (this.client.thePlayer != null) {
+			MusicType type = ((IWorldProvider) this.client.theWorld.provider).getMusicType();
+			if (type != null) return type;
+			if (this.client.thePlayer.worldObj.provider instanceof WorldProviderHell) {
+				return MusicType.NETHER;
+			} else if (this.client.thePlayer.worldObj.provider instanceof WorldProviderUnderworld) {
+				return MusicType.UNDERWORLD;
+			} else if (this.client.thePlayer.worldObj.provider instanceof WorldProviderEnd) {
+				return BossStatus.bossName != null && BossStatus.statusBarLength > 0 ? MusicType.END_BOSS : MusicType.END;
+			} else {
+				return this.client.thePlayer.capabilities.isCreativeMode && this.client.thePlayer.capabilities.allowFlying ? MusicType.CREATIVE : MusicType.GAME;
+			}
+		} else {
 			return MusicType.MENU;
 		}
-
-		if (client.thePlayer.worldObj.provider instanceof WorldProviderUnderworld) {
-			return MusicType.UNDERWORLD;
-		}
-
-		if (client.thePlayer.worldObj.provider instanceof WorldProviderHell) {
-			return MusicType.NETHER;
-		}
-
-		if (client.thePlayer.worldObj.provider instanceof WorldProviderEnd) {
-			if (BossStatus.bossName != null && BossStatus.statusBarLength > 0) {
-				return MusicType.END_BOSS;
-			}
-			return MusicType.END;
-		}
-
-		if (client.thePlayer.capabilities.isCreativeMode && client.thePlayer.capabilities.allowFlying) {
-			return MusicType.CREATIVE;
-		}
-
-		return MusicType.GAME;
 	}
-
-    public static enum MusicType {
-        MENU(new ResourceLocation("minecraft:music.menu"), 20, 600),
-        GAME(new ResourceLocation("minecraft:music.game"), 12000, 24000),
-        CREATIVE(new ResourceLocation("minecraft:music.game.creative"), 1200, 3600),
-        CREDITS(new ResourceLocation("minecraft:music.game.end.credits"), Integer.MAX_VALUE, Integer.MAX_VALUE),
-        UNDERWORLD(new ResourceLocation("bgs:music.game.underworld"), 1200, 3600),
-        NETHER(new ResourceLocation("minecraft:music.game.nether"), 1200, 3600),
-        END_BOSS(new ResourceLocation("minecraft:music.game.end.dragon"), 0, 0),
-        END(new ResourceLocation("minecraft:music.game.end"), 6000, 24000);
-
-        private final ResourceLocation identity;
-        private final int minDelay;
-        private final int maxDelay;
-
-
-        private MusicType(ResourceLocation id, int minDelay, int maxDelay) {
-            this.identity = id;
-            this.minDelay = minDelay;
-            this.maxDelay = maxDelay;
-        }
-
-        public ResourceLocation getMusicTickerLocation() {
-            return this.identity;
-        }
-
-        public int getMinDelay() {
-            return this.minDelay;
-        }
-
-        public int getMaxDelay() {
-            return this.maxDelay;
-        }
-    }
+	
+	public void playMusic(MusicTicker.MusicType requestedMusicType) {
+		this.currentMusic = PositionedSoundRecord.getMusicRecord(requestedMusicType.getMusicLocation());
+		this.client.getSoundHandler().playSound(this.currentMusic);
+		this.timeUntilNextMusic = Integer.MAX_VALUE;
+	}
+	
+	public static enum MusicType {
+		MENU(SoundEvents.MUSIC_MENU, 20, 600),
+		GAME(SoundEvents.MUSIC_GAME, 12000, 24000),
+		CREATIVE(SoundEvents.MUSIC_CREATIVE, 1200, 3600),
+		CREDITS(SoundEvents.MUSIC_CREDITS, 0, 0),
+		UNDERWORLD(SoundEvents.MUSIC_UNDERWORLD, 1200, 3600),
+		NETHER(SoundEvents.MUSIC_NETHER, 1200, 3600),
+		END_BOSS(SoundEvents.MUSIC_DRAGON, 0, 0),
+		END(SoundEvents.MUSIC_END, 6000, 24000);
+		
+		private final SoundEvent sound;
+		private final int minDelay;
+		private final int maxDelay;
+		
+		private MusicType(SoundEvent sound, int minDelay, int maxDelay) {
+			this.sound = sound;
+			this.minDelay = minDelay;
+			this.maxDelay = maxDelay;
+		}
+		
+		public SoundEvent getMusicLocation() {
+			return this.sound;
+		}
+		
+		public int getMinDelay() {
+			return this.minDelay;
+		}
+		
+		public int getMaxDelay() {
+			return this.maxDelay;
+		}
+	}
 }

@@ -12,6 +12,7 @@
     "PlayerManagerMixin",
     "ServerConfigurationManagerMixin",
     "ServerPlayerMixin",
+    "WorldProviderMixin",
     "WorldSettingsMixin",
     "widecheat.CommandGameModeMixin",
     "widecheat.CommandHandlerMixin",

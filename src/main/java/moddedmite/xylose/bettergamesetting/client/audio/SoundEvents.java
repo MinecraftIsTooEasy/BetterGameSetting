@@ -1,10 +1,6 @@
 package moddedmite.xylose.bettergamesetting.client.audio;
 
-import moddedmite.xylose.bettergamesetting.init.BGSClient;
 import net.minecraft.ResourceLocation;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class SoundEvents {
     public static final SoundEvent AMBIENT_CAVE;
@@ -14,12 +10,6 @@ public class SoundEvents {
     public static final SoundEvent ENTITY_ARMORSTAND_BREAK;
     public static final SoundEvent ENTITY_ARMORSTAND_FALL;
     public static final SoundEvent ENTITY_ARMORSTAND_HIT;
-//    public static final SoundEvent ITEM_ARMOR_EQUIP_CHAIN;
-//    public static final SoundEvent ITEM_ARMOR_EQUIP_DIAMOND;
-//    public static final SoundEvent ITEM_ARMOR_EQUIP_GENERIC;
-//    public static final SoundEvent ITEM_ARMOR_EQUIP_GOLD;
-//    public static final SoundEvent ITEM_ARMOR_EQUIP_IRON;
-//    public static final SoundEvent ITEM_ARMOR_EQUIP_LEATHER;
     public static final SoundEvent ENTITY_ARROW_HIT;
     public static final SoundEvent ENTITY_ARROW_SHOOT;
     public static final SoundEvent ENTITY_BAT_AMBIENT;
@@ -161,6 +151,7 @@ public class SoundEvents {
     public static final SoundEvent ENTITY_MULE_DEATH;
     public static final SoundEvent ENTITY_MULE_HURT;
     public static final SoundEvent MUSIC_CREATIVE;
+    public static final SoundEvent MUSIC_CREDITS;
     public static final SoundEvent MUSIC_DRAGON;
     public static final SoundEvent MUSIC_END;
     public static final SoundEvent MUSIC_GAME;
@@ -323,7 +314,7 @@ public class SoundEvents {
     public static final SoundEvent RECORD_WANDERER;
     public static final SoundEvent RECORD_LEGENDS;
 
-    private static final List<String> unregisteredSounds = new ArrayList<>();
+    public static final SoundEvent MUSIC_UNDERWORLD;
 
     private static SoundEvent getRegisteredSoundEvent(String id) {
         return getRegisteredSoundEvent(new ResourceLocation(id));
@@ -488,6 +479,7 @@ public class SoundEvents {
         ENTITY_MULE_DEATH = getRegisteredSoundEvent("mob.horse.donkey.death");
         ENTITY_MULE_HURT = getRegisteredSoundEvent("mob.horse.donkey.hit");
         MUSIC_CREATIVE = getRegisteredSoundEvent("music.game.creative");
+        MUSIC_CREDITS = getRegisteredSoundEvent("music.game.end.credits");
         MUSIC_DRAGON = getRegisteredSoundEvent("music.game.end.dragon");
         MUSIC_END = getRegisteredSoundEvent("music.game.end");
         MUSIC_GAME = getRegisteredSoundEvent("music.game");
@@ -650,11 +642,6 @@ public class SoundEvents {
         RECORD_WANDERER = getRegisteredSoundEvent("imported.wanderer");
         RECORD_LEGENDS = getRegisteredSoundEvent("imported.legends");
 
-        if (!unregisteredSounds.isEmpty()) {
-            BGSClient.logger.warn("SoundEvents: found {} unregistered sound(s), the corresponding field(s) are set to null:", new Object[]{unregisteredSounds.size()});
-            for (String sound : unregisteredSounds) {
-                BGSClient.logger.warn("  {}", new Object[]{sound});
-            }
-        }
+        MUSIC_UNDERWORLD = getRegisteredSoundEvent(new ResourceLocation("bgs", "music.game.underworld"));
     }
 }

@@ -1,69 +1,90 @@
 package moddedmite.xylose.bettergamesetting.util;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+import java.lang.reflect.Type;
+import javax.annotation.Nullable;
 
 public class JsonUtils {
-    
     /**
      * Does the given JsonObject contain a string field with the given name?
      */
-    public static boolean jsonObjectFieldTypeIsString(JsonObject p_151205_0_, String p_151205_1_) {
-        return !jsonObjectFieldTypeIsPrimitive(p_151205_0_, p_151205_1_) ? false : p_151205_0_.getAsJsonPrimitive(p_151205_1_).isString();
+    public static boolean isString(JsonObject json, String memberName) {
+        return !isJsonPrimitive(json, memberName) ? false : json.getAsJsonPrimitive(memberName).isString();
     }
     
     /**
      * Is the given JsonElement a string?
      */
-    public static boolean jsonElementTypeIsString(JsonElement p_151211_0_) {
-        return !p_151211_0_.isJsonPrimitive() ? false : p_151211_0_.getAsJsonPrimitive().isString();
+    public static boolean isString(JsonElement json) {
+        return !json.isJsonPrimitive() ? false : json.getAsJsonPrimitive().isString();
+    }
+    
+    public static boolean isNumber(JsonElement json) {
+        return !json.isJsonPrimitive() ? false : json.getAsJsonPrimitive().isNumber();
+    }
+    
+    public static boolean isBoolean(JsonObject json, String memberName) {
+        return !isJsonPrimitive(json, memberName) ? false : json.getAsJsonPrimitive(memberName).isBoolean();
     }
     
     /**
      * Does the given JsonObject contain an array field with the given name?
      */
-    public static boolean jsonObjectFieldTypeIsArray(JsonObject p_151202_0_, String p_151202_1_) {
-        return !jsonObjectHasNamedField(p_151202_0_, p_151202_1_) ? false : p_151202_0_.get(p_151202_1_).isJsonArray();
+    public static boolean isJsonArray(JsonObject json, String memberName) {
+        return !hasField(json, memberName) ? false : json.get(memberName).isJsonArray();
     }
     
     /**
      * Does the given JsonObject contain a field with the given name whose type is primitive (String, Java primitive, or
      * Java primitive wrapper)?
      */
-    public static boolean jsonObjectFieldTypeIsPrimitive(JsonObject p_151201_0_, String p_151201_1_) {
-        return !jsonObjectHasNamedField(p_151201_0_, p_151201_1_) ? false : p_151201_0_.get(p_151201_1_).isJsonPrimitive();
+    public static boolean isJsonPrimitive(JsonObject json, String memberName) {
+        return !hasField(json, memberName) ? false : json.get(memberName).isJsonPrimitive();
     }
     
     /**
      * Does the given JsonObject contain a field with the given name?
      */
-    public static boolean jsonObjectHasNamedField(JsonObject p_151204_0_, String p_151204_1_) {
-        return p_151204_0_ == null ? false : p_151204_0_.get(p_151204_1_) != null;
+    public static boolean hasField(JsonObject json, String memberName) {
+        if (json == null) {
+            return false;
+        } else {
+            return json.get(memberName) != null;
+        }
     }
     
     /**
      * Gets the string value of the given JsonElement.  Expects the second parameter to be the name of the element's
      * field if an error message needs to be thrown.
      */
-    public static String getJsonElementStringValue(JsonElement p_151206_0_, String p_151206_1_) {
-        if (p_151206_0_.isJsonPrimitive()) {
-            return p_151206_0_.getAsString();
+    public static String getString(JsonElement json, String memberName) {
+        if (json.isJsonPrimitive()) {
+            return json.getAsString();
         } else {
-            throw new JsonSyntaxException("Expected " + p_151206_1_ + " to be a string, was " + getJsonElementTypeDescription(p_151206_0_));
+            throw new JsonSyntaxException("Expected " + memberName + " to be a string, was " + toString(json));
         }
     }
     
     /**
      * Gets the string value of the field on the JsonObject with the given name.
      */
-    public static String getJsonObjectStringFieldValue(JsonObject p_151200_0_, String p_151200_1_) {
-        if (p_151200_0_.has(p_151200_1_)) {
-            return getJsonElementStringValue(p_151200_0_.get(p_151200_1_), p_151200_1_);
+    public static String getString(JsonObject json, String memberName) {
+        if (json.has(memberName)) {
+            return getString(json.get(memberName), memberName);
         } else {
-            throw new JsonSyntaxException("Missing " + p_151200_1_ + ", expected to find a string");
+            throw new JsonSyntaxException("Missing " + memberName + ", expected to find a string");
         }
     }
     
@@ -71,30 +92,30 @@ public class JsonUtils {
      * Gets the string value of the field on the JsonObject with the given name, or the given default value if the field
      * is missing.
      */
-    public static String getJsonObjectStringFieldValueOrDefault(JsonObject p_151219_0_, String p_151219_1_, String p_151219_2_) {
-        return p_151219_0_.has(p_151219_1_) ? getJsonElementStringValue(p_151219_0_.get(p_151219_1_), p_151219_1_) : p_151219_2_;
+    public static String getString(JsonObject json, String memberName, String fallback) {
+        return json.has(memberName) ? getString(json.get(memberName), memberName) : fallback;
     }
     
     /**
      * Gets the boolean value of the given JsonElement.  Expects the second parameter to be the name of the element's
      * field if an error message needs to be thrown.
      */
-    public static boolean getJsonElementBooleanValue(JsonElement p_151216_0_, String p_151216_1_) {
-        if (p_151216_0_.isJsonPrimitive()) {
-            return p_151216_0_.getAsBoolean();
+    public static boolean getBoolean(JsonElement json, String memberName) {
+        if (json.isJsonPrimitive()) {
+            return json.getAsBoolean();
         } else {
-            throw new JsonSyntaxException("Expected " + p_151216_1_ + " to be a Boolean, was " + getJsonElementTypeDescription(p_151216_0_));
+            throw new JsonSyntaxException("Expected " + memberName + " to be a Boolean, was " + toString(json));
         }
     }
     
     /**
      * Gets the boolean value of the field on the JsonObject with the given name.
      */
-    public static boolean getJsonObjectBooleanFieldValue(JsonObject p_151212_0_, String p_151212_1_) {
-        if (p_151212_0_.has(p_151212_1_)) {
-            return getJsonElementBooleanValue(p_151212_0_.get(p_151212_1_), p_151212_1_);
+    public static boolean getBoolean(JsonObject json, String memberName) {
+        if (json.has(memberName)) {
+            return getBoolean(json.get(memberName), memberName);
         } else {
-            throw new JsonSyntaxException("Missing " + p_151212_1_ + ", expected to find a Boolean");
+            throw new JsonSyntaxException("Missing " + memberName + ", expected to find a Boolean");
         }
     }
     
@@ -102,30 +123,30 @@ public class JsonUtils {
      * Gets the boolean value of the field on the JsonObject with the given name, or the given default value if the
      * field is missing.
      */
-    public static boolean getJsonObjectBooleanFieldValueOrDefault(JsonObject p_151209_0_, String p_151209_1_, boolean p_151209_2_) {
-        return p_151209_0_.has(p_151209_1_) ? getJsonElementBooleanValue(p_151209_0_.get(p_151209_1_), p_151209_1_) : p_151209_2_;
+    public static boolean getBoolean(JsonObject json, String memberName, boolean fallback) {
+        return json.has(memberName) ? getBoolean(json.get(memberName), memberName) : fallback;
     }
     
     /**
      * Gets the float value of the given JsonElement.  Expects the second parameter to be the name of the element's
      * field if an error message needs to be thrown.
      */
-    public static float getJsonElementFloatValue(JsonElement p_151220_0_, String p_151220_1_) {
-        if (p_151220_0_.isJsonPrimitive() && p_151220_0_.getAsJsonPrimitive().isNumber()) {
-            return p_151220_0_.getAsFloat();
+    public static float getFloat(JsonElement json, String memberName) {
+        if (json.isJsonPrimitive() && json.getAsJsonPrimitive().isNumber()) {
+            return json.getAsFloat();
         } else {
-            throw new JsonSyntaxException("Expected " + p_151220_1_ + " to be a Float, was " + getJsonElementTypeDescription(p_151220_0_));
+            throw new JsonSyntaxException("Expected " + memberName + " to be a Float, was " + toString(json));
         }
     }
     
     /**
      * Gets the float value of the field on the JsonObject with the given name.
      */
-    public static float getJsonObjectFloatFieldValue(JsonObject p_151217_0_, String p_151217_1_) {
-        if (p_151217_0_.has(p_151217_1_)) {
-            return getJsonElementFloatValue(p_151217_0_.get(p_151217_1_), p_151217_1_);
+    public static float getFloat(JsonObject json, String memberName) {
+        if (json.has(memberName)) {
+            return getFloat(json.get(memberName), memberName);
         } else {
-            throw new JsonSyntaxException("Missing " + p_151217_1_ + ", expected to find a Float");
+            throw new JsonSyntaxException("Missing " + memberName + ", expected to find a Float");
         }
     }
     
@@ -133,31 +154,30 @@ public class JsonUtils {
      * Gets the float value of the field on the JsonObject with the given name, or the given default value if the field
      * is missing.
      */
-    
-    public static float getJsonObjectFloatFieldValueOrDefault(JsonObject p_151221_0_, String p_151221_1_, float p_151221_2_) {
-        return p_151221_0_.has(p_151221_1_) ? getJsonElementFloatValue(p_151221_0_.get(p_151221_1_), p_151221_1_) : p_151221_2_;
+    public static float getFloat(JsonObject json, String memberName, float fallback) {
+        return json.has(memberName) ? getFloat(json.get(memberName), memberName) : fallback;
     }
     
     /**
      * Gets the integer value of the given JsonElement.  Expects the second parameter to be the name of the element's
      * field if an error message needs to be thrown.
      */
-    public static int getJsonElementIntegerValue(JsonElement p_151215_0_, String p_151215_1_) {
-        if (p_151215_0_.isJsonPrimitive() && p_151215_0_.getAsJsonPrimitive().isNumber()) {
-            return p_151215_0_.getAsInt();
+    public static int getInt(JsonElement json, String memberName) {
+        if (json.isJsonPrimitive() && json.getAsJsonPrimitive().isNumber()) {
+            return json.getAsInt();
         } else {
-            throw new JsonSyntaxException("Expected " + p_151215_1_ + " to be a Int, was " + getJsonElementTypeDescription(p_151215_0_));
+            throw new JsonSyntaxException("Expected " + memberName + " to be a Int, was " + toString(json));
         }
     }
     
     /**
      * Gets the integer value of the field on the JsonObject with the given name.
      */
-    public static int getJsonObjectIntegerFieldValue(JsonObject p_151203_0_, String p_151203_1_) {
-        if (p_151203_0_.has(p_151203_1_)) {
-            return getJsonElementIntegerValue(p_151203_0_.get(p_151203_1_), p_151203_1_);
+    public static int getInt(JsonObject json, String memberName) {
+        if (json.has(memberName)) {
+            return getInt(json.get(memberName), memberName);
         } else {
-            throw new JsonSyntaxException("Missing " + p_151203_1_ + ", expected to find a Int");
+            throw new JsonSyntaxException("Missing " + memberName + ", expected to find a Int");
         }
     }
     
@@ -165,29 +185,27 @@ public class JsonUtils {
      * Gets the integer value of the field on the JsonObject with the given name, or the given default value if the
      * field is missing.
      */
-    
-    public static int getJsonObjectIntegerFieldValueOrDefault(JsonObject p_151208_0_, String p_151208_1_, int p_151208_2_) {
-        return p_151208_0_.has(p_151208_1_) ? getJsonElementIntegerValue(p_151208_0_.get(p_151208_1_), p_151208_1_) : p_151208_2_;
+    public static int getInt(JsonObject json, String memberName, int fallback) {
+        return json.has(memberName) ? getInt(json.get(memberName), memberName) : fallback;
     }
     
     /**
      * Gets the given JsonElement as a JsonObject.  Expects the second parameter to be the name of the element's field
      * if an error message needs to be thrown.
      */
-    public static JsonObject getJsonElementAsJsonObject(JsonElement p_151210_0_, String p_151210_1_) {
-        if (p_151210_0_.isJsonObject()) {
-            return p_151210_0_.getAsJsonObject();
+    public static JsonObject getJsonObject(JsonElement json, String memberName) {
+        if (json.isJsonObject()) {
+            return json.getAsJsonObject();
         } else {
-            throw new JsonSyntaxException("Expected " + p_151210_1_ + " to be a JsonObject, was " + getJsonElementTypeDescription(p_151210_0_));
+            throw new JsonSyntaxException("Expected " + memberName + " to be a JsonObject, was " + toString(json));
         }
     }
     
-    
-    public static JsonObject func_152754_s(JsonObject base, String key) {
-        if (base.has(key)) {
-            return getJsonElementAsJsonObject(base.get(key), key);
+    public static JsonObject getJsonObject(JsonObject json, String memberName) {
+        if (json.has(memberName)) {
+            return getJsonObject(json.get(memberName), memberName);
         } else {
-            throw new JsonSyntaxException("Missing " + key + ", expected to find a JsonObject");
+            throw new JsonSyntaxException("Missing " + memberName + ", expected to find a JsonObject");
         }
     }
     
@@ -195,31 +213,30 @@ public class JsonUtils {
      * Gets the JsonObject field on the JsonObject with the given name, or the given default value if the field is
      * missing.
      */
-    
-    public static JsonObject getJsonObjectFieldOrDefault(JsonObject p_151218_0_, String p_151218_1_, JsonObject p_151218_2_) {
-        return p_151218_0_.has(p_151218_1_) ? getJsonElementAsJsonObject(p_151218_0_.get(p_151218_1_), p_151218_1_) : p_151218_2_;
+    public static JsonObject getJsonObject(JsonObject json, String memberName, JsonObject fallback) {
+        return json.has(memberName) ? getJsonObject(json.get(memberName), memberName) : fallback;
     }
     
     /**
      * Gets the given JsonElement as a JsonArray.  Expects the second parameter to be the name of the element's field if
      * an error message needs to be thrown.
      */
-    public static JsonArray getJsonElementAsJsonArray(JsonElement p_151207_0_, String p_151207_1_) {
-        if (p_151207_0_.isJsonArray()) {
-            return p_151207_0_.getAsJsonArray();
+    public static JsonArray getJsonArray(JsonElement json, String memberName) {
+        if (json.isJsonArray()) {
+            return json.getAsJsonArray();
         } else {
-            throw new JsonSyntaxException("Expected " + p_151207_1_ + " to be a JsonArray, was " + getJsonElementTypeDescription(p_151207_0_));
+            throw new JsonSyntaxException("Expected " + memberName + " to be a JsonArray, was " + toString(json));
         }
     }
     
     /**
      * Gets the JsonArray field on the JsonObject with the given name.
      */
-    public static JsonArray getJsonObjectJsonArrayField(JsonObject p_151214_0_, String p_151214_1_) {
-        if (p_151214_0_.has(p_151214_1_)) {
-            return getJsonElementAsJsonArray(p_151214_0_.get(p_151214_1_), p_151214_1_);
+    public static JsonArray getJsonArray(JsonObject json, String memberName) {
+        if (json.has(memberName)) {
+            return getJsonArray(json.get(memberName), memberName);
         } else {
-            throw new JsonSyntaxException("Missing " + p_151214_1_ + ", expected to find a JsonArray");
+            throw new JsonSyntaxException("Missing " + memberName + ", expected to find a JsonArray");
         }
     }
     
@@ -227,28 +244,47 @@ public class JsonUtils {
      * Gets the JsonArray field on the JsonObject with the given name, or the given default value if the field is
      * missing.
      */
+    public static JsonArray getJsonArray(JsonObject json, String memberName, @Nullable JsonArray fallback) {
+        return json.has(memberName) ? getJsonArray(json.get(memberName), memberName) : fallback;
+    }
     
-    public static JsonArray getJsonObjectJsonArrayFieldOrDefault(JsonObject p_151213_0_, String p_151213_1_, JsonArray p_151213_2_) {
-        return p_151213_0_.has(p_151213_1_) ? getJsonElementAsJsonArray(p_151213_0_.get(p_151213_1_), p_151213_1_) : p_151213_2_;
+    public static <T> T deserializeClass(@Nullable JsonElement json, String memberName, JsonDeserializationContext context, Class<? extends T> adapter) {
+        if (json != null) {
+            return (T) context.deserialize(json, adapter);
+        } else {
+            throw new JsonSyntaxException("Missing " + memberName);
+        }
+    }
+    
+    public static <T> T deserializeClass(JsonObject json, String memberName, JsonDeserializationContext context, Class<? extends T> adapter) {
+        if (json.has(memberName)) {
+            return (T) deserializeClass(json.get(memberName), memberName, context, adapter);
+        } else {
+            throw new JsonSyntaxException("Missing " + memberName);
+        }
+    }
+    
+    public static <T> T deserializeClass(JsonObject json, String memberName, T fallback, JsonDeserializationContext context, Class<? extends T> adapter) {
+        return (T) (json.has(memberName) ? deserializeClass(json.get(memberName), memberName, context, adapter) : fallback);
     }
     
     /**
      * Gets a human-readable description of the given JsonElement's type.  For example: "a number (4)"
      */
-    public static String getJsonElementTypeDescription(JsonElement p_151222_0_) {
-        String s = org.apache.commons.lang3.StringUtils.abbreviateMiddle(String.valueOf(p_151222_0_), "...", 10);
+    public static String toString(JsonElement json) {
+        String s = org.apache.commons.lang3.StringUtils.abbreviateMiddle(String.valueOf((Object) json), "...", 10);
         
-        if (p_151222_0_ == null) {
+        if (json == null) {
             return "null (missing)";
-        } else if (p_151222_0_.isJsonNull()) {
+        } else if (json.isJsonNull()) {
             return "null (json)";
-        } else if (p_151222_0_.isJsonArray()) {
+        } else if (json.isJsonArray()) {
             return "an array (" + s + ")";
-        } else if (p_151222_0_.isJsonObject()) {
+        } else if (json.isJsonObject()) {
             return "an object (" + s + ")";
         } else {
-            if (p_151222_0_.isJsonPrimitive()) {
-                JsonPrimitive jsonprimitive = p_151222_0_.getAsJsonPrimitive();
+            if (json.isJsonPrimitive()) {
+                JsonPrimitive jsonprimitive = json.getAsJsonPrimitive();
                 
                 if (jsonprimitive.isNumber()) {
                     return "a number (" + s + ")";
@@ -261,5 +297,57 @@ public class JsonUtils {
             
             return s;
         }
+    }
+    
+    @Nullable
+    public static <T> T gsonDeserialize(Gson gsonIn, Reader readerIn, Class<T> adapter, boolean lenient) {
+        try {
+            JsonReader jsonreader = new JsonReader(readerIn);
+            jsonreader.setLenient(lenient);
+            return (T) gsonIn.getAdapter(adapter).read(jsonreader);
+        } catch (IOException ioexception) {
+            throw new JsonParseException(ioexception);
+        }
+    }
+    
+    @Nullable
+    public static <T> T fromJson(Gson gson, Reader p_193838_1_, Type p_193838_2_, boolean p_193838_3_) {
+        try {
+            JsonReader jsonreader = new JsonReader(p_193838_1_);
+            jsonreader.setLenient(p_193838_3_);
+            return (T) gson.getAdapter(TypeToken.get(p_193838_2_)).read(jsonreader);
+        } catch (IOException ioexception) {
+            throw new JsonParseException(ioexception);
+        }
+    }
+    
+    @Nullable
+    public static <T> T fromJson(Gson p_193837_0_, String p_193837_1_, Type p_193837_2_, boolean p_193837_3_) {
+        return (T) fromJson(p_193837_0_, new StringReader(p_193837_1_), p_193837_2_, p_193837_3_);
+    }
+    
+    @Nullable
+    public static <T> T gsonDeserialize(Gson gsonIn, String json, Class<T> adapter, boolean lenient) {
+        return (T) gsonDeserialize(gsonIn, new StringReader(json), adapter, lenient);
+    }
+    
+    @Nullable
+    public static <T> T fromJson(Gson p_193841_0_, Reader p_193841_1_, Type p_193841_2_) {
+        return (T) fromJson(p_193841_0_, p_193841_1_, p_193841_2_, false);
+    }
+    
+    @Nullable
+    public static <T> T gsonDeserialize(Gson p_193840_0_, String p_193840_1_, Type p_193840_2_) {
+        return (T) fromJson(p_193840_0_, p_193840_1_, p_193840_2_, false);
+    }
+    
+    @Nullable
+    public static <T> T fromJson(Gson gson, Reader reader, Class<T> jsonClass) {
+        return (T) gsonDeserialize(gson, reader, jsonClass, false);
+    }
+    
+    @Nullable
+    public static <T> T gsonDeserialize(Gson gsonIn, String json, Class<T> adapter) {
+        return (T) gsonDeserialize(gsonIn, json, adapter, false);
     }
 }

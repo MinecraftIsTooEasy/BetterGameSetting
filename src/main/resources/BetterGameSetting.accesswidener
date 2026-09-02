@@ -41,3 +41,5 @@ accessible field net/minecraft/GuiTextField height I
 
 accessible method net/minecraft/StringTranslate getInstance ()Lnet/minecraft/StringTranslate;
 accessible method net/minecraft/GameRuleValue getGameRuleBooleanValue ()Z
+
+accessible method net/minecraft/ChatMessageComponent getTranslationKey ()Ljava/lang/String;

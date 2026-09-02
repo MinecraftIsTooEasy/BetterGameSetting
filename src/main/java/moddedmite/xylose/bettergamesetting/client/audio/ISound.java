@@ -2,8 +2,13 @@ package moddedmite.xylose.bettergamesetting.client.audio;
 
 import net.minecraft.ResourceLocation;
 
+import javax.annotation.Nullable;
+
 public interface ISound {
     ResourceLocation getSoundLocation();
+    @Nullable SoundEventAccessor createAccessor(SoundHandler handler);
+    Sound getSound();
+    SoundCategory getCategory();
     boolean canRepeat();
     int getRepeatDelay();
     float getVolume();

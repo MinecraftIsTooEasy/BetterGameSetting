@@ -397,7 +397,7 @@ public abstract class GameSettingsMixin implements IGameSetting {
     public void setSoundLevel(SoundCategory category, float volume) {
         this.soundLevels.put(category, volume);
         if (this.mc != null && this.mc.sndManager != null) {
-            ((ISoundManager) this.mc.sndManager).setSoundCategoryVolume(category, volume);
+            this.mc.sndManager.setVolume(category, volume);
         }
     }
 

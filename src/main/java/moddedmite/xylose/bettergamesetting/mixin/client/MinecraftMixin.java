@@ -48,6 +48,9 @@ public abstract class MinecraftMixin implements IClient {
     
     @Inject(method = "startGame", at = @At(value = "FIELD", target = "Lnet/minecraft/Minecraft;sndManager:Lnet/minecraft/SoundManager;", opcode = Opcodes.PUTFIELD, shift = At.Shift.AFTER))
     private void createSoundHandler(CallbackInfo ci) {
+        if (this.sndHandler == null) {
+            this.sndHandler = SoundHandler.formClient(ReflectHelper.dyCast(this));
+        }
         this.mcResourceManager.registerReloadListener(this.getSoundHandler());
         this.musicTicker = new MusicTicker(ReflectHelper.dyCast(this));
         SoundEvent.registerSounds();
@@ -187,9 +190,6 @@ public abstract class MinecraftMixin implements IClient {
     }
     
     public SoundHandler getSoundHandler() {
-        if (this.sndHandler == null) {
-            this.sndHandler = SoundHandler.formClient(ReflectHelper.dyCast(this));
-        }
         return this.sndHandler;
     }
 }

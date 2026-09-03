@@ -7,6 +7,7 @@ import moddedmite.xylose.bettergamesetting.client.CustomKeys;
 import moddedmite.xylose.bettergamesetting.client.audio.MusicTicker;
 import moddedmite.xylose.bettergamesetting.client.audio.SoundEvent;
 import moddedmite.xylose.bettergamesetting.client.audio.SoundHandler;
+import moddedmite.xylose.bettergamesetting.client.gui.GuiSubtitleOverlay;
 import moddedmite.xylose.bettergamesetting.client.gui.gamerule.GuiGameRules;
 import moddedmite.xylose.bettergamesetting.util.GuiScreenPanoramaHelp;
 import moddedmite.xylose.bettergamesetting.util.Mth;
@@ -41,11 +42,10 @@ public abstract class MinecraftMixin implements IClient {
     
     @Shadow private ReloadableResourceManager mcResourceManager;
 
-    @Shadow
-    public boolean isGamePaused;
     @Unique private SoundHandler sndHandler;
     @Unique private MusicTicker musicTicker;
-    
+    @Unique private GuiSubtitleOverlay guiSubtitleOverlay;
+
     @Inject(method = "startGame", at = @At(value = "FIELD", target = "Lnet/minecraft/Minecraft;sndManager:Lnet/minecraft/SoundManager;", opcode = Opcodes.PUTFIELD, shift = At.Shift.AFTER))
     private void createSoundHandler(CallbackInfo ci) {
         if (this.sndHandler == null) {
@@ -54,6 +54,9 @@ public abstract class MinecraftMixin implements IClient {
         this.mcResourceManager.registerReloadListener(this.getSoundHandler());
         this.musicTicker = new MusicTicker(ReflectHelper.dyCast(this));
         SoundEvent.registerSounds();
+        if (this.guiSubtitleOverlay == null) {
+            this.guiSubtitleOverlay = new GuiSubtitleOverlay(ReflectHelper.dyCast(this));
+        }
     }
 //
 //    @Inject(method = "runGameLoop", at = @At(value = "INVOKE", target = "Lnet/minecraft/SoundManager;func_92071_g()V", shift = At.Shift.AFTER))
@@ -191,5 +194,9 @@ public abstract class MinecraftMixin implements IClient {
     
     public SoundHandler getSoundHandler() {
         return this.sndHandler;
+    }
+
+    public GuiSubtitleOverlay getGuiSubtitleOverlay() {
+        return this.guiSubtitleOverlay;
     }
 }

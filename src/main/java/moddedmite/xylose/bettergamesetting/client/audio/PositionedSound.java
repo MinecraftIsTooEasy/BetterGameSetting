@@ -66,20 +66,12 @@ public abstract class PositionedSound implements ISound {
         return this.repeatDelay;
     }
     
-//    public float getVolume() {
-//        return (float) (this.volume * this.sound.getVolume());
-//    }
-//
-//    public float getPitch() {
-//        return (float) (this.pitch * this.sound.getPitch());
-//    }
-    
     public float getVolume() {
-        return this.volume;
+        return this.volume * this.sound.getVolume();
     }
-    
+
     public float getPitch() {
-        return this.pitch;
+        return this.pitch * this.sound.getPitch();
     }
     
     public float getXPosF() {

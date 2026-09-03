@@ -68,6 +68,8 @@ public abstract class GameSettingsMixin implements IGameSetting {
     @Unique public boolean highlightButtonText;
     @Unique public boolean deferChunkUpdates = false;
     @Unique private String soundDevice = "";
+    @Unique private boolean directionalAudio;
+    @Unique private boolean showSubtitles;
     @Unique private Map<SoundCategory, Float> soundLevels = Maps.newEnumMap(SoundCategory.class);
 
 //    @Unique public DisplayMode fullscreenResolution;
@@ -135,6 +137,12 @@ public abstract class GameSettingsMixin implements IGameSetting {
         }
         if (par1EnumOptions == EnumOptionsExtra.DEFER_CHUNK_UPDATES) {
             this.deferChunkUpdates = !this.deferChunkUpdates;
+        }
+        if (par1EnumOptions == EnumOptionsExtra.DIRECTIONAL_AUDIO) {
+            this.directionalAudio = !this.directionalAudio;
+        }
+        if (par1EnumOptions == EnumOptionsExtra.SHOW_SUBTITLES) {
+            this.showSubtitles = !this.showSubtitles;
         }
     }
 
@@ -259,6 +267,12 @@ public abstract class GameSettingsMixin implements IGameSetting {
         if (options == EnumOptionsExtra.DEFER_CHUNK_UPDATES) {
             cir.setReturnValue(string + getTranslationBoolean(this.deferChunkUpdates));
         }
+        if (options == EnumOptionsExtra.DIRECTIONAL_AUDIO) {
+            cir.setReturnValue(string + getTranslationBoolean(this.directionalAudio));
+        }
+        if (options == EnumOptionsExtra.SHOW_SUBTITLES) {
+            cir.setReturnValue(string + getTranslationBoolean(this.showSubtitles));
+        }
     }
 
     @Inject(method = "loadOptions", at = @At("TAIL"))
@@ -323,6 +337,12 @@ public abstract class GameSettingsMixin implements IGameSetting {
                 if (astring[0].equals("soundDevice")) {
                     this.soundDevice = s.substring(s.indexOf(58) + 1);
                 }
+                if (astring[0].equals("directionalAudio")) {
+                    this.directionalAudio = astring[1].equals("true");
+                }
+                if (astring[0].equals("showSubtitles")) {
+                    this.showSubtitles = astring[1].equals("true");
+                }
 //                if (astring[0].equals("fullscreenResolution")) {
 //                    this.fullscreenResolution = DisplayModeHelper.getDisplayModeFromString(astring[1]);
 //                }
@@ -372,6 +392,8 @@ public abstract class GameSettingsMixin implements IGameSetting {
         printwriter.println("highlightButtonText:" + this.highlightButtonText);
         printwriter.println("deferChunkUpdates:" + this.deferChunkUpdates);
         printwriter.println("soundDevice:" + this.soundDevice);
+        printwriter.println("directionalAudio:" + this.directionalAudio);
+        printwriter.println("showSubtitles:" + this.showSubtitles);
 //        printwriter.println("fullscreenResolution:" + this.fullscreenResolution);
     }
 
@@ -444,5 +466,20 @@ public abstract class GameSettingsMixin implements IGameSetting {
     @Override
     public void setSoundDevice(String device) {
         this.soundDevice = device;
+    }
+
+    @Override
+    public boolean isDirectionalAudio() {
+        return this.directionalAudio;
+    }
+
+    @Override
+    public void setDirectionalAudio(boolean enabled) {
+        this.directionalAudio = enabled;
+    }
+
+    @Override
+    public boolean isShowSubtitles() {
+        return this.showSubtitles;
     }
 }

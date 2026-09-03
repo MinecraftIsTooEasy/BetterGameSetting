@@ -46,4 +46,15 @@ public interface IGameSetting {
 
     default void setSoundDevice(String device) {
     }
+
+    default boolean isDirectionalAudio() {
+        return false;
+    }
+
+    default void setDirectionalAudio(boolean enabled) {
+    }
+
+    default boolean isShowSubtitles() {
+        return false;
+    }
 }

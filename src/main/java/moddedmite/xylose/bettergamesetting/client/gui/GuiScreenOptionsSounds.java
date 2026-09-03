@@ -1,6 +1,8 @@
 package moddedmite.xylose.bettergamesetting.client.gui;
 
 import com.google.common.collect.Lists;
+import moddedmite.xylose.bettergamesetting.client.EnumOptionsExtra;
+import moddedmite.xylose.bettergamesetting.client.gui.button.GuiOptionButton;
 import moddedmite.xylose.bettergamesetting.util.OpenALOutputLibrary;
 import moddedmite.xylose.bettergamesetting.client.audio.PositionedSoundRecord;
 import moddedmite.xylose.bettergamesetting.client.audio.SoundCategory;
@@ -51,11 +53,14 @@ public class GuiScreenOptionsSounds extends GuiScreen {
             }
         }
         
-        int j = this.width / 2 - 75;
+        int j = this.width / 2 - 155;
+        int l = this.width / 2 + 5;
         int k = this.height / 6 - 12;
         ++i;
-//        this.buttonList.add(new GuiOptionButton(201, j, k + 24 * (i >> 1), EnumOptions.SHOW_SUBTITLES, this.game_settings_4.getKeyBinding(GameSettings.Options.SHOW_SUBTITLES)));
-        this.buttonList.add(new GuiButton(202, this.width / 2 - 155, k + 24 * (i >> 1), 310, 20, this.getAudioDeviceButtonString()));
+        this.buttonList.add(new GuiOptionButton(201, j, k + 24 * (i >> 1), EnumOptionsExtra.SHOW_SUBTITLES, this.game_settings_4.getKeyBinding(EnumOptionsExtra.SHOW_SUBTITLES)));
+        this.buttonList.add(new GuiButton(202, this.width / 2 - 155, k + 24 * (i >> 1) - 24, 310, 20, this.getAudioDeviceButtonString()));
+        this.buttonList.add(new GuiOptionButton(203, l, k + 24 * (i >> 1), EnumOptionsExtra.DIRECTIONAL_AUDIO, this.game_settings_4.getKeyBinding(EnumOptionsExtra.DIRECTIONAL_AUDIO)));
+
         this.buttonList.add(new GuiButton(200, this.width / 2 - 100, this.height / 6 + 168, I18n.getString("gui.done")));
     }
     
@@ -79,12 +84,17 @@ public class GuiScreenOptionsSounds extends GuiScreen {
             if (button.id == 200) {
                 this.mc.gameSettings.saveOptions();
                 this.mc.displayGuiScreen(this.parent);
+            } else if (button.id == 201) {
+                this.mc.gameSettings.setOptionValue(EnumOptionsExtra.SHOW_SUBTITLES, 1);
+                button.displayString = this.mc.gameSettings.getKeyBinding(EnumOptionsExtra.SHOW_SUBTITLES);
+                this.mc.gameSettings.saveOptions();
             } else if (button.id == 202) {
                 this.switchToNextAudioDevice(button);
-//            } else if (button.id == 201) {
-//                this.mc.gameSettings.setOptionValue(GameSettings.Options.SHOW_SUBTITLES, 1);
-//                button.displayString = this.mc.gameSettings.getKeyBinding(GameSettings.Options.SHOW_SUBTITLES);
-//                this.mc.gameSettings.saveOptions();
+            } else if (button.id == 203) {
+                this.game_settings_4.setDirectionalAudio(!this.game_settings_4.isDirectionalAudio());
+                this.mc.sndManager.reloadSoundSystem();
+                button.displayString = this.mc.gameSettings.getKeyBinding(EnumOptionsExtra.DIRECTIONAL_AUDIO);
+                this.game_settings_4.saveOptions();
             }
         }
     }

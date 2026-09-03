@@ -16,6 +16,7 @@
     "gui.GuiButtonMixin",
     "gui.GuiContainerMixin",
     "gui.GuiCreateWorldMixin",
+    "gui.GuiIngameMixin",
     "gui.GuiLanguageMixin",
     "gui.GuiMainMenuMixin",
     "gui.GuiMultiplayerMixin",
@@ -40,5 +41,8 @@
   "injectors": {
     "defaultRequire": 1
   },
-  "plugin": "moddedmite.xylose.bettergamesetting.util.BGSMixinConfigClient"
+  "plugin": "moddedmite.xylose.bettergamesetting.util.BGSMixinConfigClient",
+  "mixins": [
+    "WorldClientMixin"
+  ]
 }

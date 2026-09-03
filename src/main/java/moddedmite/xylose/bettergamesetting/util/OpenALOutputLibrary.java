@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -29,7 +30,10 @@ import paulscode.sound.SoundSystemException;
 import paulscode.sound.libraries.LibraryLWJGLOpenAL;
 
 public class OpenALOutputLibrary extends LibraryLWJGLOpenAL {
+	private static final int ALC_HRTF_SOFT = 0x1992;
+	private static final int ALC_TRUE = 1;
 	private static volatile String requestedDevice = "";
+	private static volatile boolean directionalAudio = false;
 
 	public OpenALOutputLibrary() throws SoundSystemException {
 		super();
@@ -41,6 +45,14 @@ public class OpenALOutputLibrary extends LibraryLWJGLOpenAL {
 
 	public static String getRequestedDevice() {
 		return requestedDevice;
+	}
+
+	public static void setDirectionalAudio(boolean enabled) {
+		directionalAudio = enabled;
+	}
+
+	public static boolean getDirectionalAudio() {
+		return directionalAudio;
 	}
 
 	public static final class AudioDevice {
@@ -156,19 +168,20 @@ public class OpenALOutputLibrary extends LibraryLWJGLOpenAL {
 	public void init() throws SoundSystemException {
 		boolean errors;
 		byte[] requested = rawForKey(requestedDevice);
+		boolean needsCustomContext = requested != null || directionalAudio;
 		boolean opened = false;
-		if (requested != null) {
+		if (needsCustomContext) {
 			try {
 				if (AL.isCreated()) {
 					AL.destroy();
 				}
 				AL.create(null, 44100, 60, false, false);
-				opened = openDeviceByRawBytes(requested);
+				opened = openContext(requested, directionalAudio);
 			} catch (Throwable t) {
 				importantMessage("Opening audio device '" + decodeKeyDisplay(requestedDevice) + "' threw: " + t.getClass().getSimpleName() + ": " + t.getMessage());
 			}
 			if (!opened) {
-				importantMessage("Failed to open audio device '" + decodeKeyDisplay(requestedDevice) + "', falling back to the system default.");
+				importantMessage("Failed to open the requested audio device/HRTF, falling back to the system default.");
 				try {
 					if (AL.isCreated()) {
 						AL.destroy();
@@ -242,20 +255,35 @@ public class OpenALOutputLibrary extends LibraryLWJGLOpenAL {
 		}
 	}
 
-	private boolean openDeviceByRawBytes(byte[] raw) {
+	private boolean openContext(byte[] raw, boolean hrtf) {
 		long deviceAddress = 0L;
 		long contextAddress = 0L;
 		try {
-			ByteBuffer nameBuffer = BufferUtils.createByteBuffer(raw.length + 1);
-			nameBuffer.put(raw).put((byte) 0).flip();
-			deviceAddress = invokeNativeLong("nalcOpenDevice", MemoryUtil.getAddress(nameBuffer));
+			long deviceNameAddress = 0L;
+			if (raw != null) {
+				ByteBuffer nameBuffer = BufferUtils.createByteBuffer(raw.length + 1);
+				nameBuffer.put(raw).put((byte) 0).flip();
+				deviceNameAddress = MemoryUtil.getAddress(nameBuffer);
+			}
+			deviceAddress = invokeNativeLong("nalcOpenDevice", deviceNameAddress);
 			if (deviceAddress == 0L) {
 				errorMessage("OpenAL could not open the requested audio device.");
 				teardownPartial(deviceAddress, contextAddress);
 				return false;
 			}
 
-			contextAddress = invokeNativeLong("nalcCreateContext", deviceAddress, 0L);
+			long attributesAddress = 0L;
+			ByteBuffer attributes;
+			if (hrtf) {
+				attributes = BufferUtils.createByteBuffer(3 * 4).order(ByteOrder.nativeOrder());
+				attributes.putInt(ALC_HRTF_SOFT).putInt(ALC_TRUE).putInt(0);
+				attributes.flip();
+				attributesAddress = MemoryUtil.getAddress(attributes);
+			}
+			contextAddress = invokeNativeLong("nalcCreateContext", deviceAddress, attributesAddress);
+			if (contextAddress == 0L && hrtf) {
+				contextAddress = invokeNativeLong("nalcCreateContext", deviceAddress, 0L);
+			}
 			if (contextAddress == 0L) {
 				errorMessage("OpenAL could not create a context on the requested audio device.");
 				teardownPartial(deviceAddress, contextAddress);

@@ -20,5 +20,7 @@ public class BGSEarlyRiser implements PreLaunchEntrypoint {
         EnumExtends.OPTIONS.addEnum("TRANSPARENT_BACKGROUND", "options.transparentBackground", false, true);
         EnumExtends.OPTIONS.addEnum("HIGHLIGHT_BUTTON_TEXT", "options.highlightButtonText", false, true);
         EnumExtends.OPTIONS.addEnum("DEFER_CHUNK_UPDATES", "options.deferChunkUpdates", false, true);
+        EnumExtends.OPTIONS.addEnum("DIRECTIONAL_AUDIO", "options.directionalAudio", false, true);
+        EnumExtends.OPTIONS.addEnum("SHOW_SUBTITLES", "options.showSubtitles", false, true);
     }
 }

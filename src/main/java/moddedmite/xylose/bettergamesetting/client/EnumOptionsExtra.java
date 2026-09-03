@@ -17,4 +17,6 @@ public class EnumOptionsExtra {
     public static final EnumOptions TRANSPARENT_BACKGROUND = ClassTinkerers.getEnum(EnumOptions.class, "TRANSPARENT_BACKGROUND");
     public static final EnumOptions HIGHLIGHT_BUTTON_TEXT = ClassTinkerers.getEnum(EnumOptions.class, "HIGHLIGHT_BUTTON_TEXT");
     public static EnumOptions DEFER_CHUNK_UPDATES = ClassTinkerers.getEnum(EnumOptions.class, "DEFER_CHUNK_UPDATES");
+    public static EnumOptions DIRECTIONAL_AUDIO = ClassTinkerers.getEnum(EnumOptions.class, "DIRECTIONAL_AUDIO");
+    public static final EnumOptions SHOW_SUBTITLES = ClassTinkerers.getEnum(EnumOptions.class, "SHOW_SUBTITLES");
 }

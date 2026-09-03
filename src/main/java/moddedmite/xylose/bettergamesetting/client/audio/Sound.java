@@ -1,6 +1,9 @@
 package moddedmite.xylose.bettergamesetting.client.audio;
 
+import net.minecraft.Minecraft;
+import net.minecraft.Resource;
 import net.minecraft.ResourceLocation;
+import org.apache.commons.io.IOUtils;
 
 /**
  * SoundPoolEntry
@@ -12,7 +15,8 @@ public class Sound implements ISoundEventAccessor<Sound> {
 	private final int weight;
 	private final Sound.Type type;
 	private final boolean streaming;
-	
+	private ResourceLocation oggLocation;
+
 	public Sound(String nameIn, float volumeIn, float pitchIn, int weightIn, Sound.Type typeIn, boolean p_i46526_6_) {
 		this.name = new ResourceLocation(nameIn);
 		this.volume = volumeIn;
@@ -27,9 +31,32 @@ public class Sound implements ISoundEventAccessor<Sound> {
 	}
 	
 	public ResourceLocation getSoundAsOggLocation() {
-		return new ResourceLocation(this.name.getResourceDomain(), "sounds/" + this.name.getResourcePath() + ".ogg");
+		if (this.oggLocation == null) {
+			this.oggLocation = this.resolveOggLocation();
+		}
+		return this.oggLocation;
 	}
-	
+
+	private ResourceLocation resolveOggLocation() {
+		ResourceLocation id = new ResourceLocation(this.name.getResourceDomain(), "sounds/" + this.name.getResourcePath() + ".ogg");
+		if (soundResourceExists(id)) {
+			return id;
+		}
+		ResourceLocation rawId = new ResourceLocation(this.name.getResourceDomain(), this.name.getResourcePath() + ".ogg");
+		return soundResourceExists(rawId) ? rawId : id;
+	}
+
+	private static boolean soundResourceExists(ResourceLocation location) {
+		Minecraft client = Minecraft.getMinecraft();
+		try {
+			Resource resource = client.getResourceManager().getResource(location);
+			IOUtils.closeQuietly(resource.getInputStream());
+			return true;
+		} catch (Exception exception) {
+			return false;
+		}
+	}
+
 	public float getVolume() {
 		return this.volume;
 	}

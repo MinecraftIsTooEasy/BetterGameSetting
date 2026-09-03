@@ -160,6 +160,7 @@ public abstract class SoundManagerMixin implements ISoundManager {
 							Thread.currentThread().interrupt();
 						}
 						OpenALOutputLibrary.setRequestedDevice(this.options.getSoundDevice());
+						OpenALOutputLibrary.setDirectionalAudio(this.options.isDirectionalAudio());
 						this.sndSystem = new SoundSystemStarterThread(OpenALOutputLibrary.class);
 						this.loaded = true;
 						this.sndSystem.setMasterVolume(this.options.getSoundLevel(SoundCategory.MASTER));

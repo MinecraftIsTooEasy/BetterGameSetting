@@ -15,6 +15,7 @@ import moddedmite.xylose.bettergamesetting.client.audio.ISound;
 import moddedmite.xylose.bettergamesetting.client.audio.ISoundEventListener;
 import moddedmite.xylose.bettergamesetting.client.audio.ITickableSound;
 import moddedmite.xylose.bettergamesetting.client.audio.Sound;
+import moddedmite.xylose.bettergamesetting.util.OpenALOutputLibrary;
 import moddedmite.xylose.bettergamesetting.client.audio.SoundCategory;
 import moddedmite.xylose.bettergamesetting.client.audio.SoundEvent;
 import moddedmite.xylose.bettergamesetting.client.audio.SoundEventAccessor;
@@ -39,6 +40,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import paulscode.sound.SoundSystem;
 import paulscode.sound.SoundSystemConfig;
+import paulscode.sound.SoundSystemException;
 import paulscode.sound.SoundSystemLogger;
 import paulscode.sound.Source;
 
@@ -65,6 +67,7 @@ public abstract class SoundManagerMixin implements ISoundManager {
 	@Unique private final Map<String, Integer> playingSoundsStopTime = Maps.newHashMap();
 	@Unique private static final Set<ResourceLocation> UNABLE_TO_PLAY = Sets.<ResourceLocation>newHashSet();
 	@Unique private List<ISoundEventListener> listeners;
+	@Unique private boolean loadingSoundSystem = false;
 
 	@Inject(method = "<init>", at = @At("TAIL"))
 	private void init(CallbackInfo info) {
@@ -124,37 +127,51 @@ public abstract class SoundManagerMixin implements ISoundManager {
 	@WrapOperation(method = "onResourceManagerReload", at = @At(value = "INVOKE", target = "Lnet/minecraft/SoundManager;tryToSetLibraryAndCodecs()V"))
 	private void removeReload_3(SoundManager instance, Operation<Void> original) {
 	}
-
+	
 	private synchronized void loadSoundSystem() {
-		if (!this.loaded) {
+		if (!this.loaded && !this.loadingSoundSystem) {
+			this.loadingSoundSystem = true;
 			try {
 				(new Thread(() -> {
-					SoundSystemConfig.setLogger(new SoundSystemLogger() {
-						public void message(String p_message_1_, int p_message_2_) {
-							if (!p_message_1_.isEmpty()) {
-								BGSClient.logger.info(p_message_1_);
+					try {
+						SoundSystemConfig.setLogger(new SoundSystemLogger() {
+							public void message(String p_message_1_, int p_message_2_) {
+								if (!p_message_1_.isEmpty()) {
+									BGSClient.logger.info(p_message_1_);
+								}
 							}
-						}
-						
-						public void importantMessage(String p_importantMessage_1_, int p_importantMessage_2_) {
-							if (!p_importantMessage_1_.isEmpty()) {
-								BGSClient.logger.warn(p_importantMessage_1_);
+							
+							public void importantMessage(String p_importantMessage_1_, int p_importantMessage_2_) {
+								if (!p_importantMessage_1_.isEmpty()) {
+									BGSClient.logger.warn(p_importantMessage_1_);
+								}
 							}
-						}
-						
-						public void errorMessage(String p_errorMessage_1_, String p_errorMessage_2_, int p_errorMessage_3_) {
-							if (!p_errorMessage_2_.isEmpty()) {
-								BGSClient.logger.error("Error in class '{}'", p_errorMessage_1_);
-								BGSClient.logger.error(p_errorMessage_2_);
+							
+							public void errorMessage(String p_errorMessage_1_, String p_errorMessage_2_, int p_errorMessage_3_) {
+								if (!p_errorMessage_2_.isEmpty()) {
+									BGSClient.logger.error("Error in class '{}'", p_errorMessage_1_);
+									BGSClient.logger.error(p_errorMessage_2_);
+								}
 							}
+						});
+						try {
+							Thread.sleep(400L);
+						} catch (InterruptedException interrupted) {
+							Thread.currentThread().interrupt();
 						}
-					});
-					this.sndSystem = new SoundSystemStarterThread();
-					this.loaded = true;
-					this.sndSystem.setMasterVolume(this.options.getSoundLevel(SoundCategory.MASTER));
-					BGSClient.logger.info("Sound engine started");
+						OpenALOutputLibrary.setRequestedDevice(this.options.getSoundDevice());
+						this.sndSystem = new SoundSystemStarterThread(OpenALOutputLibrary.class);
+						this.loaded = true;
+						this.sndSystem.setMasterVolume(this.options.getSoundLevel(SoundCategory.MASTER));
+						BGSClient.logger.info("Sound engine started");
+					} catch (SoundSystemException e) {
+						throw new RuntimeException(e);
+					} finally {
+						this.loadingSoundSystem = false;
+					}
 				}, "Sound Library Loader")).start();
 			} catch (RuntimeException runtimeexception) {
+				this.loadingSoundSystem = false;
 				BGSClient.logger.error("Error starting SoundSystem. Turning off sounds & music", runtimeexception);
 				this.options.setSoundLevel(SoundCategory.MASTER, 0.0F);
 				this.options.saveOptions();
@@ -511,7 +528,8 @@ public abstract class SoundManagerMixin implements ISoundManager {
 	}
 	
 	static class SoundSystemStarterThread extends SoundSystem {
-		private SoundSystemStarterThread() {
+		private SoundSystemStarterThread(Class libraryClass) throws SoundSystemException {
+			super(libraryClass);
 		}
 		
 		public boolean playing(String p_playing_1_) {

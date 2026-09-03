@@ -12,7 +12,6 @@
     "MinecraftMixin",
     "OpenGlHelperMixin",
     "audio.SoundManagerMixin",
-    "audio.SoundPoolEntryMixin",
     "audio.SoundsMITEMixin",
     "gui.GuiButtonMixin",
     "gui.GuiContainerMixin",

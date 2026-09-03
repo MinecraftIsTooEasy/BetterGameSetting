@@ -1,16 +1,23 @@
 package moddedmite.xylose.bettergamesetting.client.gui;
 
+import com.google.common.collect.Lists;
+import moddedmite.xylose.bettergamesetting.util.OpenALOutputLibrary;
 import moddedmite.xylose.bettergamesetting.client.audio.PositionedSoundRecord;
 import moddedmite.xylose.bettergamesetting.client.audio.SoundCategory;
 import moddedmite.xylose.bettergamesetting.client.audio.SoundEvents;
 import moddedmite.xylose.bettergamesetting.client.audio.SoundHandler;
+import moddedmite.xylose.bettergamesetting.init.BGSClient;
 import net.minecraft.GuiButton;
 import net.minecraft.GuiScreen;
 import net.minecraft.Minecraft;
 import net.minecraft.I18n;
 import net.minecraft.GameSettings;
 import net.minecraft.MathHelper;
+import org.lwjgl.openal.ALC11;
 import org.lwjgl.opengl.GL11;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GuiScreenOptionsSounds extends GuiScreen {
     private final GuiScreen parent;
@@ -48,6 +55,7 @@ public class GuiScreenOptionsSounds extends GuiScreen {
         int k = this.height / 6 - 12;
         ++i;
 //        this.buttonList.add(new GuiOptionButton(201, j, k + 24 * (i >> 1), EnumOptions.SHOW_SUBTITLES, this.game_settings_4.getKeyBinding(GameSettings.Options.SHOW_SUBTITLES)));
+        this.buttonList.add(new GuiButton(202, this.width / 2 - 155, k + 24 * (i >> 1), 310, 20, this.getAudioDeviceButtonString()));
         this.buttonList.add(new GuiButton(200, this.width / 2 - 100, this.height / 6 + 168, I18n.getString("gui.done")));
     }
     
@@ -71,6 +79,8 @@ public class GuiScreenOptionsSounds extends GuiScreen {
             if (button.id == 200) {
                 this.mc.gameSettings.saveOptions();
                 this.mc.displayGuiScreen(this.parent);
+            } else if (button.id == 202) {
+                this.switchToNextAudioDevice(button);
 //            } else if (button.id == 201) {
 //                this.mc.gameSettings.setOptionValue(GameSettings.Options.SHOW_SUBTITLES, 1);
 //                button.displayString = this.mc.gameSettings.getKeyBinding(GameSettings.Options.SHOW_SUBTITLES);
@@ -91,6 +101,36 @@ public class GuiScreenOptionsSounds extends GuiScreen {
     protected String getDisplayString(SoundCategory category) {
         float f = this.game_settings_4.getSoundLevel(category);
         return f == 0.0F ? this.offDisplayString : (int) (f * 100.0F) + "%";
+    }
+
+    private String getAudioDeviceButtonString() {
+        String device = this.game_settings_4.getSoundDevice();
+        String name;
+        if (device == null || device.isEmpty()) {
+            name = I18n.getString("options.audioDevice.default");
+        } else {
+            String decoded = OpenALOutputLibrary.decodeKeyDisplay(device);
+            name = decoded.isEmpty() ? device : decoded;
+        }
+        return I18n.getString("options.audioDevice") + ": " + name;
+    }
+
+    private void switchToNextAudioDevice(GuiButton button) {
+        String current = this.game_settings_4.getSoundDevice();
+        List<String> options = Lists.newArrayList();
+        options.add("");
+        for (OpenALOutputLibrary.AudioDevice device : OpenALOutputLibrary.parseToken(ALC11.ALC_ALL_DEVICES_SPECIFIER)) {
+            options.add(device.getKey());
+        }
+        int index = current == null ? -1 : options.indexOf(current);
+        if (index < 0) {
+            index = options.size() - 1;
+        }
+        String next = options.get((index + 1) % options.size());
+        this.game_settings_4.setSoundDevice(next);
+        this.game_settings_4.saveOptions();
+        this.mc.sndManager.reloadSoundSystem();
+        button.displayString = this.getAudioDeviceButtonString();
     }
     
     class Button extends GuiButton {

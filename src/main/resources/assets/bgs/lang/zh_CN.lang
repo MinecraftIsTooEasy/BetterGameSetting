@@ -18,6 +18,8 @@ soundCategory.ui=用户界面
 options.transparentBackground=透明背景
 options.highlightButtonText=高亮按钮文字
 options.deferChunkUpdates=缓慢区块加载
+options.audioDevice=音频输出设备
+options.audioDevice.default=系统默认
 
 options.chunks=个区块
 options.gamma.default=默认

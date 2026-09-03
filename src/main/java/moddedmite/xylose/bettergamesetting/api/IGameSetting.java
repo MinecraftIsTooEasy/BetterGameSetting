@@ -39,4 +39,11 @@ public interface IGameSetting {
     default boolean isDeferChunkUpdates() {
         return false;
     }
+
+    default String getSoundDevice() {
+        return "";
+    }
+
+    default void setSoundDevice(String device) {
+    }
 }

@@ -18,6 +18,8 @@ soundCategory.ui=UI
 options.transparentBackground=Transparent Background
 options.highlightButtonText=Highlight Button Text
 options.deferChunkUpdates=Defer Chunk Updates
+options.audioDevice=Audio Device
+options.audioDevice.default=System Default
 
 options.chunks=chunks
 options.gamma.default=Default

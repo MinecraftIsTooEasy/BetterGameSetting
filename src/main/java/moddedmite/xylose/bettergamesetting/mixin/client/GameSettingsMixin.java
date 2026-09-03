@@ -67,6 +67,7 @@ public abstract class GameSettingsMixin implements IGameSetting {
     @Unique public boolean transparentBackground;
     @Unique public boolean highlightButtonText;
     @Unique public boolean deferChunkUpdates = false;
+    @Unique private String soundDevice = "";
     @Unique private Map<SoundCategory, Float> soundLevels = Maps.newEnumMap(SoundCategory.class);
 
 //    @Unique public DisplayMode fullscreenResolution;
@@ -319,6 +320,9 @@ public abstract class GameSettingsMixin implements IGameSetting {
                 if (astring[0].equals("deferChunkUpdates")) {
                     this.deferChunkUpdates = astring[1].equals("true");
                 }
+                if (astring[0].equals("soundDevice")) {
+                    this.soundDevice = s.substring(s.indexOf(58) + 1);
+                }
 //                if (astring[0].equals("fullscreenResolution")) {
 //                    this.fullscreenResolution = DisplayModeHelper.getDisplayModeFromString(astring[1]);
 //                }
@@ -367,6 +371,7 @@ public abstract class GameSettingsMixin implements IGameSetting {
         printwriter.println("transparentBackground:" + this.transparentBackground);
         printwriter.println("highlightButtonText:" + this.highlightButtonText);
         printwriter.println("deferChunkUpdates:" + this.deferChunkUpdates);
+        printwriter.println("soundDevice:" + this.soundDevice);
 //        printwriter.println("fullscreenResolution:" + this.fullscreenResolution);
     }
 
@@ -429,5 +434,15 @@ public abstract class GameSettingsMixin implements IGameSetting {
     @Override
     public boolean isDeferChunkUpdates() {
         return this.deferChunkUpdates;
+    }
+
+    @Override
+    public String getSoundDevice() {
+        return this.soundDevice;
+    }
+
+    @Override
+    public void setSoundDevice(String device) {
+        this.soundDevice = device;
     }
 }

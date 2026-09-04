@@ -1,11 +1,9 @@
 package moddedmite.xylose.bettergamesetting.client.gui.video;
 
 import com.google.common.collect.Lists;
-import moddedmite.xylose.bettergamesetting.client.EnumOptionsExtra;
 import moddedmite.xylose.bettergamesetting.client.gui.base.GuiListExtended;
 import moddedmite.xylose.bettergamesetting.client.gui.button.GuiOptionButton;
 import moddedmite.xylose.bettergamesetting.client.gui.button.GuiOptionSlider;
-import moddedmite.xylose.bettergamesetting.client.gui.button.GuiResolutionSlider;
 import moddedmite.xylose.bettergamesetting.client.gui.button.GuiScaleSlider;
 import moddedmite.xylose.bettergamesetting.util.ScreenUtil;
 import net.minecraft.EnumOptions;
@@ -22,7 +20,7 @@ public class GuiOptionsRowList extends GuiListExtended {
 
     public GuiOptionsRowList(Minecraft mcIn, int widthIn, int heightIn, int topIn, int bottomIn, int slotHeightIn, EnumOptions... options) {
         super(mcIn, widthIn, heightIn, topIn, bottomIn, slotHeightIn);
-        this.field_148163_i = false;
+        this.centerListVertically = false;
 
         for (int i = 0; i < options.length; i += 2) {
             EnumOptions optionLeft = options[i];

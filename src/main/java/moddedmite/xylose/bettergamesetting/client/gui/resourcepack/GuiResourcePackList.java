@@ -16,7 +16,7 @@ public abstract class GuiResourcePackList extends GuiListExtended {
         super(mcIn, widthIn, heightIn, 32, heightIn - 55 + 4, 36);
         this.mc = mcIn;
         this.resourcePacksEntry = resourcePackList;
-        this.field_148163_i = false;
+        this.centerListVertically = false;
         this.setHasListHeader(true, (int) ((float) mcIn.fontRenderer.FONT_HEIGHT * 1.5F));
         this.selectionBoxColor = 0xDDFFFFFF;
     }

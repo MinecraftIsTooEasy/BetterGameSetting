@@ -18,7 +18,7 @@ public abstract class GuiSlotModern {
     private int scrollDownButtonID;
     protected int mouseX;
     protected int mouseY;
-    protected boolean field_148163_i = true;
+    protected boolean centerListVertically = true;
     private float initialClickY = -2.0F;
     private float scrollMultiplier;
     private float amountScrolled;
@@ -96,10 +96,10 @@ public abstract class GuiSlotModern {
     protected void drawListHeader(int x, int y, Tessellator tessellator) {
     }
 
-    protected void func_148132_a(int p_148132_1_, int p_148132_2_) {
+    protected void clickedHeader(int p_148132_1_, int p_148132_2_) {
     }
 
-    protected void func_148142_b(int p_148142_1_, int p_148142_2_) {
+    protected void renderDecorations(int mouseXIn, int mouseYIn) {
     }
 
     public int getSlotIndexFromScreenCoords(int mouseX, int mouseY) {
@@ -128,7 +128,7 @@ public abstract class GuiSlotModern {
             i /= 2;
         }
 
-        if (!this.field_148163_i && i < 0) {
+        if (!this.centerListVertically && i < 0) {
             i = 0;
         }
 
@@ -213,7 +213,7 @@ public abstract class GuiSlotModern {
                             this.selectedElement = j2;
                             this.lastClicked = Minecraft.getSystemTime();
                         } else if (mouseXR >= k1 && mouseXR <= l1 && i2 < 0) {
-                            this.func_148132_a(mouseXR - k1, mouseYR - this.top + (int) this.amountScrolled - 4);
+                            this.clickedHeader(mouseXR - k1, mouseYR - this.top + (int) this.amountScrolled - 4);
                             flag1 = false;
                         }
 
@@ -344,7 +344,7 @@ public abstract class GuiSlotModern {
             tessellator.draw();
         }
 
-        this.func_148142_b(mouseXR, mouseYR);
+        this.renderDecorations(mouseXR, mouseYR);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glShadeModel(GL11.GL_FLAT);
         GL11.glEnable(GL11.GL_ALPHA_TEST);

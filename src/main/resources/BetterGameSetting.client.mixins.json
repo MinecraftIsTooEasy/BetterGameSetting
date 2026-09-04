@@ -43,6 +43,7 @@
   },
   "plugin": "moddedmite.xylose.bettergamesetting.util.BGSMixinConfigClient",
   "mixins": [
-    "WorldClientMixin"
+    "WorldClientMixin",
+    "gui.GuiScreenTemporaryResourcePackSelectSelectionListMixin"
   ]
 }

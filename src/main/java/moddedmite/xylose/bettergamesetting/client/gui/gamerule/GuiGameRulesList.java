@@ -7,7 +7,6 @@ import net.minecraft.*;
 import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -19,7 +18,7 @@ public class GuiGameRulesList extends GuiListExtended {
     
     public GuiGameRulesList(GuiGameRules gui, String searchText) {
         super(gui.mc, gui.width, gui.height, 32, gui.height - 32, 24);
-        this.field_148163_i = false;
+        this.centerListVertically = false;
         this.gameRules = gui.gameRules;
         this.searchText = searchText != null ? searchText.toLowerCase() : "";
         this.buildEntriesList();

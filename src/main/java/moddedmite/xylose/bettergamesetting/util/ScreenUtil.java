@@ -1,9 +1,16 @@
 package moddedmite.xylose.bettergamesetting.util;
 
+import moddedmite.xylose.bettergamesetting.client.gui.world.GuiListWorldSelection;
 import net.minecraft.*;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -364,5 +371,42 @@ public class ScreenUtil extends Gui {
     public static int getMouseY(ScaledResolution scale) {
         int height = scale.getScaledHeight();
         return height - Mouse.getY() * height / client.displayHeight - 1;
+    }
+    
+    public static void createWorldIcon(Minecraft mc, String folderName) {
+        try {
+            int width = mc.displayWidth;
+            int height = mc.displayHeight;
+            IntBuffer buffer = BufferUtils.createIntBuffer(width * height);
+            GL11.glPixelStorei(GL11.GL_PACK_ALIGNMENT, 1);
+            GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
+            buffer.clear();
+            GL11.glReadPixels(0, 0, width, height, GL12.GL_BGRA, GL12.GL_UNSIGNED_INT_8_8_8_8_REV, buffer);
+            int[] data = new int[width * height];
+            buffer.get(data);
+            flipVertically(data, width, height);
+            BufferedImage screenshot = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+            screenshot.setRGB(0, 0, width, height, data, 0, width);
+            int size = Math.min(width, height);
+            int offsetX = (width - size) / 2;
+            int offsetY = (height - size) / 2;
+            BufferedImage icon = new BufferedImage(64, 64, BufferedImage.TYPE_INT_RGB);
+            Graphics graphics = icon.createGraphics();
+            graphics.drawImage(screenshot, 0, 0, 64, 64, offsetX, offsetY, offsetX + size, offsetY + size, null);
+            graphics.dispose();
+            ImageIO.write(icon, "png", GuiListWorldSelection.getIconFile(folderName));
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
+    }
+    
+    private static void flipVertically(int[] data, int width, int height) {
+        int[] row = new int[width];
+        int halfHeight = height / 2;
+        for (int y = 0; y < halfHeight; ++y) {
+            System.arraycopy(data, y * width, row, 0, width);
+            System.arraycopy(data, (height - 1 - y) * width, data, y * width, width);
+            System.arraycopy(row, 0, data, (height - 1 - y) * width, width);
+        }
     }
 }

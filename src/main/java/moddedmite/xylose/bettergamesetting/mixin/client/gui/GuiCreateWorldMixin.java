@@ -44,7 +44,8 @@ public abstract class GuiCreateWorldMixin extends GuiScreen implements IGuiCreat
     @Shadow private GuiButton button_cancel;
     @Shadow private void makeUseableName() {}
     @Shadow protected abstract void updateButtonText();
-    
+    @Shadow private static String[] ILLEGAL_WORLD_NAMES;
+
     @Shadow private boolean are_skills_enabled;
     @Unique private GuiButton buttonRulesEditor;
     @Unique private GuiButton buttonExperiments;
@@ -54,6 +55,29 @@ public abstract class GuiCreateWorldMixin extends GuiScreen implements IGuiCreat
     @Unique private static final int TAB_WIDTH = 130;
     @Unique private static final int TAB_HEIGHT = 24;
     @Unique private final Map<Integer, String> hoverTexts = new HashMap<>();
+
+    /**
+     * @author xylose
+     * @reason Change the auto-generated duplicate world folder/name suffix from appending "-" to a "(2)", "(3)", ... numeric suffix.
+     */
+    @Overwrite
+    public static String func_73913_a(ISaveFormat par0ISaveFormat, String par1Str) {
+        par1Str = par1Str.replaceAll("[\\./\"]", "_");
+        for (String var5 : ILLEGAL_WORLD_NAMES) {
+            if (par1Str.equalsIgnoreCase(var5)) {
+                par1Str = "_" + par1Str + "_";
+            }
+        }
+        if (par0ISaveFormat.getWorldInfo(par1Str) == null) {
+            return par1Str;
+        }
+        for (int i = 2; ; ++i) {
+            String candidate = par1Str + " (" + i + ")";
+            if (par0ISaveFormat.getWorldInfo(candidate) == null) {
+                return candidate;
+            }
+        }
+    }
 
     @Inject(method = "initGui", at = @At("TAIL"))
     private void onInitGuiTail(CallbackInfo ci) {
@@ -112,6 +136,7 @@ public abstract class GuiCreateWorldMixin extends GuiScreen implements IGuiCreat
         } else {
             textboxWorldName = new GuiTextField(this.fontRenderer, this.width / 2 - 100, TAB_HEIGHT + 10, this.width / 2, 20);
             textboxWorldName.setText(this.localizedNewWorldText);
+            textboxWorldName.setMaxStringLength(32);
         }
 
         if (textboxSeed != null) {

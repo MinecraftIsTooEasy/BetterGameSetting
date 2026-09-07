@@ -22,6 +22,7 @@
     "gui.GuiMultiplayerMixin",
     "gui.GuiOptionsMixin",
     "gui.GuiScreenMixin",
+    "gui.GuiSelectWorldMixin",
     "gui.GuiSlotLanguageMixin",
     "gui.GuiSlotMixin",
     "gui.GuiTextFieldMixin",

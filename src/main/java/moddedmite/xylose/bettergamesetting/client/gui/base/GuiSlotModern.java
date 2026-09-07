@@ -403,21 +403,23 @@ public abstract class GuiSlotModern {
                 if (this.showSelectionBox && this.isSelected(j1)) {
                     int i2 = this.left + (this.width / 2 - this.getListWidth() / 2);
                     int j2 = this.left + this.width / 2 + this.getListWidth() / 2;
-                    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                    GL11.glDisable(GL11.GL_TEXTURE_2D);
-                    tessellator.startDrawingQuads();
-                    tessellator.setColorOpaque_I(this.selectionBoxColor);
-                    tessellator.addVertexWithUV(i2, k1 + l1 + 2, 0.0D, 0.0D, 1.0D);
-                    tessellator.addVertexWithUV(j2, k1 + l1 + 2, 0.0D, 1.0D, 1.0D);
-                    tessellator.addVertexWithUV(j2, k1 - 2, 0.0D, 1.0D, 0.0D);
-                    tessellator.addVertexWithUV(i2, k1 - 2, 0.0D, 0.0D, 0.0D);
-                    tessellator.setColorOpaque_I(0);
-                    tessellator.addVertexWithUV(i2 + 1, k1 + l1 + 1, 0.0D, 0.0D, 1.0D);
-                    tessellator.addVertexWithUV(j2 - 1, k1 + l1 + 1, 0.0D, 1.0D, 1.0D);
-                    tessellator.addVertexWithUV(j2 - 1, k1 - 1, 0.0D, 1.0D, 0.0D);
-                    tessellator.addVertexWithUV(i2 + 1, k1 - 1, 0.0D, 0.0D, 0.0D);
-                    tessellator.draw();
-                    GL11.glEnable(GL11.GL_TEXTURE_2D);
+                    ScreenUtil.scissorExecute(this.left, this.top, this.right, this.bottom - this.top, () -> {
+                        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+                        GL11.glDisable(GL11.GL_TEXTURE_2D);
+                        tessellator.startDrawingQuads();
+                        tessellator.setColorOpaque_I(this.selectionBoxColor);
+                        tessellator.addVertexWithUV(i2, k1 + l1 + 2, 0.0D, 0.0D, 1.0D);
+                        tessellator.addVertexWithUV(j2, k1 + l1 + 2, 0.0D, 1.0D, 1.0D);
+                        tessellator.addVertexWithUV(j2, k1 - 2, 0.0D, 1.0D, 0.0D);
+                        tessellator.addVertexWithUV(i2, k1 - 2, 0.0D, 0.0D, 0.0D);
+                        tessellator.setColorOpaque_I(0);
+                        tessellator.addVertexWithUV(i2 + 1, k1 + l1 + 1, 0.0D, 0.0D, 1.0D);
+                        tessellator.addVertexWithUV(j2 - 1, k1 + l1 + 1, 0.0D, 1.0D, 1.0D);
+                        tessellator.addVertexWithUV(j2 - 1, k1 - 1, 0.0D, 1.0D, 0.0D);
+                        tessellator.addVertexWithUV(i2 + 1, k1 - 1, 0.0D, 0.0D, 0.0D);
+                        tessellator.draw();
+                        GL11.glEnable(GL11.GL_TEXTURE_2D);
+                    });
                 }
 
                 this.drawSlot(j1, x, k1, l1, tessellator, mouseXIn, mouseYIn);

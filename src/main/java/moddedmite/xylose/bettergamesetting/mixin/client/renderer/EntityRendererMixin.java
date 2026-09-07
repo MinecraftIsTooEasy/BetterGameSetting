@@ -5,14 +5,23 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
-import moddedmite.xylose.bettergamesetting.api.IGameSetting;
+import moddedmite.xylose.bettergamesetting.client.gui.world.GuiListWorldSelection;
+import moddedmite.xylose.bettergamesetting.init.BGSClient;
+import moddedmite.xylose.bettergamesetting.util.ScreenUtil;
 import net.minecraft.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
+import java.io.IOException;
 
 @Mixin(value = EntityRenderer.class, priority = 9999)
 public abstract class EntityRendererMixin {
@@ -26,6 +35,18 @@ public abstract class EntityRendererMixin {
     @Shadow private float debugCamFOV;
     @Shadow private float fovModifierHandPrev;
     @Shadow private float fovModifierHand;
+
+    @Unique private long timeWorldIcon;
+    
+    @Inject(method = "updateCameraAndRender", at = @At(value = "INVOKE", target = "Lnet/minecraft/GuiIngame;renderGameOverlay(FZII)V"))
+    private void captureWorldIcon(float par1, CallbackInfo ci) {
+        if (Minecraft.isSingleplayer() && this.timeWorldIcon < Minecraft.getSystemTime() - 1000L) {
+            this.timeWorldIcon = Minecraft.getSystemTime();
+            if (!GuiListWorldSelection.getIconFile(this.mc.getIntegratedServer().getFolderName()).isFile()) {
+                ScreenUtil.createWorldIcon(mc, this.mc.getIntegratedServer().getFolderName());
+            }
+        }
+    }
 
     @ModifyConstant(method = "updateRenderer", constant = @Constant(intValue = 3))
     private int modifyRD(int constant) {

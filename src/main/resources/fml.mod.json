@@ -11,7 +11,8 @@
   "breaks": {
     "gamma_free": "*",
     "fontfixer": "*",
-    "shader-loader": "<=1.0.3"
+    "shader-loader": "<=1.0.3",
+    "ohmycommands": "<3.0.0"
   },
   "environment": "client",
   "name": "BetterGameSetting",
@@ -55,6 +56,7 @@
       "net/minecraft/GuiButton": ["moddedmite/xylose/bettergamesetting/api/IButton"],
       "net/minecraft/GuiTextField": ["moddedmite/xylose/bettergamesetting/api/ITextField"],
       "net/minecraft/GuiCreateWorld": ["moddedmite/xylose/bettergamesetting/api/IGuiCreateWorld"],
+      "net/minecraft/GuiSelectWorld": ["moddedmite/xylose/bettergamesetting/api/IGuiSelectWorld"],
       "net/minecraft/Minecraft": ["moddedmite/xylose/bettergamesetting/api/IClient"],
       "net/minecraft/SoundManager": ["moddedmite/xylose/bettergamesetting/api/ISoundManager"]
     },

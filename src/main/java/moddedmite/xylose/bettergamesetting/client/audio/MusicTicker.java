@@ -31,22 +31,38 @@ public class MusicTicker implements IUpdatePlayerListBox {
 		if (this.currentMusic != null) {
 			if (!musictype.getMusicLocation().soundName().equals(this.currentMusic.getSoundLocation())) {
 				this.client.getSoundHandler().stopSound(this.currentMusic);
-				this.timeUntilNextMusic = MathHelper.getRandomIntegerInRange(this.rand, 0, musictype.getMinDelay() / 2);
+				this.timeUntilNextMusic = MathHelper.getRandomIntegerInRange(this.rand, 0, this.getMinDelay(musictype) / 2);
 			}
-			
+
 			if (!this.client.getSoundHandler().isSoundPlaying(this.currentMusic)) {
 				this.currentMusic = null;
-				this.timeUntilNextMusic = Math.min(MathHelper.getRandomIntegerInRange(this.rand, musictype.getMinDelay(), musictype.getMaxDelay()), this.timeUntilNextMusic);
+				this.timeUntilNextMusic = Math.min(MathHelper.getRandomIntegerInRange(this.rand, this.getMinDelay(musictype), this.getMaxDelay(musictype)), this.timeUntilNextMusic);
 			}
 		}
-		
-		this.timeUntilNextMusic = Math.min(this.timeUntilNextMusic, musictype.getMaxDelay());
+
+		this.timeUntilNextMusic = Math.min(this.timeUntilNextMusic, this.getMaxDelay(musictype));
 		
 		if (this.currentMusic == null && this.timeUntilNextMusic-- <= 0) {
 			this.playMusic(musictype);
 		}
 	}
-	
+
+	private int getMinDelay(MusicType musictype) {
+		return switch (this.client.gameSettings.getMusicFrequency()) {
+			case 1 -> musictype.getMinDelay() / 2;
+			case 2 -> 0;
+			default -> musictype.getMinDelay();
+		};
+	}
+
+	private int getMaxDelay(MusicType musictype) {
+		return switch (this.client.gameSettings.getMusicFrequency()) {
+			case 1 -> musictype.getMaxDelay() / 2;
+			case 2 -> 0;
+			default -> musictype.getMaxDelay();
+		};
+	}
+
 	public MusicType getAmbientMusicType() {
 		if (this.client.currentScreen instanceof GuiWinGame) {
 			return MusicType.CREDITS;

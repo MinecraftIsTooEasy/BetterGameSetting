@@ -505,7 +505,7 @@ public class SoundEvents {
         ENTITY_PLAYER_BIG_FALL = getRegisteredSoundEvent("game.player.hurt.fall.big");
         ENTITY_PLAYER_BURP = getRegisteredSoundEvent("random.burp");
         ENTITY_PLAYER_DEATH = getRegisteredSoundEvent("game.player.die");
-        ENTITY_PLAYER_HURT = getRegisteredSoundEvent("game.player.hurt");
+        ENTITY_PLAYER_HURT = getRegisteredSoundEvent("damage.hit");
         ENTITY_PLAYER_LEVELUP = getRegisteredSoundEvent("random.levelup");
         ENTITY_PLAYER_SMALL_FALL = getRegisteredSoundEvent("game.player.hurt.fall.small");
         ENTITY_PLAYER_SPLASH = getRegisteredSoundEvent("game.player.swim.splash");

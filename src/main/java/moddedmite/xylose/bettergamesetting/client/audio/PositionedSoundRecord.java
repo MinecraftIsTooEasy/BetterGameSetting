@@ -1,5 +1,6 @@
 package moddedmite.xylose.bettergamesetting.client.audio;
 
+import moddedmite.xylose.bettergamesetting.util.SoundHelper;
 import net.minecraft.ResourceLocation;
 import net.minecraft.Vec3;
 
@@ -20,14 +21,26 @@ public class PositionedSoundRecord extends PositionedSound {
         return new PositionedSoundRecord(soundIn, SoundCategory.MUSIC, 1.0F, 1.0F, false, 0, ISound.AttenuationType.NONE, 0.0F, 0.0F, 0.0F);
     }
 
-    public static PositionedSoundRecord of(ResourceLocation soundId) {
-        return new PositionedSoundRecord(soundId, SoundCategory.MUSIC, 1.0F, 1.0F, false, 0, ISound.AttenuationType.NONE, 0.0F, 0.0F, 0.0F);
-    }
-    
     public static PositionedSoundRecord getRecordSoundRecord(SoundEvent soundIn, float xIn, float yIn, float zIn) {
         return new PositionedSoundRecord(soundIn, SoundCategory.RECORDS, 4.0F, 1.0F, false, 0, ISound.AttenuationType.LINEAR, xIn, yIn, zIn);
     }
     
+    public static PositionedSoundRecord of(String soundIn, float pitchIn, float volumeIn) {
+        return new PositionedSoundRecord(SoundEvent.of(soundIn), SoundHelper.getCategoryForSoundPath(soundIn), volumeIn, pitchIn, false, 0, ISound.AttenuationType.NONE, .0F, .0F, .0F);
+    }
+
+    public static PositionedSoundRecord of(String soundIn, float xIn, float yIn, float zIn) {
+        return new PositionedSoundRecord(SoundEvent.of(soundIn), SoundHelper.getCategoryForSoundPath(soundIn), 1.0F, 1.0F, false, 0, ISound.AttenuationType.NONE, xIn, yIn, zIn);
+    }
+
+    public static PositionedSoundRecord of(String soundIn, float xIn, float yIn, float zIn, float pitchIn, float volumeIn) {
+        return new PositionedSoundRecord(SoundEvent.of(soundIn), SoundHelper.getCategoryForSoundPath(soundIn), volumeIn, pitchIn, false, 0, ISound.AttenuationType.NONE, xIn, yIn, zIn);
+    }
+
+    public static PositionedSoundRecord of(String soundIn, float xIn, float yIn, float zIn, float pitchIn, float volumeIn, int delayIn) {
+        return new PositionedSoundRecord(SoundEvent.of(soundIn), SoundHelper.getCategoryForSoundPath(soundIn), volumeIn, pitchIn, false, delayIn, ISound.AttenuationType.NONE, xIn, yIn, zIn);
+    }
+
     public PositionedSoundRecord(SoundEvent soundIn, SoundCategory categoryIn, float volumeIn, float pitchIn, float xIn, float yIn, float zIn) {
         this(soundIn, categoryIn, volumeIn, pitchIn, false, 0, ISound.AttenuationType.LINEAR, xIn, yIn, zIn);
     }

@@ -133,6 +133,15 @@
       "damage/hit3"
     ]
   },
+  "damage.hit": {
+    "subtitle": "subtitles.entity.player.hurt",
+    "category": "player",
+    "sounds": [
+      "damage/hit1",
+      "damage/hit2",
+      "damage/hit3"
+    ]
+  },
   "dig.cloth": {
     "subtitle": "subtitles.block.generic.break",
     "category": "block",
@@ -278,6 +287,24 @@
     "category": "block",
     "sounds": [
       "liquid/lavapop"
+    ]
+  },
+  "liquid.splash": {
+    "subtitle": "subtitles.entity.generic.splash",
+    "category": "neutral",
+    "sounds": [
+      "liquid/splash",
+      "liquid/splash2"
+    ]
+  },
+  "liquid.swim": {
+    "subtitle": "subtitles.entity.generic.swim",
+    "category": "neutral",
+    "sounds": [
+      "liquid/swim1",
+      "liquid/swim2",
+      "liquid/swim3",
+      "liquid/swim4"
     ]
   },
   "game.neutral.swim.splash": {
@@ -1631,6 +1658,22 @@
       "random/glass3"
     ]
   },
+  "random.fuse": {
+    "subtitle": "subtitles.entity.creeper.primed",
+    "category": "hostile",
+    "sounds": [
+      "random/fuse"
+    ]
+  },
+  "random.glass": {
+    "subtitle": "subtitles.block.generic.break",
+    "category": "block",
+    "sounds": [
+      "random/glass1",
+      "random/glass2",
+      "random/glass3"
+    ]
+  },
   "random.levelup": {
     "subtitle": "subtitles.entity.player.levelup",
     "category": "player",
@@ -2300,6 +2343,13 @@
       "sound/imported/portal/runegate"
     ],
     "subtitle": "subtitles.block.portal.runegate"
+  },
+  "random.hurt.classic": {
+    "category": "player",
+    "sounds": [
+      "sound/random/classic_hurt"
+    ],
+    "subtitle": "subtitles.player.classic_hurt"
   },
   "imported.underworld": {
     "category": "record",

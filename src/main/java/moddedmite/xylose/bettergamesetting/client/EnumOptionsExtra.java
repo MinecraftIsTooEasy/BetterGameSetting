@@ -19,4 +19,5 @@ public class EnumOptionsExtra {
     public static EnumOptions DEFER_CHUNK_UPDATES = ClassTinkerers.getEnum(EnumOptions.class, "DEFER_CHUNK_UPDATES");
     public static EnumOptions DIRECTIONAL_AUDIO = ClassTinkerers.getEnum(EnumOptions.class, "DIRECTIONAL_AUDIO");
     public static final EnumOptions SHOW_SUBTITLES = ClassTinkerers.getEnum(EnumOptions.class, "SHOW_SUBTITLES");
+    public static final EnumOptions MUSIC_FREQUENCY = ClassTinkerers.getEnum(EnumOptions.class, "MUSIC_FREQUENCY");
 }

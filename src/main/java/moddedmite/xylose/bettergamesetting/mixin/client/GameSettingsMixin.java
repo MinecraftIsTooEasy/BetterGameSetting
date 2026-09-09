@@ -70,7 +70,9 @@ public abstract class GameSettingsMixin implements IGameSetting {
     @Unique private String soundDevice = "";
     @Unique private boolean directionalAudio;
     @Unique private boolean showSubtitles;
+    @Unique private int musicFrequency;
     @Unique private Map<SoundCategory, Float> soundLevels = Maps.newEnumMap(SoundCategory.class);
+    @Unique private static final String[] MUSIC_FREQUENCIES = new String[]{"options.musicFrequency.default", "options.musicFrequency.frequent", "options.musicFrequency.continuous"};
 
 //    @Unique public DisplayMode fullscreenResolution;
 
@@ -143,6 +145,12 @@ public abstract class GameSettingsMixin implements IGameSetting {
         }
         if (par1EnumOptions == EnumOptionsExtra.SHOW_SUBTITLES) {
             this.showSubtitles = !this.showSubtitles;
+        }
+        if (par1EnumOptions == EnumOptionsExtra.MUSIC_FREQUENCY) {
+            this.musicFrequency = (this.musicFrequency + par2) % 3;
+            if (this.musicFrequency < 0) {
+                this.musicFrequency += 3;
+            }
         }
     }
 
@@ -273,6 +281,9 @@ public abstract class GameSettingsMixin implements IGameSetting {
         if (options == EnumOptionsExtra.SHOW_SUBTITLES) {
             cir.setReturnValue(string + getTranslationBoolean(this.showSubtitles));
         }
+        if (options == EnumOptionsExtra.MUSIC_FREQUENCY) {
+            cir.setReturnValue(string + I18n.getString(MUSIC_FREQUENCIES[this.musicFrequency % 3]));
+        }
     }
 
     @Inject(method = "loadOptions", at = @At("TAIL"))
@@ -343,6 +354,12 @@ public abstract class GameSettingsMixin implements IGameSetting {
                 if (astring[0].equals("showSubtitles")) {
                     this.showSubtitles = astring[1].equals("true");
                 }
+                if (astring[0].equals("musicFrequency")) {
+                    this.musicFrequency = Integer.parseInt(astring[1]) % 3;
+                    if (this.musicFrequency < 0) {
+                        this.musicFrequency = 0;
+                    }
+                }
 //                if (astring[0].equals("fullscreenResolution")) {
 //                    this.fullscreenResolution = DisplayModeHelper.getDisplayModeFromString(astring[1]);
 //                }
@@ -394,6 +411,7 @@ public abstract class GameSettingsMixin implements IGameSetting {
         printwriter.println("soundDevice:" + this.soundDevice);
         printwriter.println("directionalAudio:" + this.directionalAudio);
         printwriter.println("showSubtitles:" + this.showSubtitles);
+        printwriter.println("musicFrequency:" + this.musicFrequency);
 //        printwriter.println("fullscreenResolution:" + this.fullscreenResolution);
     }
 
@@ -481,5 +499,10 @@ public abstract class GameSettingsMixin implements IGameSetting {
     @Override
     public boolean isShowSubtitles() {
         return this.showSubtitles;
+    }
+
+    @Override
+    public int getMusicFrequency() {
+        return this.musicFrequency;
     }
 }

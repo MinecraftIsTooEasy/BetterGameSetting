@@ -14,6 +14,7 @@ import moddedmite.xylose.bettergamesetting.api.ISoundManager;
 import moddedmite.xylose.bettergamesetting.client.audio.ISound;
 import moddedmite.xylose.bettergamesetting.client.audio.ISoundEventListener;
 import moddedmite.xylose.bettergamesetting.client.audio.ITickableSound;
+import moddedmite.xylose.bettergamesetting.client.audio.PositionedSoundRecord;
 import moddedmite.xylose.bettergamesetting.client.audio.Sound;
 import moddedmite.xylose.bettergamesetting.util.OpenALOutputLibrary;
 import moddedmite.xylose.bettergamesetting.client.audio.SoundCategory;
@@ -22,6 +23,7 @@ import moddedmite.xylose.bettergamesetting.client.audio.SoundEventAccessor;
 import moddedmite.xylose.bettergamesetting.client.audio.SoundHandler;
 import moddedmite.xylose.bettergamesetting.init.BGSClient;
 import moddedmite.xylose.bettergamesetting.util.Mth;
+import moddedmite.xylose.bettergamesetting.util.SoundHelper;
 import net.minecraft.Entity;
 import net.minecraft.EntityPlayer;
 import net.minecraft.GameSettings;
@@ -75,29 +77,34 @@ public abstract class SoundManagerMixin implements ISoundManager {
 		this.listeners = Lists.<ISoundEventListener>newArrayList();
 	}
 
-	@WrapOperation(method = "playSound", at = @At(value = "INVOKE", target = "Lpaulscode/sound/SoundSystem;setVolume(Ljava/lang/String;F)V"))
-	private void applyCategoryVolume(SoundSystem instance, String sourcename, float value, Operation<Void> original, @Local(argsOnly = true) String par1Str) {
-		instance.setVolume(sourcename, value * this.getVolume(this.getCategoryForSoundPath(par1Str)));
+	@Inject(method = "playSound", at = @At("HEAD"), cancellable = true)
+	private void applyCategoryVolume(String sound, float x, float y, float z, float volume, float pitch, CallbackInfo ci) {
+		ci.cancel();
+		this.getSoundHandler().playSound(PositionedSoundRecord.of(sound, x, y, z, pitch, volume));
 	}
 
-	@WrapOperation(method = "playEntitySound", at = @At(value = "INVOKE", target = "Lpaulscode/sound/SoundSystem;setVolume(Ljava/lang/String;F)V"))
-	private void applyEntityCategoryVolume(SoundSystem instance, String sourcename, float value, Operation<Void> original, @Local(argsOnly = true) String par1Str) {
-		instance.setVolume(sourcename, value * this.getVolume(this.getCategoryForSoundPath(par1Str)));
+	@Inject(method = "playEntitySound", at = @At("HEAD"), cancellable = true)
+	private void applyEntityCategoryVolume(String sound, Entity entity, float volume, float pitch, boolean priority, CallbackInfo ci) {
+		ci.cancel();
+		this.getSoundHandler().playSound(PositionedSoundRecord.of(sound, (float) entity.posX, (float) entity.posY, (float) entity.posZ, pitch, volume));
 	}
 
-	@WrapOperation(method = "playLongDistanceSound", at = @At(value = "INVOKE", target = "Lpaulscode/sound/SoundSystem;setVolume(Ljava/lang/String;F)V"))
-	private void applyLongDistanceCategoryVolume(SoundSystem instance, String sourcename, float value, Operation<Void> original, @Local(argsOnly = true) String par1Str) {
-		instance.setVolume(sourcename, value * this.getVolume(this.getCategoryForSoundPath(par1Str)));
+	@Inject(method = "playLongDistanceSound", at = @At("HEAD"), cancellable = true)
+	private void applyLongDistanceCategoryVolume(String sound, float x, float y, float z, float volume, float pitch, CallbackInfo ci) {
+		ci.cancel();
+		this.getSoundHandler().playSound(PositionedSoundRecord.of(sound, x, y, z, pitch, volume));
 	}
 
-	@WrapOperation(method = "playStreaming", at = @At(value = "INVOKE", target = "Lpaulscode/sound/SoundSystem;setVolume(Ljava/lang/String;F)V"))
-	private void applyRecordCategoryVolume(SoundSystem instance, String sourcename, float value, Operation<Void> original) {
-		instance.setVolume(sourcename, value * this.getVolume(SoundCategory.RECORDS));
+	@Inject(method = "playStreaming", at = @At("HEAD"), cancellable = true)
+	private void applyRecordCategoryVolume(String sound, float x, float y, float z, CallbackInfo ci) {
+		ci.cancel();
+		this.getSoundHandler().playSound(PositionedSoundRecord.of(sound, x, y, z));
 	}
-	
-	@WrapOperation(method = "playSoundFX", at = @At(value = "INVOKE", target = "Lpaulscode/sound/SoundSystem;setVolume(Ljava/lang/String;F)V"))
-	public void applyFXVolume(SoundSystem instance, String sourcename, float value, Operation<Void> original) {
-		instance.setVolume(sourcename, value * this.getVolume(SoundCategory.UI));
+
+	@Inject(method = "playSoundFX", at = @At("HEAD"), cancellable = true)
+	public void applyFXVolume(String sound, float volume, float pitch, CallbackInfo ci) {
+		ci.cancel();
+		this.getSoundHandler().playSound(PositionedSoundRecord.of(sound, pitch, volume));
 	}
 	
 	public void reloadSoundSystem() {
@@ -474,58 +481,6 @@ public abstract class SoundManagerMixin implements ISoundManager {
 	@Unique
 	private float getClampedVolume(ISound soundIn) {
 		return MathHelper.clamp_float(soundIn.getVolume() * this.getVolume(soundIn.getCategory()), 0.0F, 1.0F);
-	}
-
-	@Unique
-	private SoundCategory getCategoryForSoundPath(String s) {
-		if (s != null) {
-			SoundEvent soundevent = (SoundEvent) SoundEvent.REGISTRY.getObject(new ResourceLocation(s));
-			if (soundevent != null) {
-				return soundevent.getSoundCategory();
-			}
-		}
-		SoundEvent soundevent = (SoundEvent) SoundEvent.REGISTRY.getObject(s);
-		if (soundevent != null) {
-			return soundevent.getSoundCategory();
-		}
-//		if (s == null) {
-//			return SoundCategory.MASTER;
-//		}
-//		if (s.startsWith("music.")) {
-//			return SoundCategory.MUSIC;
-//		}
-//		if (s.startsWith("record.") || s.startsWith("records.")) {
-//			return SoundCategory.RECORDS;
-//		}
-//		if (s.startsWith("weather.")) {
-//			return SoundCategory.WEATHER;
-//		}
-//		if (s.startsWith("ambient.")) {
-//			return SoundCategory.AMBIENT;
-//		}
-//		if (s.startsWith("mob.")) {
-//			String str = s.substring(4);
-//			if (str.startsWith("cow.") || str.startsWith("pig.") || str.startsWith("chicken.") || str.startsWith("sheep.")
-//					|| str.startsWith("bat.") || str.startsWith("squid.") || str.startsWith("horse.") || str.startsWith("ocelot.")
-//					|| str.startsWith("wolf.") || str.startsWith("villager.") || str.startsWith("rabbit.") || str.startsWith("cat.")) {
-//				return SoundCategory.ANIMALS;
-//			}
-//			return SoundCategory.MOBS;
-//		}
-//		if (s.startsWith("dig.") || s.startsWith("step.") || s.startsWith("fire.") || s.startsWith("liquid.")
-//				|| s.startsWith("note.") || s.startsWith("portal.") || s.startsWith("tile.")) {
-//			return SoundCategory.BLOCKS;
-//		}
-//		if (s.startsWith("minecart.")) {
-//			return SoundCategory.ANIMALS;
-//		}
-//		if (s.startsWith("random.") || s.startsWith("game.")) {
-//			return SoundCategory.PLAYERS;
-//		}
-//		if (s.contains("click.")) {
-//			return SoundCategory.UI;
-//		}
-		return SoundCategory.MASTER;
 	}
 	
 	static class SoundSystemStarterThread extends SoundSystem {

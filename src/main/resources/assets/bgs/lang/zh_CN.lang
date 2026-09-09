@@ -22,6 +22,10 @@ options.audioDevice=音频输出设备
 options.audioDevice.default=系统默认
 options.directionalAudio=定向音频
 options.showSubtitles=显示字幕
+options.musicFrequency=音乐播放频率
+options.musicFrequency.default=默认
+options.musicFrequency.frequent=频繁
+options.musicFrequency.continuous=持续
 
 options.chunks=个区块
 options.gamma.default=默认
@@ -306,4 +310,5 @@ subtitles.entity.wight.say=尸妖：哀嚎
 subtitles.entity.witch.cackle=女巫：咯咯笑
 subtitles.entity.witch.death=女巫：死亡
 subtitles.entity.witch.hurt=女巫：受伤
+subtitles.player.classic_hurt=玩家：降级
 

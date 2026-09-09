@@ -1,6 +1,7 @@
 package moddedmite.xylose.bettergamesetting.client.audio;
 
 import com.google.common.collect.Lists;
+import moddedmite.xylose.bettergamesetting.util.SoundHelper;
 import net.minecraft.ResourceLocation;
 
 import java.util.List;
@@ -10,6 +11,11 @@ public record SoundEvent(ResourceLocation soundName, SoundCategory category) {
 
     public SoundCategory getSoundCategory() {
         return this.category();
+    }
+
+    public static SoundEvent of(String soundIn) {
+        if (soundIn == null) return new SoundEvent(new ResourceLocation("null"), SoundCategory.MASTER);
+        return new SoundEvent(new ResourceLocation(soundIn),  SoundHelper.getCategoryForSoundPath(soundIn));
     }
 
     public static void registerSounds() {
@@ -23,6 +29,7 @@ public record SoundEvent(ResourceLocation soundName, SoundCategory category) {
         registerSound(SoundCategory.AMBIENT, "fireworks.twinkle_far");
         registerSound(SoundCategory.WEATHER, "ambient.weather.rain");
         registerSound(SoundCategory.WEATHER, "ambient.weather.thunder");
+        registerSound(SoundCategory.PLAYERS, "damage.hit");
         registerSound(SoundCategory.PLAYERS, "game.player.die");
         registerSound(SoundCategory.PLAYERS, "game.player.hurt");
         registerSound(SoundCategory.PLAYERS, "game.player.hurt.fall.big");

@@ -57,4 +57,8 @@ public interface IGameSetting {
     default boolean isShowSubtitles() {
         return false;
     }
+
+    default int getMusicFrequency() {
+        return 0;
+    }
 }

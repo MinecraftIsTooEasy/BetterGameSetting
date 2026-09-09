@@ -22,6 +22,10 @@ options.audioDevice=Audio Device
 options.audioDevice.default=System Default
 options.directionalAudio=Directional Audio
 options.showSubtitles=Show Subtitles
+options.musicFrequency=Music Frequency
+options.musicFrequency.default=Default
+options.musicFrequency.frequent=Frequent
+options.musicFrequency.continuous=Continuous
 
 options.chunks=chunks
 options.gamma.default=Default
@@ -305,3 +309,4 @@ subtitles.entity.wight.say=Wight moans
 subtitles.entity.witch.cackle=Witch cackles
 subtitles.entity.witch.death=Witch dies
 subtitles.entity.witch.hurt=Witch hurts
+subtitles.player.classic_hurt=Player ugh

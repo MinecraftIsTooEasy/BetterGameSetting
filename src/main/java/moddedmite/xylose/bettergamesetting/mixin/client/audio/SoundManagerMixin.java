@@ -98,7 +98,7 @@ public abstract class SoundManagerMixin implements ISoundManager {
 	@Inject(method = "playStreaming", at = @At("HEAD"), cancellable = true)
 	private void applyRecordCategoryVolume(String sound, float x, float y, float z, CallbackInfo ci) {
 		ci.cancel();
-		this.getSoundHandler().playSound(PositionedSoundRecord.of(sound, x, y, z));
+		this.getSoundHandler().playSound(PositionedSoundRecord.getRecordSoundRecord(SoundEvent.of(sound), x, y, z));
 	}
 
 	@Inject(method = "playSoundFX", at = @At("HEAD"), cancellable = true)

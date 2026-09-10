@@ -30,15 +30,15 @@ public class PositionedSoundRecord extends PositionedSound {
     }
 
     public static PositionedSoundRecord of(String soundIn, float xIn, float yIn, float zIn) {
-        return new PositionedSoundRecord(SoundEvent.of(soundIn), SoundHelper.getCategoryForSoundPath(soundIn), 1.0F, 1.0F, false, 0, ISound.AttenuationType.NONE, xIn, yIn, zIn);
+        return new PositionedSoundRecord(SoundEvent.of(soundIn), SoundHelper.getCategoryForSoundPath(soundIn), 1.0F, 1.0F, false, 0, ISound.AttenuationType.LINEAR, xIn, yIn, zIn);
     }
 
     public static PositionedSoundRecord of(String soundIn, float xIn, float yIn, float zIn, float pitchIn, float volumeIn) {
-        return new PositionedSoundRecord(SoundEvent.of(soundIn), SoundHelper.getCategoryForSoundPath(soundIn), volumeIn, pitchIn, false, 0, ISound.AttenuationType.NONE, xIn, yIn, zIn);
+        return new PositionedSoundRecord(SoundEvent.of(soundIn), SoundHelper.getCategoryForSoundPath(soundIn), volumeIn, pitchIn, false, 0, ISound.AttenuationType.LINEAR, xIn, yIn, zIn);
     }
 
     public static PositionedSoundRecord of(String soundIn, float xIn, float yIn, float zIn, float pitchIn, float volumeIn, int delayIn) {
-        return new PositionedSoundRecord(SoundEvent.of(soundIn), SoundHelper.getCategoryForSoundPath(soundIn), volumeIn, pitchIn, false, delayIn, ISound.AttenuationType.NONE, xIn, yIn, zIn);
+        return new PositionedSoundRecord(SoundEvent.of(soundIn), SoundHelper.getCategoryForSoundPath(soundIn), volumeIn, pitchIn, false, delayIn, ISound.AttenuationType.LINEAR, xIn, yIn, zIn);
     }
 
     public PositionedSoundRecord(SoundEvent soundIn, SoundCategory categoryIn, float volumeIn, float pitchIn, float xIn, float yIn, float zIn) {

@@ -107,6 +107,11 @@ public abstract class FontRendererMixin {
         (registeredFixers.get(ReflectHelper.dyCast(this))).setBidiFlag(rightToLeft);
     }
 
+    @Inject(method = "onResourceManagerReload", at = @At("TAIL"))
+    private void onResourceManagerReload(ResourceManager par1ResourceManager, CallbackInfo ci) {
+        (registeredFixers.get(ReflectHelper.dyCast(this))).onResourceManagerReload(par1ResourceManager);
+    }
+
 //    @Overwrite
 //    public List listFormattedStringToWidth(String text, int width) {
 //        return (registeredFixers.get(ReflectHelper.dyCast(this))).listFormattedStringToWidth(text, width);

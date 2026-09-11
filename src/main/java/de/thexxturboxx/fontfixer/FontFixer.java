@@ -16,7 +16,7 @@ import java.util.Random;
 
 import static org.lwjgl.opengl.GL11.glColor4f;
 
-public class FontFixer {
+public class FontFixer implements ResourceManagerReloadListener {
     private static final ResourceLocation[] unicodePageLocations = new ResourceLocation[256];
     public static String FIXER_VERSION = "1";
     private int[] charWidth = new int[Short.MAX_VALUE];
@@ -43,9 +43,9 @@ public class FontFixer {
     private boolean underlineStyle = false;
     private boolean strikethroughStyle = false;
     private final ResourceLocation locationFontTexture;
+    private final GameSettings options;
 
     public final String ASCII = "ÀÁÂÈÊËÍÓÔÕÚßãõğİıŒœŞşŴŵžȇ\u0000\u0000\u0000\u0000\u0000\u0000\u0000 !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\u0000ÇüéâäàåçêëèïîìÄÅÉæÆôöòûùÿÖÜø£Ø×ƒáíóúñÑªº¿®¬½¼¡«»░▒▓│┤╡╢╖╕╣║╗╝╜╛┐└┴┬├─┼╞╟╚╔╩╦╠═╬╧╨╤╥╙╘╒╓╫╪┘┌█▄▌▐▀αβΓπΣσμτΦΘΩδ∞∅∈∩≡±≥≤⌠⌡÷≈°∙·√ⁿ²■\u0000";
-
 
 //    public FontFixer() {
 //        this.renderEngine = null;
@@ -55,9 +55,18 @@ public class FontFixer {
         this.locationFontTexture = resourceLocation;
         this.renderEngine = renderEngine;
         this.unicodeFlag = unicodeFlag;
+        this.options = gameSettings;
         renderEngine.bindTexture(this.locationFontTexture);
         this.readGlyphSizes();
+        this.readFontTexture();
+    }
 
+    @Override
+    public void onResourceManagerReload(ResourceManager par1ResourceManager) {
+        this.readFontTexture();
+    }
+
+    public void readFontTexture() {
         BufferedImage bufferedImage;
         try {
             bufferedImage = ImageIO.read(Minecraft.getMinecraft().getResourceManager().getResource(this.locationFontTexture).getInputStream());
@@ -70,6 +79,9 @@ public class FontFixer {
         int[] var8 = new int[var19 * var7];
         bufferedImage.getRGB(0, 0, var19, var7, var8, 0, var19);
 
+        int var5 = var7 / 16;
+        int var17 = var19 / 16;
+        float var18 = 8.0F / (float) var17;
         int var9;
         int var10;
         int var11;
@@ -81,14 +93,13 @@ public class FontFixer {
             var10 = var9 % 16;
             var11 = var9 / 16;
 
-            for (var12 = 7; var12 >= 0; --var12) {
-                var13 = var10 * 8 + var12;
+            for (var12 = var17 - 1; var12 >= 0; --var12) {
+                var13 = var10 * var17 + var12;
                 boolean var14 = true;
 
-                for (var15 = 0; var15 < 8 && var14; ++var15) {
-                    var16 = (var11 * 8 + var15) * var19;
-                    int var17 = var8[var13 + var16] & 255;
-                    if (var17 > 0) {
+                for (var15 = 0; var15 < var5 && var14; ++var15) {
+                    var16 = (var11 * var17 + var15) * var19;
+                    if ((var8[var13 + var16] >> 24 & 255) != 0) {
                         var14 = false;
                     }
                 }
@@ -98,11 +109,7 @@ public class FontFixer {
                 }
             }
 
-            if (var9 == 32) {
-                var12 = 2;
-            }
-
-            this.charWidth[var9] = var12 + 2;
+            this.charWidth[var9] = (int) (0.5D + (double) ((float) (++var12) * var18)) + 1;
         }
 
         this.fontTextureName = 1;
@@ -117,7 +124,7 @@ public class FontFixer {
                 var11 += 85;
             }
 
-            if (gameSettings.anaglyph) {
+            if (options.anaglyph) {
                 int var20 = (var11 * 30 + var12 * 59 + var13 * 11) / 100;
                 var15 = (var11 * 30 + var12 * 70) / 100;
                 var16 = (var11 * 30 + var13 * 70) / 100;
@@ -144,7 +151,7 @@ public class FontFixer {
                 var20 += 85;
             }
 
-            if (gameSettings.anaglyph) {
+            if (options.anaglyph) {
                 int var23 = (var20 * 30 + var21 * 59 + var22 * 11) / 100;
                 int var24 = (var20 * 30 + var21 * 70) / 100;
                 int var25 = (var20 * 30 + var22 * 70) / 100;

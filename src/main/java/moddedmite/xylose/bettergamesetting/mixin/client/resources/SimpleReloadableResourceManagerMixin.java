@@ -3,6 +3,7 @@ package moddedmite.xylose.bettergamesetting.mixin.client.resources;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Iterables;
 import moddedmite.xylose.bettergamesetting.util.SimpleReloadableResourceManagerINNER1;
+import moddedmite.xylose.bettergamesetting.client.FontPack;
 import net.minecraft.Minecraft;
 import net.minecraft.ResourcePack;
 import net.minecraft.SimpleReloadableResourceManager;
@@ -27,6 +28,10 @@ public class SimpleReloadableResourceManagerMixin {
     @Overwrite
     public void reloadResources(List par1List) {
         this.clearResources();
+        FontPack fontPack = FontPack.get();
+        if (fontPack != null) {
+            par1List.add(fontPack);
+        }
         Minecraft.getMinecraft().getLogAgent().logInfo("Reloading ResourceManager: " + joinerResourcePacks.join(Iterables.transform(par1List, new SimpleReloadableResourceManagerINNER1(ReflectHelper.dyCast(this)))));
 
         for (ResourcePack resourcePack : (List<ResourcePack>) par1List) {

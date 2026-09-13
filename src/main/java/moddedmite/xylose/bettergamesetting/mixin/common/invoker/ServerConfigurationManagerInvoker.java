@@ -1,4 +1,4 @@
-package moddedmite.xylose.bettergamesetting.mixin.client.invoker;
+package moddedmite.xylose.bettergamesetting.mixin.common.invoker;
 
 import net.minecraft.ServerConfigurationManager;
 import org.spongepowered.asm.mixin.Mixin;

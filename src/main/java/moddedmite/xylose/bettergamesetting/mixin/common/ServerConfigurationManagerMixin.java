@@ -1,7 +1,7 @@
 package moddedmite.xylose.bettergamesetting.mixin.common;
 
 import moddedmite.xylose.bettergamesetting.mixin.client.invoker.PlayerManagerInvoker;
-import moddedmite.xylose.bettergamesetting.mixin.client.invoker.ServerConfigurationManagerInvoker;
+import moddedmite.xylose.bettergamesetting.mixin.common.invoker.ServerConfigurationManagerInvoker;
 import net.minecraft.ServerConfigurationManager;
 import net.minecraft.WorldServer;
 import net.minecraft.server.MinecraftServer;

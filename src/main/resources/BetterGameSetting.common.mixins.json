@@ -9,6 +9,8 @@
     "GameRulesMixin",
     "IntegratedPlayerListMixin",
     "IntegratedServerMixin",
+    "invoker.ServerConfigurationManagerInvoker",
+    "PacketMixin",
     "PlayerManagerMixin",
     "ServerConfigurationManagerMixin",
     "ServerPlayerMixin",

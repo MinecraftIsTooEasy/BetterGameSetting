@@ -107,7 +107,7 @@ public abstract class GuiSlotModern {
         int l = this.left + this.width / 2 + this.getListWidth() / 2;
         int i = mouseY - this.top - this.headerPadding + (int) this.amountScrolled - 4;
         int j = i / this.slotHeight;
-        return mouseX < this.getScrollBarX() && mouseX >= k && mouseX <= l && j >= 0 && i >= 0 && j < this.getSize() ? j : -1;
+        return mouseX < this.getScrollBarX() && mouseX >= k && mouseX <= l && this.isMouseYWithinSlotBounds(mouseY) && j >= 0 && i >= 0 && j < this.getSize() ? j : -1;
     }
 
     /**

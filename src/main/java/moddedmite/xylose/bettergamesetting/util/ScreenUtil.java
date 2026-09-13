@@ -373,6 +373,13 @@ public class ScreenUtil extends Gui {
         return height - Mouse.getY() * height / client.displayHeight - 1;
     }
     
+    public static void deleteTexture(ResourceLocation location, int glTextureId) {
+        if (glTextureId >= 0) {
+            GL11.glDeleteTextures(glTextureId);
+        }
+        Minecraft.getMinecraft().getTextureManager().loadTexture(location, TextureUtil.missingTexture);
+    }
+
     public static void createWorldIcon(Minecraft mc, String folderName) {
         try {
             int width = mc.displayWidth;

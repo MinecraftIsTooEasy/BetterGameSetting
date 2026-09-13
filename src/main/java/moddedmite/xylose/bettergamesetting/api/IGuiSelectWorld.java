@@ -1,5 +1,6 @@
 package moddedmite.xylose.bettergamesetting.api;
 
+import moddedmite.xylose.bettergamesetting.client.gui.world.GuiListWorldSelectionEntry;
 import net.minecraft.SaveFormatComparator;
 
 import java.util.List;
@@ -7,7 +8,9 @@ import java.util.List;
 public interface IGuiSelectWorld {
     List<SaveFormatComparator> getSaveList();
 
-    int getSelectedIndex();
+    void selectWorld(GuiListWorldSelectionEntry entry);
 
-    void onElementClicked(int index, boolean isDoubleClick);
+    void setVersionTooltip(String text);
+
+    void loadWorld(String fileName);
 }

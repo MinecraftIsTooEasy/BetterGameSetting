@@ -6,6 +6,7 @@ import net.minecraft.*;
 import net.xiaoyu233.fml.util.ReflectHelper;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Invoker;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -33,8 +34,10 @@ public abstract class FontRendererMixin {
     @Shadow private float posX;
     @Shadow private float posY;
     @Shadow public int FONT_HEIGHT;
+    @Shadow private byte[] glyphWidth;
     @Shadow protected abstract float renderDefaultChar(int var1, boolean var2);
-    @Shadow protected abstract float renderUnicodeChar(char var1, boolean var2);
+    @Shadow protected abstract void loadGlyphTexture(int var1);
+    @Invoker("readGlyphSizes") protected abstract void invokeReadGlyphSizes();
 
     @Unique private final int[] colorCode = new int[32];
     @Unique private final String ASCII = "ÀÁÂÈÊËÍÓÔÕÚßãõğİıŒœŞşŴŵžȇ\u0000\u0000\u0000\u0000\u0000\u0000\u0000 !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\u0000ÇüéâäàåçêëèïîìÄÅÉæÆôöòûùÿÖÜø£Ø×ƒáíóúñÑªº¿®¬½¼¡«»░▒▓│┤╡╢╖╕╣║╗╝╜╛┐└┴┬├─┼╞╟╚╔╩╦╠═╬╧╨╤╥╙╘╒╓╫╪┘┌█▄▌▐▀αβΓπΣσμτΦΘΩδ∞∅∈∩≡±≥≤⌠⌡÷≈°∙·√ⁿ²■\u0000";
@@ -109,6 +112,7 @@ public abstract class FontRendererMixin {
 
     @Inject(method = "onResourceManagerReload", at = @At("TAIL"))
     private void onResourceManagerReload(ResourceManager par1ResourceManager, CallbackInfo ci) {
+        this.invokeReadGlyphSizes();
         (registeredFixers.get(ReflectHelper.dyCast(this))).onResourceManagerReload(par1ResourceManager);
     }
 
@@ -160,7 +164,6 @@ public abstract class FontRendererMixin {
 
     @Inject(method = "renderStringAtPos", at = @At("HEAD"), cancellable = true)
     private void newRender(String string, boolean shadow, CallbackInfo ci) {
-        if (Minecraft.getMinecraft().gameSettings.isForceUnicodeFont()) return;
         ci.cancel();
 
         for (int var3 = 0; var3 < string.length(); ++var3) {
@@ -283,7 +286,16 @@ public abstract class FontRendererMixin {
         if (par2 == ' ') {
             return 4.0F;
         } else {
-            return (this.ASCII.indexOf(par2) != -1 && !((IGameSetting) Minecraft.getMinecraft().gameSettings).isForceUnicodeFont()) ? this.renderDefaultChar(par1, par3) : this.renderUnicodeChar(par2, par3);
+            return (this.ASCII.indexOf(par2) != -1 && !((IGameSetting) Minecraft.getMinecraft().gameSettings).isForceUnicodeFont()) ? this.renderDefaultChar(par1, par3) : this.newRenderUnicodeChar(par2, par3);
         }
+    }
+
+    @Unique
+    private float newRenderUnicodeChar(char par1, boolean par2) {
+        if (this.glyphWidth[par1] == 0) {
+            return 0.0F;
+        }
+        this.loadGlyphTexture(par1 / 256);
+        return FontFixer.drawUnicodeQuad(par1, this.glyphWidth[par1] & 255, this.posX, this.posY, par2);
     }
 }

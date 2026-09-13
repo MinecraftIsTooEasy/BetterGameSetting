@@ -97,6 +97,7 @@ selectWorld.tab.more=More
 selectWorld.hover.worldName=Save Folder: §o%s
 selectWorld.hover.seed=Once the world is created, the seed will be saved in MITE/world_seeds.txt
 selectWorld.button.gameRuleEditor=GameRules
+selectWorld.version=Version:
 
 selectWorld.experimental.message=Be careful!\nThis configuration requires features that are still under development. Your world might crash, break, or not work with future updates.
 selectWorld.experimental.title=Experimental Features Warning
@@ -129,8 +130,16 @@ gamerules.category.misc=Miscellaneous
 
 selectWorld.experimental.warning=Experimental settings may affect stability
 
+multiplayer.status.pinging=Pinging...
+multiplayer.status.cannot_resolve=Can't resolve hostname
+multiplayer.status.cannot_connect=Can't connect to server
+multiplayer.status.no_connection=(no connection)
+multiplayer.status.incompatible=Incompatible version!
+multiplayer.status.ping=%sms
+multiplayer.status.old=Old
+multiplayer.status.unknown=???
+
 # subtitles
-# === vanilla subtitles ===
 subtitles.ambient.cave=Eerie noise
 subtitles.block.anvil.destroy=Anvil destroyed
 subtitles.block.anvil.land=Anvil landed
@@ -279,7 +288,6 @@ subtitles.item.flintandsteel.use=Flint and Steel click
 subtitles.item.shear=Shears click
 subtitles.weather.rain=Rain falls
 
-# === MITE subtitles ===
 subtitles.block.boil=Boiling
 subtitles.block.portal.runegate=Rune gate activates
 subtitles.block.random.chest_locked=Chest locked

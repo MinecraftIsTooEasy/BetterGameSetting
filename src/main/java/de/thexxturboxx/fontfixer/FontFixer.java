@@ -1,6 +1,7 @@
 package de.thexxturboxx.fontfixer;
 
 import moddedmite.xylose.bettergamesetting.api.IGameSetting;
+import moddedmite.xylose.bettergamesetting.client.FontPack;
 import net.minecraft.*;
 import org.lwjgl.opengl.GL11;
 
@@ -63,6 +64,7 @@ public class FontFixer implements ResourceManagerReloadListener {
 
     @Override
     public void onResourceManagerReload(ResourceManager par1ResourceManager) {
+        this.readGlyphSizes();
         this.readFontTexture();
     }
 
@@ -174,7 +176,6 @@ public class FontFixer implements ResourceManagerReloadListener {
         try {
             InputStream stream = Minecraft.getMinecraft().getResourceManager().getResource(new ResourceLocation("font/glyph_sizes.bin")).getInputStream();
             stream.read(this.glyphWidth);
-            this.glyphWidth['（'] = 127;
         } catch (IOException var2) {
             throw new RuntimeException(var2);
         }
@@ -223,29 +224,33 @@ public class FontFixer implements ResourceManagerReloadListener {
     private float renderUnicodeChar(char glyphWidth, boolean par2) {
         if (this.glyphWidth[glyphWidth] == 0) {
             return 0.0F;
-        } else {
-            int var3 = glyphWidth / 256;
-            this.loadGlyphTexture(var3);
-            int var4 = this.glyphWidth[glyphWidth] >>> 4;
-            int var5 = this.glyphWidth[glyphWidth] & 15;
-            float var6 = (float)var4;
-            float var7 = (float)(var5 + 1);
-            float var8 = (float)(glyphWidth % 16 * 16) + var6;
-            float var9 = (float)((glyphWidth & 255) / 16 * 16);
-            float var10 = var7 - var6 - 0.02F;
-            float var11 = par2 ? 1.0F : 0.0F;
-            GL11.glBegin(5);
-            GL11.glTexCoord2f(var8 / 256.0F, var9 / 256.0F);
-            GL11.glVertex3f(this.posX + var11, this.posY, 0.0F);
-            GL11.glTexCoord2f(var8 / 256.0F, (var9 + 15.98F) / 256.0F);
-            GL11.glVertex3f(this.posX - var11, this.posY + 7.99F, 0.0F);
-            GL11.glTexCoord2f((var8 + var10) / 256.0F, var9 / 256.0F);
-            GL11.glVertex3f(this.posX + var10 / 2.0F + var11, this.posY, 0.0F);
-            GL11.glTexCoord2f((var8 + var10) / 256.0F, (var9 + 15.98F) / 256.0F);
-            GL11.glVertex3f(this.posX + var10 / 2.0F - var11, this.posY + 7.99F, 0.0F);
-            GL11.glEnd();
-            return (var7 - var6) / 2.0F + 1.0F;
         }
+        this.loadGlyphTexture(glyphWidth / 256);
+        return drawUnicodeQuad(glyphWidth, this.glyphWidth[glyphWidth] & 255, this.posX, this.posY, par2);
+    }
+
+    public static float drawUnicodeQuad(char ch, int packed, float posX, float posY, boolean italic) {
+        int scale = FontPack.SS;
+        int x0 = (packed >>> 4) * scale;
+        int x1 = (packed & 15) * scale;
+        float left = (float)x0;
+        float right = (float)(x1 + scale);
+        float u = (float)(ch % 16 * 16 * scale) + left;
+        float v = (float)((ch & 255) / 16 * 16 * scale);
+        float width = right - left - 0.02F;
+        float slant = italic ? 1.0F : 0.0F;
+        float size = 256.0F * scale;
+        GL11.glBegin(5);
+        GL11.glTexCoord2f(u / size, v / size);
+        GL11.glVertex3f(posX + slant, posY, 0.0F);
+        GL11.glTexCoord2f(u / size, (v + 16.0F * scale - 0.02F) / size);
+        GL11.glVertex3f(posX - slant, posY + 7.99F, 0.0F);
+        GL11.glTexCoord2f((u + width) / size, v / size);
+        GL11.glVertex3f(posX + width / (2.0F * scale) + slant, posY, 0.0F);
+        GL11.glTexCoord2f((u + width) / size, (v + 16.0F * scale - 0.02F) / size);
+        GL11.glVertex3f(posX + width / (2.0F * scale) - slant, posY + 7.99F, 0.0F);
+        GL11.glEnd();
+        return (right - left) / (2.0F * scale) + 1.0F;
     }
 
     public int drawStringWithShadow(String text, int x, int y, int textColor) {
@@ -554,12 +559,8 @@ public class FontFixer implements ResourceManagerReloadListener {
             if (glyphWidth > 0 && var2 != -1 && !((IGameSetting) Minecraft.getMinecraft().gameSettings).isForceUnicodeFont()) {
                 return this.charWidth[var2];
             } else if (this.glyphWidth[glyphWidth] != 0) {
-                int var3 = this.glyphWidth[glyphWidth] >>> 4;
+                int var3 = (this.glyphWidth[glyphWidth] & 255) >>> 4;
                 int var4 = this.glyphWidth[glyphWidth] & 15;
-                if (var4 > 7) {
-                    var4 = 15;
-                    var3 = 0;
-                }
 
                 ++var4;
                 return (var4 - var3) / 2 + 1;

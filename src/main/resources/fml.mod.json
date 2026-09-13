@@ -14,7 +14,7 @@
     "shader-loader": "<=1.0.3",
     "ohmycommands": "<3.0.0"
   },
-  "environment": "client",
+  "environment": "*",
   "name": "BetterGameSetting",
   "icon": "assets/bgs/bgs_icon.png",
   "description": "Ports the game settings screen from 1.7.2+ to 1.6.4-MITE",
@@ -58,7 +58,8 @@
       "net/minecraft/GuiCreateWorld": ["moddedmite/xylose/bettergamesetting/api/IGuiCreateWorld"],
       "net/minecraft/GuiSelectWorld": ["moddedmite/xylose/bettergamesetting/api/IGuiSelectWorld"],
       "net/minecraft/Minecraft": ["moddedmite/xylose/bettergamesetting/api/IClient"],
-      "net/minecraft/SoundManager": ["moddedmite/xylose/bettergamesetting/api/ISoundManager"]
+      "net/minecraft/SoundManager": ["moddedmite/xylose/bettergamesetting/api/ISoundManager"],
+      "net/minecraft/ServerData": ["moddedmite/xylose/bettergamesetting/api/IServerData"]
     },
     "modmenu:clientsideOnly": true
   }

@@ -23,6 +23,7 @@ import net.minecraft.Minecraft;
 import net.minecraft.ResourceLocation;
 import net.minecraft.SaveFormatComparator;
 import net.minecraft.TextureObject;
+import net.minecraft.TextureUtil;
 import net.minecraft.WorldInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
@@ -68,7 +69,7 @@ public class GuiListWorldSelectionEntry implements GuiListExtended.IGuiListEntry
         }
 
         TextureObject existingIcon = this.client.getTextureManager().getTexture(this.iconLocation);
-        this.icon = existingIcon instanceof DynamicTexture ? (DynamicTexture) existingIcon : null;
+        this.icon = existingIcon instanceof DynamicTexture && existingIcon != TextureUtil.missingTexture ? (DynamicTexture) existingIcon : null;
 
         WorldInfo worldInfo = this.client.getSaveLoader().getSaveLoader(worldSummaryIn.getFileName(), false).loadWorldInfo();
         int version = getClientMiteRelease();
@@ -262,6 +263,8 @@ public class GuiListWorldSelectionEntry implements GuiListExtended.IGuiListEntry
                 this.freeIcon();
                 return;
             }
+
+            if (bufferedimage.getWidth() != 64 || bufferedimage.getHeight() != 64) return;
 
             if (this.icon == null) {
                 this.icon = new DynamicTexture(bufferedimage.getWidth(), bufferedimage.getHeight());

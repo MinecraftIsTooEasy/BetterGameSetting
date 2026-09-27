@@ -15,13 +15,13 @@ import net.minecraft.Minecraft;
 import net.minecraft.ResourceLocation;
 import net.minecraft.ServerData;
 import net.minecraft.TextureObject;
+import net.minecraft.TextureUtil;
 import org.apache.commons.lang3.Validate;
 import org.lwjgl.opengl.GL11;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.net.UnknownHostException;
 import java.util.Base64;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -45,7 +45,7 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry {
         this.serverIcon = new ResourceLocation(BGSClient.resourceId, "servers/" + server.serverIP + "/icon", false);
 
         TextureObject existing = this.mc.getTextureManager().getTexture(this.serverIcon);
-        this.icon = existing instanceof DynamicTexture ? (DynamicTexture) existing : null;
+        this.icon = existing instanceof DynamicTexture && existing != TextureUtil.missingTexture ? (DynamicTexture) existing : null;
     }
 
     @Override
@@ -199,7 +199,7 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry {
             Validate.validState(bufferedimage.getWidth() == 64, "Must be 64 pixels wide");
             Validate.validState(bufferedimage.getHeight() == 64, "Must be 64 pixels high");
         } catch (Throwable throwable) {
-            this.server.setBase64EncodedIconData(null);
+            ((IServerData) this.server).setBase64EncodedIconData(null);
             this.lastIconB64 = null;
             return;
         }

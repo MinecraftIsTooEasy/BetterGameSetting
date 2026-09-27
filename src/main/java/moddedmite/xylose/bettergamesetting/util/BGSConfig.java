@@ -23,7 +23,7 @@ public class BGSConfig {
             .addEntry(ConfigEntry.of("Use Modern Create World Gui", useModernCreateWorldGui).withComment("使用1.19.4+的创建世界界面"))
             .addEntry(ConfigEntry.of("Use Modern Resource Pack Gui", useModernResourcePackGui).withComment("使用1.7+的资源包界面"))
             .addEntry(ConfigEntry.of("Use Font Fix", useModernCreateWorldGui).withComment("开启字体修复"))
-            .addEntry(ConfigEntry.of("Use TTF Font", useTtfFont).withComment("将材质包 font/default.json 中的 ttf 字体转为字体材质, 覆盖材质包字体"))
+            .addEntry(ConfigEntry.of("Use TTF Font", useTtfFont).withComment("使用资源包中的TTF字体"))
             .addEntry(ConfigEntry.of("Free Dev Allow Cheat", freeDevAllowCheat).withComment("免dev允许作弊"))
             ;
 

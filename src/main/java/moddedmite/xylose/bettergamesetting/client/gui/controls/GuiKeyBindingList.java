@@ -1,8 +1,10 @@
 package moddedmite.xylose.bettergamesetting.client.gui.controls;
 
+import com.google.common.collect.Lists;
 import moddedmite.rustedironcore.api.keybinding.KeybindingV1;
 import moddedmite.xylose.bettergamesetting.client.gui.base.GuiListExtended;
 import moddedmite.xylose.bettergamesetting.util.KeyBindingHelper;
+import moddedmite.xylose.bettergamesetting.util.ScreenUtil;
 import net.minecraft.*;
 
 import java.util.ArrayList;
@@ -51,6 +53,15 @@ public class GuiKeyBindingList extends GuiListExtended {
 
     public int getSize() {
         return this.listEntries.size();
+    }
+
+    protected void drawTooltip(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY) {
+        if (!(this.listEntries.get(slotIndex) instanceof KeyEntry keyEntry)) return;
+        if (mouseY < y || mouseY >= y + 20 || mouseX < x + 99 || mouseX >= x + 180) return;
+        List<String> lines = keyEntry.conflictTooltip();
+        if (lines != null) {
+            ScreenUtil.getInstance().drawButtonTooltip(lines, mouseX, mouseY);
+        }
     }
 
 //    protected void drawSlot(int par1, int par2, int par3, int par4, Tessellator par5Tessellator) {
@@ -120,7 +131,7 @@ public class GuiKeyBindingList extends GuiListExtended {
             this.btnReset.drawButton(GuiKeyBindingList.this.mc, mouseX, mouseY);
             this.btnChangeKeyBinding.xPosition = x + 105;
             this.btnChangeKeyBinding.yPosition = y;
-            this.btnChangeKeyBinding.displayString = GameSettings.getKeyDisplayString(this.keybinding.keyCode);
+            this.btnChangeKeyBinding.displayString = KeyBindingHelper.getKeyDisplayString(this.keybinding.keyCode);
             boolean flag1 = false;
 
             if (this.keybinding.keyCode != 0) {
@@ -135,10 +146,25 @@ public class GuiKeyBindingList extends GuiListExtended {
             if (flag) {
                 this.btnChangeKeyBinding.displayString = EnumChatFormatting.WHITE + "> " + EnumChatFormatting.YELLOW + this.btnChangeKeyBinding.displayString + EnumChatFormatting.WHITE + " <";
             } else if (flag1) {
-                this.btnChangeKeyBinding.displayString = EnumChatFormatting.RED + this.btnChangeKeyBinding.displayString;
+                this.btnChangeKeyBinding.displayString = EnumChatFormatting.YELLOW + "[ " + EnumChatFormatting.WHITE + this.btnChangeKeyBinding.displayString + EnumChatFormatting.YELLOW + " ]";
+                Gui.drawRect(x + 99, y, x + 102, y + 20, 0xFFFFFF00);
             }
 
             this.btnChangeKeyBinding.drawButton(GuiKeyBindingList.this.mc, mouseX, mouseY);
+        }
+
+        public List<String> conflictTooltip() {
+            if (this.keybinding.keyCode == 0) {
+                return null;
+            }
+            List<String> lines = Lists.newArrayList();
+            lines.add(I18n.getString("controls.conflict.tooltip"));
+            for (KeyBinding keybinding : GuiKeyBindingList.this.mc.gameSettings.keyBindings) {
+                if (keybinding != this.keybinding && keybinding.keyCode == this.keybinding.keyCode) {
+                    lines.add(I18n.getString(keybinding.keyDescription));
+                }
+            }
+            return lines.size() > 1 ? lines : null;
         }
 
         public boolean mousePressed(int slotIndex, int x, int y, int mouseEvent, int relativeX, int relativeY) {

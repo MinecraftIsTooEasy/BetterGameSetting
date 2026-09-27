@@ -20,6 +20,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
+import org.lwjgl.input.Keyboard;
+
 import java.io.*;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -123,6 +125,17 @@ public abstract class GameSettingsMixin implements IGameSetting {
             )
     )
     private void keepGammaSetting(GameSettings instance, float value) {
+    }
+
+    @Redirect(
+            method = "getKeyDisplayString",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lorg/lwjgl/input/Keyboard;getKeyName(I)Ljava/lang/String;"
+            )
+    )
+    private static String guardKeyName(int key) {
+        return key < Keyboard.KEYBOARD_SIZE ? Keyboard.getKeyName(key) : String.format("%c", (char) (key - Keyboard.KEYBOARD_SIZE)).toUpperCase();
     }
 
     @Inject(method = "setOptionValue", at = @At("HEAD"))

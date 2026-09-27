@@ -232,7 +232,6 @@ public abstract class GuiMultiplayerMixin extends GuiScreen implements IGuiMulti
         return this.oldServerPinger;
     }
     
-    
     @Override
     public void setHoveringText(String text) {
         this.lagTooltip = text;

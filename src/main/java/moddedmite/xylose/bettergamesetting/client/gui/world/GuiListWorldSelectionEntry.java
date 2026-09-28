@@ -18,7 +18,6 @@ import net.minecraft.GuiRenameWorld;
 import net.minecraft.GuiScreen;
 import net.minecraft.I18n;
 import net.minecraft.ISaveFormat;
-import net.minecraft.ISaveHandler;
 import net.minecraft.Minecraft;
 import net.minecraft.ResourceLocation;
 import net.minecraft.SaveFormatComparator;
@@ -71,7 +70,7 @@ public class GuiListWorldSelectionEntry implements GuiListExtended.IGuiListEntry
         TextureObject existingIcon = this.client.getTextureManager().getTexture(this.iconLocation);
         this.icon = existingIcon instanceof DynamicTexture && existingIcon != TextureUtil.missingTexture ? (DynamicTexture) existingIcon : null;
 
-        WorldInfo worldInfo = this.client.getSaveLoader().getSaveLoader(worldSummaryIn.getFileName(), false).loadWorldInfo();
+        WorldInfo worldInfo = this.client.getSaveLoader().getWorldInfo(worldSummaryIn.getFileName());
         int version = getClientMiteRelease();
         if (worldInfo == null) {
             this.versionName = null;
@@ -230,9 +229,7 @@ public class GuiListWorldSelectionEntry implements GuiListExtended.IGuiListEntry
     public void recreateWorld() {
         this.client.displayGuiScreen(new GuiScreenWorking());
         GuiCreateWorld guicreateworld = new GuiCreateWorld(this.worldSelScreen);
-        ISaveHandler isavehandler = this.client.getSaveLoader().getSaveLoader(this.worldSummary.getFileName(), false);
-        WorldInfo worldinfo = isavehandler.loadWorldInfo();
-        isavehandler.flush();
+        WorldInfo worldinfo = this.client.getSaveLoader().getWorldInfo(this.worldSummary.getFileName());
 
         if (worldinfo != null) {
             guicreateworld.func_82286_a(worldinfo);

@@ -12,7 +12,7 @@
     "gamma_free": "*",
     "fontfixer": "*",
     "shader-loader": "<=1.0.3",
-    "ohmycommands": "<3.0.0"
+    "ohmycommands": "<=2.1.0"
   },
   "environment": "*",
   "name": "BetterGameSetting",

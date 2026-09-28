@@ -1,22 +1,15 @@
 package moddedmite.xylose.bettergamesetting.mixin.client.renderer;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import moddedmite.xylose.bettergamesetting.client.audio.PositionedSoundRecord;
-import moddedmite.xylose.bettergamesetting.client.audio.SoundCategory;
-import moddedmite.xylose.bettergamesetting.client.audio.SoundEvent;
 import net.minecraft.*;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.nio.IntBuffer;
-import java.util.List;
 
 @Mixin(value = RenderGlobal.class, priority = 3001)
 public abstract class RenderGlobalMixin {
@@ -38,7 +31,17 @@ public abstract class RenderGlobalMixin {
         this.renderChunksTall = 16;
         this.renderChunksDeep = var1;
     }
-    
+
+    @ModifyConstant(method = "updateRenderers", constant = @Constant(intValue = 2))
+    private int modifyChunkRebuildBudget(int constant) {
+        return 32;
+    }
+
+    @Redirect(method = "updateRenderers", at = @At(value = "FIELD", target = "Lnet/minecraft/WorldRenderer;isInFrustum:Z", opcode = Opcodes.GETFIELD, ordinal = 1))
+    private boolean ignoreFrustumWhenRebuilding(WorldRenderer instance) {
+        return true;
+    }
+
 //    @WrapOperation(method = "playAuxSFX", at = @At(value = "INVOKE", target = "Lnet/minecraft/SoundManager;playSound(Ljava/lang/String;FFFFF)V"))
 //    private void replaceSoundManager(SoundManager instance, String sound, float x, float y, float z, float volume, float pitch, Operation<Void> original) {
 //        this.mc.getSoundHandler().playSound(new PositionedSoundRecord(new SoundEvent(new ResourceLocation(sound), SoundCategory.MASTER), SoundCategory.MASTER, volume, pitch, x, y, z));

@@ -37,9 +37,13 @@ public abstract class EntityRendererMixin {
     @Shadow private float fovModifierHand;
 
     @Unique private long timeWorldIcon;
-    
+
     @Inject(method = "updateCameraAndRender", at = @At(value = "INVOKE", target = "Lnet/minecraft/GuiIngame;renderGameOverlay(FZII)V"))
     private void captureWorldIcon(float par1, CallbackInfo ci) {
+        if (this.timeWorldIcon == 0L && Minecraft.isSingleplayer()) {
+            this.timeWorldIcon = Minecraft.getSystemTime() + 6000L;
+            return;
+        }
         if (Minecraft.isSingleplayer() && this.timeWorldIcon < Minecraft.getSystemTime() - 1000L) {
             this.timeWorldIcon = Minecraft.getSystemTime();
             if (!GuiListWorldSelection.getIconFile(this.mc.getIntegratedServer().getFolderName()).isFile()) {

@@ -138,6 +138,17 @@ public abstract class MinecraftMixin implements IClient {
         GuiGameRules.applyPendingRules(ReflectHelper.dyCast(this));
     }
 
+    @Inject(method = "launchIntegratedServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/Minecraft;loadWorld(Lnet/minecraft/WorldClient;)V", shift = At.Shift.AFTER))
+    private void awaitPreviousServerShutdown(CallbackInfo ci) {
+        Thread serverThread = Minecraft.server_thread;
+        if (serverThread == null || serverThread == Thread.currentThread()) return;
+        try {
+            serverThread.join(30000L);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
     /**
      * @author Arminias & Xy_Luce
      * @reason Optimized the performance of full-screen and change to windowed full-screen

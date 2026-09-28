@@ -33,6 +33,7 @@
     "renderer.EntityRendererMixin",
     "renderer.RenderGlobalMixin",
     "renderer.RenderMixin",
+    "renderer.WorldRendererMixin",
     "resources.ResourceLocationMixin",
     "resources.ResourcePackRepositoryEntryMixin",
     "resources.ResourcePackRepositoryMixin",

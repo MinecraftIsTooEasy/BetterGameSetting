@@ -109,8 +109,9 @@ tasks.named('runClient', JavaExec).configure { exec ->
 
 publishing {
     publications {
-        mavenJava(MavenPublication) {
-            from components.java
+        create("mavenJava", MavenPublication) {
+            artifactId = project.maven_id
+            from(components.java)
         }
     }
 

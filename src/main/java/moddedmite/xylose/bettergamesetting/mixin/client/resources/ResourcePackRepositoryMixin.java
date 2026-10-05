@@ -18,7 +18,6 @@ public class ResourcePackRepositoryMixin implements IResourcePackRepository {
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void loadResourcePacks(File resourcePack, ResourcePack metadataSerializer, MetadataSerializer gameSettings, GameSettings par4, CallbackInfo ci) {
-
         for (String s : par4.getResourcePacks()) {
             for (ResourcePackRepositoryEntry entry : (List<ResourcePackRepositoryEntry>) this.repositoryEntriesAll) {
                 if (entry.getResourcePackName().equals(s)) {

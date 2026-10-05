@@ -52,6 +52,7 @@ public abstract class PlayerManagerMixin implements IPlayerChunkMap {
 
 	@Override
 	public void queueChunkLoad(PlayerInstance instance) {
+		if (this.pendingChunkLoads.contains(instance)) return;
 		this.pendingChunkLoads.add(instance);
 		this.pendingChunkLoadSortTimer = 0;
 	}

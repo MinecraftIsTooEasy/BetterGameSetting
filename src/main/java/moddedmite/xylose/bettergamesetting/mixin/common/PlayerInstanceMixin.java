@@ -35,8 +35,8 @@ public abstract class PlayerInstanceMixin implements IPlayerInstance {
 		return null;
 	}
 
-	@Inject(method = "<init>", at = @At("TAIL"))
-	private void queueChunkLoad(CallbackInfo ci) {
+	@Inject(method = "addPlayer", at = @At("TAIL"))
+	private void queueChunkLoad(ServerPlayer par1EntityPlayerMP, CallbackInfo ci) {
 		((IPlayerChunkMap) this.thePlayerManager).queueChunkLoad(ReflectHelper.dyCast(this));
 	}
 

@@ -6,7 +6,6 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import moddedmite.xylose.bettergamesetting.client.gui.world.GuiListWorldSelection;
-import moddedmite.xylose.bettergamesetting.init.BGSClient;
 import moddedmite.xylose.bettergamesetting.util.ScreenUtil;
 import net.minecraft.*;
 import org.spongepowered.asm.mixin.Mixin;
@@ -17,16 +16,13 @@ import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
-import java.io.IOException;
 
 @Mixin(value = EntityRenderer.class, priority = 9999)
 public abstract class EntityRendererMixin {
     @Shadow private float farPlaneDistance;
     @Shadow private Minecraft mc;
+    @Shadow private long renderEndNanoTime;
     @Shadow protected abstract void setupFog(int par1, float par2);
     @Shadow float fogColorRed;
     @Shadow float fogColorGreen;
@@ -77,26 +73,12 @@ public abstract class EntityRendererMixin {
         }
     }
 
-    @ModifyVariable(
+    @WrapOperation(
             method = "renderWorld",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/RenderGlobal;updateRenderers(Lnet/minecraft/EntityLivingBase;Z)Z",
-                    shift = At.Shift.BY,
-                    by = 2
-            ),
-            ordinal = 0)
-    private long modifyTimeoutCheck(long remainingTime, float partialTicks, long renderTime) {
-        if (this.mc.gameSettings.isDeferChunkUpdates()) {
-            if (remainingTime < 1000000L || remainingTime > 1000000000L) {
-                return -1L;
-            }
-        } else {
-            if (remainingTime < 0L || remainingTime > 1000000000L) {
-                return -1L;
-            }
-        }
-        return remainingTime;
+            at = @At(value = "INVOKE", target = "Ljava/lang/System;nanoTime()J", ordinal = 2))
+    private long modifyTimeoutCheck(Operation<Long> original, float par1, long par2) {
+        long budget = this.mc.gameSettings.isDeferChunkUpdates() ? 4000000L : 25000000L;
+        return par2 - budget + original.call() - this.renderEndNanoTime;
     }
 
     @Inject(method = "updateFogColor", at = @At(value = "INVOKE", target = "Lnet/minecraft/WorldClient;getRainStrength(F)F"), locals = LocalCapture.CAPTURE_FAILEXCEPTION)

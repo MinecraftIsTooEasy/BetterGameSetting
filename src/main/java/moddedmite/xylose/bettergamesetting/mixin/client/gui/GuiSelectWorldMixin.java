@@ -1,5 +1,7 @@
 package moddedmite.xylose.bettergamesetting.mixin.client.gui;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import moddedmite.xylose.bettergamesetting.api.IGuiSelectWorld;
 import moddedmite.xylose.bettergamesetting.client.gui.world.GuiListWorldSelection;
 import moddedmite.xylose.bettergamesetting.client.gui.world.GuiListWorldSelectionEntry;
@@ -8,11 +10,11 @@ import net.minecraft.GuiButton;
 import net.minecraft.GuiCreateWorld;
 import net.minecraft.GuiScreen;
 import net.minecraft.GuiSelectWorld;
+import net.minecraft.GuiWorldSlot;
 import net.minecraft.Minecraft;
 import net.minecraft.SaveFormatComparator;
 import net.xiaoyu233.fml.util.ReflectHelper;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -24,7 +26,6 @@ import java.util.List;
 
 @Mixin(value = GuiSelectWorld.class, priority = 1001)
 public abstract class GuiSelectWorldMixin extends GuiScreen implements IGuiSelectWorld {
-    @Shadow protected String screenTitle;
     @Shadow protected GuiScreen parentScreen;
     @Shadow private List saveList;
     @Shadow private int selectedWorld;
@@ -42,53 +43,38 @@ public abstract class GuiSelectWorldMixin extends GuiScreen implements IGuiSelec
         this.worldSelectionList = new GuiListWorldSelection(ReflectHelper.dyCast(this), this.mc, this.width, this.height, 32, this.height - 64, 36);
     }
 
-    /**
-     * @author Xy_Lose
-     * @reason
-     */
-    @Overwrite
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        Minecraft.clearWorldSessionClientData();
+    @WrapOperation(method = "drawScreen", at = @At(value = "INVOKE", target = "Lnet/minecraft/GuiWorldSlot;drawScreen(IIF)V"))
+    private void wrapList(GuiWorldSlot instance, int mouseX, int mouseY, float partialTicks, Operation<Void> original) {
         this.worldVersTooltip = null;
-        if (this.worldSelectionList != null) {
-            this.worldSelectionList.drawScreen(mouseX, mouseY, partialTicks);
-        }
-        this.fontRenderer.drawStringWithShadow(this.screenTitle, this.width / 2 - this.fontRenderer.getStringWidth(this.screenTitle) / 2, 20, 16777215);
-        for (Object o : this.buttonList) {
-            ((GuiButton) o).drawButton(this.mc, mouseX, mouseY);
-        }
+        this.worldSelectionList.drawScreen(mouseX, mouseY, partialTicks);
         if (this.worldVersTooltip != null) {
             ScreenUtil.getInstance().drawTooltip(Arrays.asList(this.worldVersTooltip.split("\n")), mouseX, mouseY);
         }
     }
 
-    /**
-     * @author Xy_Lose
-     * @reason
-     */
-    @Overwrite
-    protected void actionPerformed(GuiButton button) {
+    @Inject(method = "actionPerformed", at = @At("HEAD"), cancellable = true)
+    protected void newAction(GuiButton button, CallbackInfo ci) {
+        ci.cancel();
         if (!button.enabled) return;
-        GuiListWorldSelectionEntry entry = this.worldSelectionList == null ? null : this.worldSelectionList.getSelectedWorld();
-
+        GuiListWorldSelectionEntry guiListWorldSelectionEntry = this.worldSelectionList.getSelectedWorld();
         if (button.id == 2) {
-            if (entry != null) {
-                entry.deleteWorld();
+            if (guiListWorldSelectionEntry != null) {
+                guiListWorldSelectionEntry.deleteWorld();
             }
         } else if (button.id == 1) {
-            if (entry != null) {
-                entry.joinWorld();
+            if (guiListWorldSelectionEntry != null) {
+                guiListWorldSelectionEntry.joinWorld();
             }
         } else if (button.id == 3) {
             this.mc.displayGuiScreen(new GuiCreateWorld(this));
-        } else if (button.id == 4) {
-            if (entry != null) {
-                entry.editWorld();
+        } else if (button.id == 6) {
+            if (guiListWorldSelectionEntry != null) {
+                guiListWorldSelectionEntry.editWorld();
             }
         } else if (button.id == 0) {
             this.mc.displayGuiScreen(this.parentScreen);
-        } else if (button.id == 5 && entry != null) {
-            entry.recreateWorld();
+        } else if (button.id == 7 && guiListWorldSelectionEntry != null) {
+            guiListWorldSelectionEntry.recreateWorld();
         }
     }
 

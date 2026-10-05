@@ -241,13 +241,13 @@ public abstract class SoundManagerMixin implements ISoundManager {
 				}
 				
 				if (this.sndSystem.getMasterVolume() <= 0.0F) {
-					BGSClient.logger.debug("Skipped playing soundEvent: {}, master volume was zero", (Object) resourcelocation);
+//					BGSClient.logger.debug("Skipped playing soundEvent: {}, master volume was zero", resourcelocation);
 				} else {
 					Sound sound = p_sound.getSound();
 					
 					if (sound == SoundHandler.MISSING_SOUND) {
 						if (UNABLE_TO_PLAY.add(resourcelocation)) {
-							BGSClient.logger.warn("Unable to play empty soundEvent: {}", (Object) resourcelocation);
+							BGSClient.logger.warn("Unable to play empty soundEvent: {}", resourcelocation);
 						}
 					} else {
 						float f3 = p_sound.getVolume();
@@ -262,7 +262,7 @@ public abstract class SoundManagerMixin implements ISoundManager {
 						float f2 = this.getClampedPitch(p_sound);
 						
 						if (f1 == 0.0F) {
-							BGSClient.logger.debug("Skipped playing sound {}, volume was zero.", (Object) sound.getSoundLocation());
+//							BGSClient.logger.debug("Skipped playing sound {}, volume was zero.", sound.getSoundLocation());
 						} else {
 							boolean flag = p_sound.canRepeat() && p_sound.getRepeatDelay() == 0;
 							String s = Mth.getRandomUUID(ThreadLocalRandom.current()).toString();
@@ -274,7 +274,7 @@ public abstract class SoundManagerMixin implements ISoundManager {
 								this.sndSystem.newSource(false, s, BGSClient.getURLForSoundResource(resourcelocation1), resourcelocation1.toString(), flag, p_sound.getXPosF(), p_sound.getYPosF(), p_sound.getZPosF(), p_sound.getAttenuationType().getTypeInt(), f);
 							}
 							
-							BGSClient.logger.debug("Playing sound {} for event {} as channel {}", sound.getSoundLocation(), resourcelocation, s);
+//							BGSClient.logger.debug("Playing sound {} for event {} as channel {}", sound.getSoundLocation(), resourcelocation, s);
 							this.sndSystem.setPitch(s, f2);
 							this.sndSystem.setVolume(s, f1);
 							this.sndSystem.play(s);

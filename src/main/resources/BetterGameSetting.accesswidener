@@ -31,6 +31,7 @@ accessible method net/minecraft/World chunkExists (II)Z
 accessible class net/minecraft/GameRuleValue
 accessible class net/minecraft/GuiSlotStats
 accessible class net/minecraft/GuiSlotLanguage
+accessible class net/minecraft/GuiWorldSlot
 accessible class net/minecraft/GuiButtonNextPage
 accessible class net/minecraft/GuiScreenTemporaryResourcePackSelectSelectionList
 accessible class net/minecraft/PlayerInstance

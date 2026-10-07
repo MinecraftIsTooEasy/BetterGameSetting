@@ -286,6 +286,10 @@ public class GuiListWorldSelectionEntry implements GuiListExtended.IGuiListEntry
         return this.worldSummary.passed_validation;
     }
 
+    public boolean matchesFilter(String lowerCaseFilter) {
+        return this.worldSummary.getDisplayName().toLowerCase().contains(lowerCaseFilter) || this.worldSummary.getFileName().toLowerCase().contains(lowerCaseFilter);
+    }
+
     @Override
     public void mouseReleased(int slotIndex, int x, int y, int mouseEvent, int relativeX, int relativeY) {
     }

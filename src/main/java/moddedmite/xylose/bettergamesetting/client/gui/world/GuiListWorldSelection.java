@@ -14,6 +14,8 @@ public class GuiListWorldSelection extends GuiListExtended {
     private final GuiScreen parent;
     private final IGuiSelectWorld worldSelection;
     private final List<GuiListWorldSelectionEntry> entries = new ArrayList<>();
+    private final List<GuiListWorldSelectionEntry> filters = new ArrayList<>();
+    private String filter = "";
     private int selectedIdx = -1;
 
     public GuiListWorldSelection(GuiScreen parent, Minecraft mc, int width, int height, int top, int bottom, int slotHeight) {
@@ -29,16 +31,36 @@ public class GuiListWorldSelection extends GuiListExtended {
 	    for (SaveFormatComparator save : this.worldSelection.getSaveList()) {
 		    this.entries.add(new GuiListWorldSelectionEntry(this, save));
 	    }
+	    this.applyFilter();
+    }
+
+    public void setFilter(String filter) {
+        if (this.filter.equals(filter)) return;
+        this.filter = filter;
+        this.applyFilter();
+        this.scrollBy(-this.getAmountScrolled());
+    }
+
+    private void applyFilter() {
+        this.filters.clear();
+        String lowerCaseFilter = this.filter.toLowerCase();
+        for (GuiListWorldSelectionEntry entry : this.entries) {
+            if (lowerCaseFilter.isEmpty() || entry.matchesFilter(lowerCaseFilter)) {
+                this.filters.add(entry);
+            }
+        }
+        this.selectedIdx = -1;
+        this.worldSelection.selectWorld(null);
     }
 
     @Override
     protected int getSize() {
-        return this.entries.size();
+        return this.filters.size();
     }
 
     @Override
     public GuiListWorldSelectionEntry getListEntry(int index) {
-        return this.entries.get(index);
+        return this.filters.get(index);
     }
 
     @Override

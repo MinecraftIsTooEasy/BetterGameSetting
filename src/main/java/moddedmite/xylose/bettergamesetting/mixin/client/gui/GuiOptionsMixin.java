@@ -11,6 +11,7 @@ import moddedmite.xylose.bettergamesetting.client.gui.controls.GuiNewControls;
 import moddedmite.xylose.bettergamesetting.client.gui.resourcepack.GuiScreenResourcePacks;
 import moddedmite.xylose.bettergamesetting.util.BGSConfig;
 import net.minecraft.*;
+import net.xiaoyu233.fml.FishModLoader;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -25,7 +26,11 @@ public class GuiOptionsMixin extends GuiScreen {
 
     @Inject(method = "initGui", at = @At("TAIL"))
     private void addButton(CallbackInfo ci) {
-        this.buttonList.add(new GuiButton(300, this.width / 2 - 152, this.height / 6 + 96 - 30, 150, 20, I18n.getString("options.sounds")));
+        if (FishModLoader.hasMod("skinport")) {
+            this.buttonList.add(new GuiButton(300, this.width / 2 + 2, this.height / 6 + 96 - 30, 150, 20, I18n.getString("options.sounds")));
+        } else {
+            this.buttonList.add(new GuiButton(300, this.width / 2 - 152, this.height / 6 + 96 - 30, 150, 20, I18n.getString("options.sounds")));
+        }
         GuiButton worldOptionsButton;
         this.buttonList.add(worldOptionsButton = new GuiButton(301, this.width / 2 + 2, this.height / 6 - 12, 150, 20, I18n.getString("options.worldOptions.button")));
         worldOptionsButton.enabled = !(this.mc.getIntegratedServer() == null);

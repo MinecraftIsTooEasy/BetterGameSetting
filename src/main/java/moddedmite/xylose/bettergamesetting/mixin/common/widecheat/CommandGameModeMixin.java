@@ -13,6 +13,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public class CommandGameModeMixin {
 	@WrapOperation(method = "processCommand", at = @At(value = "INVOKE", target = "Lnet/minecraft/Minecraft;inDevMode()Z"))
 	private boolean wide_0(Operation<Boolean> original) {
-		return !original.call() || !BGSConfig.freeDevAllowCheat.get();
+		return original.call() || BGSConfig.freeDevAllowCheat.get();
 	}
 }

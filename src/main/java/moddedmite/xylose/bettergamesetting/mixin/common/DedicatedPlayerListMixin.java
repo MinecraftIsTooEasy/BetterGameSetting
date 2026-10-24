@@ -1,5 +1,6 @@
 package moddedmite.xylose.bettergamesetting.mixin.common;
 
+import moddedmite.xylose.bettergamesetting.compat.ModCompat;
 import moddedmite.xylose.bettergamesetting.mixin.common.invoker.ServerConfigurationManagerInvoker;
 import net.minecraft.DedicatedPlayerList;
 import net.minecraft.DedicatedServer;
@@ -14,5 +15,6 @@ public class DedicatedPlayerListMixin {
 	@Inject(method = "<init>", at = @At("TAIL"))
 	private void onInitTail(DedicatedServer par1DedicatedServer, CallbackInfo ci) {
 		((ServerConfigurationManagerInvoker) ReflectHelper.dyCast(this)).invokerParseDistance(par1DedicatedServer.getIntProperty("view-distance", 10));
+		ModCompat.isServerSlowChunkLoadingEnabled(par1DedicatedServer);
 	}
 }

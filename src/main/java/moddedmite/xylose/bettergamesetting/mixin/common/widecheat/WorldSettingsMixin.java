@@ -14,6 +14,6 @@ public class WorldSettingsMixin {
 
     @Inject(method = "areCommandsAllowed", at = @At("TAIL"), cancellable = true)
     public void wide(CallbackInfoReturnable<Boolean> cir) {
-        cir.setReturnValue((BGSConfig.freeDevAllowCheat.get() && commandsAllowed));
+        cir.setReturnValue(cir.getReturnValue() || (BGSConfig.freeDevAllowCheat.get() && commandsAllowed));
     }
 }

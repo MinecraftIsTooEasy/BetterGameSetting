@@ -2,6 +2,7 @@ package moddedmite.xylose.bettergamesetting.mixin.client.resources;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Iterables;
+import moddedmite.xylose.bettergamesetting.api.BuiltInResourcePackRegistry;
 import moddedmite.xylose.bettergamesetting.util.SimpleReloadableResourceManagerINNER1;
 import moddedmite.xylose.bettergamesetting.client.FontPack;
 import net.minecraft.Minecraft;
@@ -13,6 +14,7 @@ import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 
 import java.util.List;
+import java.util.ArrayList;
 
 @Mixin(SimpleReloadableResourceManager.class)
 public class SimpleReloadableResourceManagerMixin {
@@ -27,7 +29,10 @@ public class SimpleReloadableResourceManagerMixin {
      */
     @Overwrite
     public void reloadResources(List par1List) {
+        // Reload callers may reuse their list or supply an immutable list.
+        par1List = new ArrayList(par1List);
         this.clearResources();
+        BuiltInResourcePackRegistry.insertBeforeSelected(par1List);
         FontPack fontPack = FontPack.get();
         if (fontPack != null) {
             par1List.add(fontPack);
@@ -38,6 +43,7 @@ public class SimpleReloadableResourceManagerMixin {
             this.reloadResourcePack(resourcePack);
         }
 
+        BuiltInResourcePackRegistry.recordLoadedPacks(par1List);
         this.notifyReloadListeners();
     }
 }

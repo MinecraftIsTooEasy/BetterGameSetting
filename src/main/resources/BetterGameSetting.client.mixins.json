@@ -34,6 +34,7 @@
     "renderer.RenderGlobalMixin",
     "renderer.RenderMixin",
     "renderer.WorldRendererMixin",
+    "resources.AbstractResourcePackMixin",
     "resources.ResourceLocationMixin",
     "resources.ResourcePackRepositoryEntryMixin",
     "resources.ResourcePackRepositoryMixin",

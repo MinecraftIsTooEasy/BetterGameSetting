@@ -68,7 +68,8 @@ public abstract class GameSettingsMixin implements IGameSetting {
     };
     @Unique public boolean transparentBackground;
     @Unique public boolean highlightButtonText;
-    @Unique public boolean deferChunkUpdates = false;
+    @Unique public boolean deferChunkUpdates = true;
+    @Unique private boolean slowChunkLoadingMigrationComplete;
     @Unique private String soundDevice = "";
     @Unique private boolean directionalAudio;
     @Unique private boolean showSubtitles;
@@ -303,6 +304,9 @@ public abstract class GameSettingsMixin implements IGameSetting {
     public void loadOptions(CallbackInfo ci) {
         try {
             if (!this.optionsFile.exists()) {
+                this.deferChunkUpdates = true;
+                this.slowChunkLoadingMigrationComplete = true;
+                this.saveOptions();
                 return;
             }
             BufferedReader var1 = new BufferedReader(new FileReader(this.optionsFile));
@@ -358,6 +362,9 @@ public abstract class GameSettingsMixin implements IGameSetting {
                 if (astring[0].equals("deferChunkUpdates")) {
                     this.deferChunkUpdates = astring[1].equals("true");
                 }
+                if (astring[0].equals("bgsSlowChunkLoadingMigration") && astring[1].equals("true")) {
+                    this.slowChunkLoadingMigrationComplete = true;
+                }
                 if (astring[0].equals("soundDevice")) {
                     this.soundDevice = s.substring(s.indexOf(58) + 1);
                 }
@@ -381,6 +388,12 @@ public abstract class GameSettingsMixin implements IGameSetting {
                         this.soundLevels.put(soundcategory, this.parseFloat(astring[1]));
                     }
                 }
+            }
+            var1.close();
+            if (!this.slowChunkLoadingMigrationComplete) {
+                this.deferChunkUpdates = true;
+                this.slowChunkLoadingMigrationComplete = true;
+                this.saveOptions();
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -421,6 +434,7 @@ public abstract class GameSettingsMixin implements IGameSetting {
         printwriter.println("transparentBackground:" + this.transparentBackground);
         printwriter.println("highlightButtonText:" + this.highlightButtonText);
         printwriter.println("deferChunkUpdates:" + this.deferChunkUpdates);
+        printwriter.println("bgsSlowChunkLoadingMigration:" + this.slowChunkLoadingMigrationComplete);
         printwriter.println("soundDevice:" + this.soundDevice);
         printwriter.println("directionalAudio:" + this.directionalAudio);
         printwriter.println("showSubtitles:" + this.showSubtitles);

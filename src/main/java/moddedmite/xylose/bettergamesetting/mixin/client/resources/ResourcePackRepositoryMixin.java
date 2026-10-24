@@ -1,7 +1,11 @@
 package moddedmite.xylose.bettergamesetting.mixin.client.resources;
 
 import moddedmite.xylose.bettergamesetting.api.IResourcePackRepository;
-import net.minecraft.*;
+import net.minecraft.GameSettings;
+import net.minecraft.MetadataSerializer;
+import net.minecraft.ResourcePack;
+import net.minecraft.ResourcePackRepository;
+import net.minecraft.ResourcePackRepositoryEntry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -13,14 +17,20 @@ import java.util.List;
 
 @Mixin(ResourcePackRepository.class)
 public class ResourcePackRepositoryMixin implements IResourcePackRepository {
-    @Shadow private List repositoryEntries;
-    @Shadow private List repositoryEntriesAll;
+    @Shadow private List<ResourcePackRepositoryEntry> repositoryEntries;
+    @Shadow private List<ResourcePackRepositoryEntry> repositoryEntriesAll;
 
     @Inject(method = "<init>", at = @At("TAIL"))
-    private void loadResourcePacks(File resourcePack, ResourcePack metadataSerializer, MetadataSerializer gameSettings, GameSettings par4, CallbackInfo ci) {
-        for (String s : par4.getResourcePacks()) {
-            for (ResourcePackRepositoryEntry entry : (List<ResourcePackRepositoryEntry>) this.repositoryEntriesAll) {
-                if (entry.getResourcePackName().equals(s)) {
+    private void loadResourcePacks(File resourcePackDirectory, ResourcePack defaultResourcePack, MetadataSerializer metadataSerializer, GameSettings gameSettings, CallbackInfo ci) {
+        // BGS's ordered selection replaces the legacy single-pack skin option.
+        // Keeping the constructor's selection would load that pack twice.
+        this.repositoryEntries.clear();
+        for (String selectedPack : gameSettings.getResourcePacks()) {
+            // Modern options.txt identifies external packs with file/, while
+            // the legacy repository exposes the raw ZIP/directory filename.
+            String packName = selectedPack.startsWith("file/") ? selectedPack.substring(5) : selectedPack;
+            for (ResourcePackRepositoryEntry entry : this.repositoryEntriesAll) {
+                if (entry.getResourcePackName().equals(packName) && !this.repositoryEntries.contains(entry)) {
                     this.repositoryEntries.add(entry);
                     break;
                 }

@@ -4,6 +4,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import moddedmite.xylose.bettergamesetting.api.IPlayerInstance;
 import moddedmite.xylose.bettergamesetting.api.IPlayerChunkMap;
+import moddedmite.xylose.bettergamesetting.compat.ModCompat;
 import moddedmite.xylose.bettergamesetting.mixin.client.invoker.PlayerManagerInvoker;
 import net.minecraft.ChunkCoordIntPair;
 import net.minecraft.LongHashMap;
@@ -84,6 +85,8 @@ public abstract class PlayerManagerMixin implements IPlayerChunkMap {
 
 	@Inject(method = "updatePlayerInstances", at = @At("HEAD"))
 	private void tickPendingChunkLoads(CallbackInfo ci) {
+		if (ModCompat.HAS_PERFORMANCE_OPTIMIZATION) return;
+		if (!ModCompat.isServerSlowChunkLoadingEnabled(this.theWorldServer.getMinecraftServer())) return;
 		if (this.pendingChunkLoads.isEmpty()) return;
 		if (--this.pendingChunkLoadSortTimer <= 0) {
 			this.pendingChunkLoads.sort((a, b) -> Double.compare(this.closestPlayerDistanceSq(a), this.closestPlayerDistanceSq(b)));

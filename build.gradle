@@ -1,4 +1,5 @@
 import java.text.SimpleDateFormat
+import java.util.Locale
 
 plugins {
     id 'fml-loom' version '0.1'
@@ -14,12 +15,17 @@ static def buildTime() {
     return df.format(new Date())
 }
 
+def useLocalizedArchiveName = Locale.default.country.equalsIgnoreCase("CN")
+
 base {
 //	archivesName = project.archives_base_name + "-dev-build." + buildTime()
-    archivesName = project.archives_base_name
+    archivesName = useLocalizedArchiveName
+            ? "[更好的游戏设置]${project.archives_base_name}"
+            : project.archives_base_name
 }
 
 repositories {
+    mavenLocal()
     maven {
         name = "ModdedMITE"
         url = uri("https://maven.limingzxc.top/repository/maven-public/")
@@ -46,11 +52,14 @@ dependencies {
     compileOnly neodymium
 
     implementation "com.github.MinecraftIsTooEasy:Conditional-Mixin:0.6.4"
-    implementation "com.github.MinecraftIsTooEasy:RustedIronCore:1.5.7"
+    implementation "org.moddedmite:rusted-iron-core:1.5.8"
 
     localRuntime "com.github.MinecraftIsTooEasy:ManyLib:2.3.1"
     localRuntime "com.github.MinecraftIsTooEasy:Gson:2.10.1"
     localRuntime "com.github.MinecraftIsTooEasy:FastUtil:8.5.12"
+    localRuntime "org.moddedmite:performance-optimization:1.0.2"
+    localRuntime "org.moddedmite:omc:3.0.0"
+    localRuntime "org.moddedmite:ommc:1.4.5"
     localRuntime mod_menu
     localRuntime emi
     localRuntime neodymium

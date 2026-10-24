@@ -7,7 +7,6 @@ import moddedmite.xylose.bettergamesetting.api.IPlayerChunkMap;
 import moddedmite.xylose.bettergamesetting.util.ChunkTileEntities;
 import net.minecraft.Chunk;
 import net.minecraft.ChunkCoordIntPair;
-import net.minecraft.ChunkProviderServer;
 import net.minecraft.PlayerInstance;
 import net.minecraft.PlayerManager;
 import net.minecraft.ServerPlayer;
@@ -29,16 +28,6 @@ public abstract class PlayerInstanceMixin implements IPlayerInstance {
 	@Shadow @Final private ChunkCoordIntPair chunkLocation;
 	@Shadow @Final PlayerManager thePlayerManager;
 	@Shadow private int numberOfTilesToUpdate;
-
-	@WrapOperation(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/ChunkProviderServer;loadChunk(II)Lnet/minecraft/Chunk;"))
-	private Chunk deferChunkLoad(ChunkProviderServer instance, int var8, int var9, Operation<Chunk> original) {
-		return null;
-	}
-
-	@Inject(method = "addPlayer", at = @At("TAIL"))
-	private void queueChunkLoad(ServerPlayer par1EntityPlayerMP, CallbackInfo ci) {
-		((IPlayerChunkMap) this.thePlayerManager).queueChunkLoad(ReflectHelper.dyCast(this));
-	}
 
 	@Override
 	public ChunkCoordIntPair getChunkLocation() {

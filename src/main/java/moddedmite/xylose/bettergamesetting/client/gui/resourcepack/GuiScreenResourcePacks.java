@@ -3,6 +3,7 @@ package moddedmite.xylose.bettergamesetting.client.gui.resourcepack;
 import com.google.common.collect.Lists;
 import moddedmite.xylose.bettergamesetting.api.IGameSetting;
 import moddedmite.xylose.bettergamesetting.api.IResourcePackRepository;
+import moddedmite.xylose.bettergamesetting.api.BuiltInResourcePackRegistry;
 import moddedmite.xylose.bettergamesetting.client.gui.button.GuiOptionButton;
 import moddedmite.xylose.bettergamesetting.util.ScreenUtil;
 import net.minecraft.*;
@@ -186,6 +187,8 @@ public class GuiScreenResourcePacks extends GuiScreen {
                             this.mc.gameSettings.getIncompatibleResourcePacks().add(resourcepackrepository$entry.getResourcePackName());
                         }
                     }
+
+                    BuiltInResourcePackRegistry.appendConfiguredIds(this.mc.gameSettings.getResourcePacks());
 
                     this.mc.gameSettings.saveOptions();
                     this.mc.refreshResources();

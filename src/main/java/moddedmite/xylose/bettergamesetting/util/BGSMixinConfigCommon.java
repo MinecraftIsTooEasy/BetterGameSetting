@@ -1,5 +1,6 @@
 package moddedmite.xylose.bettergamesetting.util;
 
+import moddedmite.xylose.bettergamesetting.compat.ModCompat;
 import net.xiaoyu233.fml.FishModLoader;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
@@ -16,11 +17,14 @@ public class BGSMixinConfigCommon implements IMixinConfigPlugin {
 
     @Override
     public String getRefMapperConfig() {
-        return "";
+        return null;
     }
 
     @Override
     public boolean shouldApplyMixin(String s, String s1) {
+        if (ModCompat.PLAYER_INSTANCE_SCHEDULER_MIXIN.equals(s1)) {
+            return !ModCompat.HAS_PERFORMANCE_OPTIMIZATION;
+        }
         if (BGSConfig.freeDevAllowCheat.get()) {
             if (s1.contains("EnumGameTypeMixin$OhMyCommandsCompatMixin")) return !FishModLoader.hasMod("ohmycommands");
             if (s1.contains("ItemInWorldManagerMixin$OhMyCommandsCompatMixin")) return !FishModLoader.hasMod("ohmycommands");

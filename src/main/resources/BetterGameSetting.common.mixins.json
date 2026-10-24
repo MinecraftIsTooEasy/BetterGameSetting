@@ -14,6 +14,7 @@
     "PacketMixin",
     "PlayerInstanceMixin",
     "PlayerManagerMixin",
+    "scheduler.PlayerInstanceMixin",
     "ServerConfigurationManagerMixin",
     "ServerPlayerMixin",
     "WorldProviderMixin",

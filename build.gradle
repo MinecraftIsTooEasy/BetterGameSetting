@@ -18,10 +18,8 @@ static def buildTime() {
 def useLocalizedArchiveName = Locale.default.country.equalsIgnoreCase("CN")
 
 base {
-//	archivesName = project.archives_base_name + "-dev-build." + buildTime()
-    archivesName = useLocalizedArchiveName
-            ? "[更好的游戏设置]${project.archives_base_name}"
-            : project.archives_base_name
+    def localizedArchivePrefix = useLocalizedArchiveName ? "[更好的游戏设置]" : ""
+    archivesName = "${localizedArchivePrefix}${project.archives_base_name}-dev-build.${buildTime()}"
 }
 
 repositories {
